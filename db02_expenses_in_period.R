@@ -1,6 +1,7 @@
 library(tidyverse)
 library(shiny)
 library(shinythemes)
+library(shinyWidgets)
 library(lubridate)
 
 # Condense income and expenses per day
@@ -60,6 +61,7 @@ end_date <- max(expense_income_daily$date_formatted)
 
 ui <- fluidPage(
   theme = shinytheme("flatly"),
+  chooseSliderSkin(color = "#abb1a1"),
   sidebarLayout(
     sidebarPanel(sliderInput("date_considered", "Dates to show",
                              min = start_date,
