@@ -66,7 +66,7 @@ ui <- fluidPage(
                              timeFormat = "%F"),
                  selectInput("table_sort_type", "Show expenses:",
                              choices = c("Most recent" = "recent",
-                                         "Most expenseive" = "expensive")),
+                                         "Most expensive" = "expensive")),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
               verbatimTextOutput("expenses_summary")),
