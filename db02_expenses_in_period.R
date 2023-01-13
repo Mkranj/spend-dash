@@ -63,6 +63,9 @@ ui <- fluidPage(
                              min = start_date,
                              max = end_date,
                              value = c(start_date, end_date)),
+                 selectInput("table_sort_type", "Show expenses:",
+                             choices = c("Most recent" = "recent",
+                                         "Most expenseive" = "expensive")),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
               verbatimTextOutput("expenses_summary")),
@@ -115,7 +118,14 @@ server <- function(input, output, session) {
   output$table_recent <- renderTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
     table_data$date_formatted <- as.Date(table_data$date_formatted) %>% as.character()
-    table_data %>% arrange(desc(date_formatted)) %>%
+    if (input$table_sort_type == "recent") {
+      table_data <- arrange(table_data, desc(date_formatted))
+      }
+    else if (input$table_sort_type == "expensive") {
+      table_data <- arrange(table_data, desc(Amount), desc(date_formatted)) 
+      }
+    else print("Unknown arrange choice")
+    table_data %>%
       select(date_formatted, Amount, Note) %>% head()
   })
 }
