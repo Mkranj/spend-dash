@@ -44,7 +44,11 @@ expense_income_daily <- expense_income_daily %>%
          expense_income_daily, got_income = case_when(
            income > 0 ~ 1, TRUE ~ 0))
 
+currency <- unique(finance_data$Currency)[1]
+# FIX! something is in USD, recalculate it.
+
 # App ----
+# Hovering over plot -> show precise date and amount
 
 start_date <- min(expense_income_daily$date_formatted)
 end_date <- max(expense_income_daily$date_formatted)
@@ -55,23 +59,38 @@ ui <- fluidPage(
                              min = start_date,
                              max = end_date,
                              value = c(start_date, end_date))),
-    mainPanel(plotOutput("main_plot_expenses", height = "600px")),
+    mainPanel(plotOutput("main_plot_expenses", height = "600px"),
+              verbatimTextOutput("expenses_summary")),
     position = "right"
   )
 )
 
 server <- function(input, output, session) {
-  
-  plot_expenses <- reactive({
-    plot_data <- expense_income_daily %>% 
+  expenses_data <- reactive({
+    filtered_data <- expense_income_daily %>% 
       filter(date_formatted >= input$date_considered[1],
              date_formatted <= input$date_considered[2]) 
+    filtered_data
+  })
+  
+  plot_expenses <- reactive({
+    plot_data <- expenses_data()
     ggplot(plot_data, aes(as.Date(date_formatted), expense)) + geom_line() +
       scale_x_date(date_labels = "%m-%Y")}
   )
   
   output$main_plot_expenses <- renderPlot(plot_expenses())
   
+  expenses_summary_data <- reactive({
+    total_expense <- sum(expenses_data()$expense, na.rm = T) %>% round(2)
+    n_expenses <- expenses_data() %>% filter(expense > 0) %>% nrow()
+    avg_expense <- (total_expense/n_expenses) %>% round(2)
+    paste0("Total expenses: ", total_expense, currency,
+           "\nNumber of expenses: ", n_expenses,
+           "\nAverage expense: ", avg_expense, currency)
+  })
+  
+  output$expenses_summary <- renderText(expenses_summary_data())
 }
 
 shinyApp(ui, server)
