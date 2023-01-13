@@ -73,6 +73,8 @@ ui <- fluidPage(
                                          "Most expensive" = "expensive")),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
+              textInput("filter_words", "Filter expenses containing:",
+                        placeholder = "e.g. 'movie', 'drinks'..."),
               htmlOutput("expenses_summary")),
     position = "right"
   )
@@ -83,7 +85,17 @@ server <- function(input, output, session) {
   expenses_individual_data <- reactive({
     filtered_data <- expenses %>% 
       filter(date_formatted >= input$date_considered[1],
-             date_formatted <= input$date_considered[2]) 
+             date_formatted <= input$date_considered[2])
+    # Filter by input words, if any matches, update data
+    matching_filter <- grep(pattern = input$filter_words,
+                            x = filtered_data$Note, ignore.case = T)
+    if (length(matching_filter) > 0) {
+      filtered_data <- filtered_data[matching_filter, ]
+    } else if (input$filter_words != "") {
+      output$expenses_summary <- renderUI(
+        paste("NO MATCHES FOUND<br/>", expenses_summary_data()) %>% HTML())
+    }
+    
     filtered_data
   })
   
