@@ -116,8 +116,15 @@ server <- function(input, output, session) {
   
   plot_expenses <- reactive({
     plot_data <- expenses_daily_data()
-    ggplot(plot_data, aes(as.Date(date_formatted), expense)) + geom_line() +
-      scale_x_date(date_labels = "%m-%Y")}
+    plot <- ggplot(plot_data, aes(as.Date(date_formatted), expense)) +
+      scale_x_date(date_labels = "%m-%Y")
+    if (nrow(expenses_daily_data()) == 1){
+      plot <- plot + geom_point()
+    } else {
+      plot <- plot + geom_line()
+    }
+    plot
+    }
   )
   
   output$main_plot_expenses <- renderPlot(plot_expenses())
