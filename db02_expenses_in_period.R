@@ -73,9 +73,10 @@ ui <- fluidPage(
                                          "Most expensive" = "expensive")),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
-              textInput("filter_words", "Filter expenses containing:",
-                        placeholder = "e.g. 'movie', 'drinks'..."),
-              htmlOutput("expenses_summary")),
+              column(6, textInput("filter_words", "Filter expenses containing:",
+                      placeholder = "e.g. 'movie', 'drinks'...")),
+              column(6, htmlOutput("expenses_summary"))
+              ),
     position = "right"
   )
 )
@@ -91,6 +92,7 @@ server <- function(input, output, session) {
                             x = filtered_data$Note, ignore.case = T)
     if (length(matching_filter) > 0) {
       filtered_data <- filtered_data[matching_filter, ]
+      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
     } else if (input$filter_words != "") {
       output$expenses_summary <- renderUI(
         paste("NO MATCHES FOUND<br/>", expenses_summary_data()) %>% HTML())
