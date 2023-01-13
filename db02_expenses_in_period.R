@@ -1,5 +1,6 @@
 library(tidyverse)
 library(shiny)
+library(shinythemes)
 library(lubridate)
 
 # Condense income and expenses per day
@@ -58,6 +59,7 @@ start_date <- min(expense_income_daily$date_formatted)
 end_date <- max(expense_income_daily$date_formatted)
 
 ui <- fluidPage(
+  theme = shinytheme("flatly"),
   sidebarLayout(
     sidebarPanel(sliderInput("date_considered", "Dates to show",
                              min = start_date,
@@ -69,7 +71,7 @@ ui <- fluidPage(
                                          "Most expensive" = "expensive")),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
-              verbatimTextOutput("expenses_summary")),
+              htmlOutput("expenses_summary")),
     position = "right"
   )
 )
@@ -109,11 +111,11 @@ server <- function(input, output, session) {
     n_expenses <- expenses_individual_data() %>% filter(Amount > 0) %>% nrow()
     avg_expense <- (total_expense/n_expenses) %>% round(2)
     paste0("Total expenses: ", total_expense, currency,
-           "\nNumber of expenses: ", n_expenses,
-           "\nAverage expense: ", avg_expense, currency)
+           "<br/>Number of expenses: ", n_expenses,
+           "<br/>Average expense: ", avg_expense, currency)
   })
   
-  output$expenses_summary <- renderText(expenses_summary_data())
+  output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
   
   # Change to individual expenses, not daily
   output$table_recent <- renderTable({
