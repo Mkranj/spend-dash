@@ -66,7 +66,8 @@ server <- function(input, output, session) {
     plot_data <- expense_income_daily %>% 
       filter(date_formatted >= input$date_considered[1],
              date_formatted <= input$date_considered[2]) 
-    ggplot(plot_data, aes(date_formatted, expense)) + geom_line()}
+    ggplot(plot_data, aes(as.Date(date_formatted), expense)) + geom_line() +
+      scale_x_date(date_labels = "%m-%Y")}
   )
   
   output$main_plot_expenses <- renderPlot(plot_expenses())
