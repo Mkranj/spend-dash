@@ -32,6 +32,10 @@ expense_income_daily <- left_join(
   expenses_daily) %>%
   left_join(income_daily)
 
+expenses <- left_join(
+  all_dates,
+  expenses)
+
 expense_income_daily$expense[is.na(expense_income_daily$expense)] <- 0
 expense_income_daily$income[is.na(expense_income_daily$income)] <- 0
 expense_income_daily$no_of_expenses[is.na(expense_income_daily$no_of_expenses)] <- 0
@@ -58,7 +62,8 @@ ui <- fluidPage(
     sidebarPanel(sliderInput("date_considered", "Dates to show",
                              min = start_date,
                              max = end_date,
-                             value = c(start_date, end_date))),
+                             value = c(start_date, end_date)),
+                 tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
               verbatimTextOutput("expenses_summary")),
     position = "right"
@@ -66,15 +71,29 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  expenses_data <- reactive({
-    filtered_data <- expense_income_daily %>% 
+  
+  expenses_individual_data <- reactive({
+    filtered_data <- expenses %>% 
+      filter(date_formatted >= input$date_considered[1],
+             date_formatted <= input$date_considered[2]) 
+    filtered_data
+  })
+  
+  expenses_daily_data <- reactive({
+    daily_data <- group_by(expenses_individual_data(), date_formatted) %>% 
+      summarise(expense = sum(Amount, na.rm = T), no_of_expenses = n())
+    
+    # Days with no expenses still have one row and n of 1
+    daily_data$no_of_expenses[!(daily_data$expense > 0)] <- 0
+    
+    filtered_data <- daily_data %>% 
       filter(date_formatted >= input$date_considered[1],
              date_formatted <= input$date_considered[2]) 
     filtered_data
   })
   
   plot_expenses <- reactive({
-    plot_data <- expenses_data()
+    plot_data <- expenses_daily_data()
     ggplot(plot_data, aes(as.Date(date_formatted), expense)) + geom_line() +
       scale_x_date(date_labels = "%m-%Y")}
   )
@@ -82,8 +101,8 @@ server <- function(input, output, session) {
   output$main_plot_expenses <- renderPlot(plot_expenses())
   
   expenses_summary_data <- reactive({
-    total_expense <- sum(expenses_data()$expense, na.rm = T) %>% round(2)
-    n_expenses <- expenses_data() %>% filter(expense > 0) %>% nrow()
+    total_expense <- sum(expenses_individual_data()$Amount, na.rm = T) %>% round(2)
+    n_expenses <- expenses_individual_data() %>% filter(Amount > 0) %>% nrow()
     avg_expense <- (total_expense/n_expenses) %>% round(2)
     paste0("Total expenses: ", total_expense, currency,
            "\nNumber of expenses: ", n_expenses,
@@ -91,6 +110,14 @@ server <- function(input, output, session) {
   })
   
   output$expenses_summary <- renderText(expenses_summary_data())
+  
+  # Change to individual expenses, not daily
+  output$table_recent <- renderTable({
+    table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
+    table_data$date_formatted <- as.Date(table_data$date_formatted) %>% as.character()
+    table_data %>% arrange(desc(date_formatted)) %>%
+      select(date_formatted, Amount, Note) %>% head()
+  })
 }
 
 shinyApp(ui, server)
