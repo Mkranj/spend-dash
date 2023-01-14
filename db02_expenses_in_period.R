@@ -3,6 +3,7 @@ library(shiny)
 library(shinythemes)
 library(shinyWidgets)
 library(lubridate)
+library(plotly)
 
 # Condense income and expenses per day
 finance_data <- read.csv("expense_data_1.csv")
@@ -74,7 +75,7 @@ ui <- fluidPage(
                                          "Most expensive" = "expensive")
                              ),
                  tableOutput("table_recent")),
-    mainPanel(plotOutput("main_plot_expenses", height = "600px"),
+    mainPanel(plotlyOutput("main_plot_expenses", height = "600px"),
               column(6, textInput("filter_words", "Filter expenses containing:",
                       placeholder = "e.g. 'movie', 'drinks'...")),
               column(6, htmlOutput("expenses_summary"))
@@ -136,11 +137,11 @@ server <- function(input, output, session) {
     } else {
       plot <- plot + geom_line()
     }
-    plot
+    plot %>% ggplotly()
     }
   )
   
-  output$main_plot_expenses <- renderPlot(plot_expenses())
+  output$main_plot_expenses <- renderPlotly(plot_expenses())
   
   expenses_summary_data <- reactive({
     total_expense <- sum(expenses_individual_data()$Amount, na.rm = T) %>% round(2)
