@@ -116,8 +116,13 @@ server <- function(input, output, session) {
   
   plot_expenses <- reactive({
     plot_data <- expenses_daily_data()
+    
+    # Function to pass as an argument, to round y-axis
+    round_y_axis <- function(y) round(y) 
+    
     plot <- ggplot(plot_data, aes(as.Date(date_formatted), expense)) +
-      scale_x_date(date_labels = "%m-%Y")
+      scale_x_date(date_labels = "%m-%Y") + xlab("Date") + ylab("Amount spent") +
+      scale_y_continuous(labels = round_y_axis)
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
     } else {
