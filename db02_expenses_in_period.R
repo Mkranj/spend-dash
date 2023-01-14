@@ -92,12 +92,17 @@ server <- function(input, output, session) {
     # Filter by input words, if any matches, update data
     matching_filter <- grep(pattern = input$filter_words,
                             x = filtered_data$Note, ignore.case = T)
-    if (length(matching_filter) > 0) {
+    
+    # Some are blank, some are NA -- by default searches for "" string,
+    # which doesn't match NA. But "" should include everything
+    if (length(matching_filter) > 0 & input$filter_words != "") {
       filtered_data <- filtered_data[matching_filter, ]
       output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
     } else if (input$filter_words != "") {
       output$expenses_summary <- renderUI(
         paste("NO MATCHES FOUND<br/>", expenses_summary_data()) %>% HTML())
+    } else if (input$filter_words == "") {
+      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
     }
     
     filtered_data
