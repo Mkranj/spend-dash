@@ -62,6 +62,7 @@ end_date <- max(expense_income_daily$date_formatted)
 ui <- fluidPage(
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "#abb1a1"),
+  tags$head(tags$style(HTML("#filter_words {border-color: gray}"))),
   sidebarLayout(
     sidebarPanel(sliderInput("date_considered", "Dates to show",
                              min = start_date,
@@ -70,7 +71,8 @@ ui <- fluidPage(
                              timeFormat = "%F"),
                  selectInput("table_sort_type", "Show expenses:",
                              choices = c("Most recent" = "recent",
-                                         "Most expensive" = "expensive")),
+                                         "Most expensive" = "expensive")
+                             ),
                  tableOutput("table_recent")),
     mainPanel(plotOutput("main_plot_expenses", height = "600px"),
               column(6, textInput("filter_words", "Filter expenses containing:",
