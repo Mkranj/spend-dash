@@ -88,8 +88,8 @@ server <- function(input, output, session) {
   
   expenses_individual_data <- reactive({
     filtered_data <- expenses %>% 
-      filter(date_formatted >= input$date_considered[1],
-             date_formatted <= input$date_considered[2])
+      filter(date_formatted > input$date_considered[1],
+             date_formatted <= input$date_considered[2] + days(1))
     # Filter by input words, if any matches, update data
     matching_filter <- grep(pattern = input$filter_words,
                             x = filtered_data$Note, ignore.case = T)
