@@ -121,7 +121,8 @@ server <- function(input, output, session) {
     round_y_axis <- function(y) round(y) 
     
     plot <- ggplot(plot_data, aes(as.Date(date_formatted), expense)) +
-      scale_x_date(date_labels = "%m-%Y") + xlab("Date") + ylab("Amount spent") +
+      scale_x_date(date_labels = "%m-%Y", date_minor_breaks = "1 months") +
+      xlab("Date") + ylab("Amount spent") +
       scale_y_continuous(labels = round_y_axis)
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
