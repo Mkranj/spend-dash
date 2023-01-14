@@ -115,11 +115,8 @@ server <- function(input, output, session) {
     
     # Days with no expenses still have one row and n of 1
     daily_data$no_of_expenses[!(daily_data$expense > 0)] <- 0
-    
-    filtered_data <- daily_data %>% 
-      filter(date_formatted >= input$date_considered[1],
-             date_formatted <= input$date_considered[2]) 
-    filtered_data
+
+    daily_data
   })
   
   plot_expenses <- reactive({
