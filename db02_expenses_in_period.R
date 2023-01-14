@@ -110,7 +110,7 @@ server <- function(input, output, session) {
     } else {
       plot <- plot + geom_line()
     }
-    plot <- plot %>% ggplotly()
+    plot <- plot %>% ggplotly() %>% config(displayModeBar = FALSE)
     plot$x$data[[1]]$text <- sub("as.Date\\(date_formatted\\)", "Date", plot$x$data[[1]]$text)
     plot$x$data[[1]]$text <- sub("expense", "Expense", plot$x$data[[1]]$text)
     plot
