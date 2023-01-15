@@ -45,7 +45,7 @@ ui <- fluidPage(
                              min = start_date,
                              max = end_date,
                              value = c(start_date, end_date),
-                             timeFormat = "%F"),
+                             timeFormat = "%d.%m.%Y"),
                  selectInput("table_sort_type", "Show expenses:",
                              choices = c("Most recent" = "recent",
                                          "Most expensive" = "expensive")
