@@ -136,7 +136,6 @@ server <- function(input, output, session) {
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
   
-  # Change to individual expenses, not daily
   output$table_recent <- renderTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
     table_data$date_transform <- as.Date(table_data$date_transform) %>% as.character()
@@ -148,7 +147,7 @@ server <- function(input, output, session) {
       }
     else print("Unknown arrange choice")
     table_data %>%
-      select(date_format, Amount, Note, Category) %>% head()
+      select(Date = date_format, Amount, Note, Category) %>% head()
   })
 }
 
