@@ -104,7 +104,7 @@ server <- function(input, output, session) {
     plot <- ggplot(plot_data, aes(x = as.Date(date_transform), y = expense,
                                   # text - specific aesthetic we can later use to create tooltips
                                   text = paste("Date:", date_format,
-                                              "<br>Expense: ", expense), 
+                                              "<br>Expenses: ", expense), 
                                   # group = 1 - needed if including text - otherwise geom_line tries to group by text and doesn't display anything!
                                   group = 1)) +
       scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
