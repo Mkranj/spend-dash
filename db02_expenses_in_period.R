@@ -97,31 +97,28 @@ server <- function(input, output, session) {
   
   plot_expenses <- reactive({
     plot_data <- expenses_daily_data()
+    plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
     
     # Function to pass as an argument, to round y-axis
     round_y_axis <- function(y) round(y) 
-    
-    plot <- ggplot(plot_data, aes(as.Date(date_transform), expense)) +
+    plot <- ggplot(plot_data, aes(x = as.Date(date_transform), y = expense,
+                                  # text - specific aesthetic we can later use to create tooltips
+                                  text = paste("Date:", date_format,
+                                              "<br>Expense: ", expense), 
+                                  # group = 1 - needed if including text - otherwise geom_line tries to group by text and doesn't display anything!
+                                  group = 1)) +
       scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
       xlab("Date") + ylab("Amount spent") + theme_minimal() +
       scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05)),
-                         labels = round_y_axis) + 
+                         labels = round_y_axis) +
       theme(panel.grid.major = element_line(colour="grey"))
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
     } else {
       plot <- plot + geom_line()
     }
-    plot <- plot %>% ggplotly() %>% config(displayModeBar = FALSE)
-    
-    # Get newly formatted dates
-    formatted_dates <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
-    formatted_dates <- paste0("Date: ", formatted_dates, "<br/>")
-    
-    
-    plot$x$data[[1]]$text <- sub("as.Date\\(date_transform\\)", "Date", plot$x$data[[1]]$text)
-    plot$x$data[[1]]$text <- sub("expense", "Expense", plot$x$data[[1]]$text)
-    browser()
+    plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE)
+
     plot
     }
   )
