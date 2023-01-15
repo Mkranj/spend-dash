@@ -102,7 +102,7 @@ server <- function(input, output, session) {
     round_y_axis <- function(y) round(y) 
     
     plot <- ggplot(plot_data, aes(as.Date(date_transform), expense)) +
-      scale_x_date(date_labels = "%m-%Y", date_breaks = "1 months") +
+      scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
       xlab("Date") + ylab("Amount spent") + theme_minimal() +
       scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05)),
                          labels = round_y_axis) + 
@@ -113,8 +113,15 @@ server <- function(input, output, session) {
       plot <- plot + geom_line()
     }
     plot <- plot %>% ggplotly() %>% config(displayModeBar = FALSE)
+    
+    # Get newly formatted dates
+    formatted_dates <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
+    formatted_dates <- paste0("Date: ", formatted_dates, "<br/>")
+    
+    
     plot$x$data[[1]]$text <- sub("as.Date\\(date_transform\\)", "Date", plot$x$data[[1]]$text)
     plot$x$data[[1]]$text <- sub("expense", "Expense", plot$x$data[[1]]$text)
+    browser()
     plot
     }
   )
