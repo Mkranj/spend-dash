@@ -130,9 +130,10 @@ server <- function(input, output, session) {
     total_expense <- sum(expenses_individual_data()$Amount, na.rm = T) %>% round(2)
     n_expenses <- expenses_individual_data() %>% filter(Amount > 0) %>% nrow()
     avg_expense <- (total_expense/n_expenses) %>% round(2)
-    paste0("Total expenses: ", total_expense, currency,
+    summary_data <- paste0("Total expenses: ", total_expense, currency,
            "<br/>Number of expenses: ", n_expenses,
            "<br/>Average expense: ", avg_expense, currency)
+    paste0("<div style='border-style: groove;border-color: gray;border-radius: 5px;border-width: 2px;padding: 5px;font-size: 20px;'>", summary_data, "</div>")
   })
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
