@@ -51,7 +51,7 @@ ui <- fluidPage(
                                          "Most expensive" = "expensive")
                              ),
                  tableOutput("table_recent")),
-    mainPanel(plotlyOutput("main_plot_expenses", height = "600px"),
+    mainPanel(plotlyOutput("main_plot_expenses", height = "80%"),
               column(6, textInput("filter_words", "Filter expenses containing:",
                       placeholder = "e.g. 'movie', 'drinks'...")),
               column(6, htmlOutput("expenses_summary"))
@@ -117,7 +117,8 @@ server <- function(input, output, session) {
     } else {
       plot <- plot + geom_line()
     }
-    plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE)
+    plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
+      layout(margin = list(b=100))
 
     plot
     }
