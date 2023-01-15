@@ -101,6 +101,7 @@ server <- function(input, output, session) {
     
     # Function to pass as an argument, to round y-axis
     round_y_axis <- function(y) round(y) 
+    max_daily_expense <- max(plot_data$expense)
     plot <- ggplot(plot_data, aes(x = as.Date(date_transform), y = expense,
                                   # text - specific aesthetic we can later use to create tooltips
                                   text = paste("Date:", date_format,
@@ -109,8 +110,10 @@ server <- function(input, output, session) {
                                   group = 1)) +
       scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
       xlab("Date") + ylab("Amount spent") + theme_minimal() +
-      scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0.05)),
-                         labels = round_y_axis) +
+      scale_y_continuous(limits = c(0, NA), 
+                         expand = expansion(mult = c(0, 0.05)),
+                         labels = round_y_axis, 
+                         breaks = seq(0, max_daily_expense, by = 1000)) +
       theme(panel.grid.major = element_line(colour="grey"))
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
@@ -133,7 +136,12 @@ server <- function(input, output, session) {
     summary_data <- paste0("Total expenses: ", total_expense, currency,
            "<br/>Number of expenses: ", n_expenses,
            "<br/>Average expense: ", avg_expense, currency)
-    paste0("<div style='border-style: groove;border-color: gray;border-radius: 5px;border-width: 2px;padding: 5px;font-size: 20px;'>", summary_data, "</div>")
+    paste0("<div style='border-style: groove;
+           border-color: gray;
+           border-radius: 5px;
+           border-width: 2px;
+           padding: 5px;
+           font-size: 20px;'>", summary_data, "</div>")
   })
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
