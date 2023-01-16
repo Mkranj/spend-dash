@@ -48,7 +48,7 @@ ui <- fluidPage(
   
   # UI controls ----
   fluidRow(
-    column(9,div(style = "margin-left: 10px", sliderInput("date_considered", "Dates to show",
+    column(9,div(style = "margin-left: 10px; text-align: center;", sliderInput("date_considered", "Dates to show",
       min = start_date,
       max = end_date,
       value = c(start_date, end_date),
