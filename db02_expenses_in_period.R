@@ -61,8 +61,10 @@ ui <- fluidPage(
   fluidRow(column(6, tableOutput("table_recent")),
            column(4, htmlOutput("expenses_summary"))
            ),
-  selectInput("table_sort_type", "Show expenses:",
-              choices = c("Most recent" = "recent", "Most expensive" = "expensive")),
+  fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
+                                   choices = c("Most recent" = "recent",
+                                               "Most expensive" = "expensive"))))
+  
 )
 
 server <- function(input, output, session) {
