@@ -132,8 +132,10 @@ server <- function(input, output, session) {
       plot <- plot + geom_line(color = "#000245")
     }
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
-      layout(margin = list(t = 0, b = 50), xaxis = list(title = list(standoff = 0)))
-    # margin seems to change after 50!
+      layout(margin = list(t = 0, b = 50),
+             xaxis = list(title = list(standoff = 0), fixedrange = T),
+             yaxis = list(fixedrange = T))
+    # margin changes after value 50
     plot
     }
   )
