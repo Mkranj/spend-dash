@@ -129,7 +129,7 @@ server <- function(input, output, session) {
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
     } else {
-      plot <- plot + geom_line()
+      plot <- plot + geom_line(color = "#000245")
     }
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50), xaxis = list(title = list(standoff = 0)))
