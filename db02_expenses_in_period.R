@@ -60,7 +60,7 @@ ui <- fluidPage(
   plotlyOutput("main_plot_expenses", height = "330px"),
   
   # UI table and summary ----
-  fluidRow(column(6, tableOutput("table_recent")),
+  fluidRow(column(6, dataTableOutput("table_recent")),
            column(4, htmlOutput("expenses_summary"))
            ),
   fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
@@ -155,7 +155,7 @@ server <- function(input, output, session) {
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
   
-  output$table_recent <- renderTable({
+  output$table_recent <- renderDataTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
     table_data$date_transform <- as.Date(table_data$date_transform) %>% as.character()
     if (input$table_sort_type == "recent") {
@@ -167,7 +167,8 @@ server <- function(input, output, session) {
     else print("Unknown arrange choice")
     table_data %>%
       select(Date = date_format, Amount, Note, Category) %>% head()
-  })
+  },
+  options = list(info = F, paging = F, searching = F, scrollY = "150px"))
 }
 
 shinyApp(ui, server)
