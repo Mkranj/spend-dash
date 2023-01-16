@@ -42,22 +42,24 @@ ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "#abb1a1"),
-  tags$head(tags$style(HTML("#filter_words {border-color: gray}"))),
+  tags$head(tags$style(type = "text/css", "#filter_words {
+  border-color: gray;
+  }")),
   
   # UI controls ----
   fluidRow(
-    column(9, sliderInput("date_considered", "Dates to show",
+    column(9,div(style = "margin-left: 10px", sliderInput("date_considered", "Dates to show",
       min = start_date,
       max = end_date,
       value = c(start_date, end_date),
-      timeFormat = "%d.%m.%Y", width = "100%")),
+      timeFormat = "%d.%m.%Y", width = "100%"))),
     column(3, "PLACEHOLDER BUTTONS")
   ),
   textInput("filter_words", "Filter expenses containing:",
             placeholder = "e.g. 'movie', 'drinks'..."),
   
   # UI plot ----
-  plotlyOutput("main_plot_expenses", height = "330px"),
+  plotlyOutput("main_plot_expenses", height = "310px"),
   
   # UI table and summary ----
   fluidRow(column(6, dataTableOutput("table_recent")),
@@ -166,7 +168,7 @@ server <- function(input, output, session) {
       }
     else print("Unknown arrange choice")
     table_data %>%
-      select(Date = date_format, Amount, Note, Category) %>% head()
+      select(Date = date_format, Amount, Note, Category)
   },
   options = list(info = F, paging = F, searching = F, scrollY = "150px"))
 }
