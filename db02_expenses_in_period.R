@@ -43,6 +43,7 @@ ui <- fluidPage(
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "#abb1a1"),
   tags$head(tags$style(HTML("#filter_words {border-color: gray}"))),
+  
   # UI controls ----
   fluidRow(
     column(9, sliderInput("date_considered", "Dates to show",
@@ -57,6 +58,7 @@ ui <- fluidPage(
   
   # UI plot ----
   plotlyOutput("main_plot_expenses", height = "330px"),
+  
   # UI table and summary ----
   fluidRow(column(6, tableOutput("table_recent")),
            column(4, htmlOutput("expenses_summary"))
