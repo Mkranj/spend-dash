@@ -116,7 +116,7 @@ server <- function(input, output, session) {
       scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
       xlab("Date") + ylab("Amount spent") + theme_minimal() +
       scale_y_continuous(limits = c(0, NA), 
-                         expand = expansion(mult = c(0, 0.05)),
+                         expand = expansion(mult = c(0, 0.05), add = c(50,0)),
                          labels = round_y_axis, 
                          breaks = seq(0, max_daily_expense, by = 1000)) +
       theme(panel.grid.major = element_line(colour="grey"))
@@ -126,8 +126,8 @@ server <- function(input, output, session) {
       plot <- plot + geom_line()
     }
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
-      layout(margin = list(b=100))
-
+      layout(margin = list(t = 0, b=70))
+    # margin seems to change after 50!
     plot
     }
   )
