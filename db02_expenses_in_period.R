@@ -40,8 +40,7 @@ ui <- fluidPage(
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "#abb1a1"),
   tags$head(tags$style(HTML("#filter_words {border-color: gray}"))),
-  sidebarLayout(
-    sidebarPanel(sliderInput("date_considered", "Dates to show",
+    sliderInput("date_considered", "Dates to show",
                              min = start_date,
                              max = end_date,
                              value = c(start_date, end_date),
@@ -50,14 +49,14 @@ ui <- fluidPage(
                              choices = c("Most recent" = "recent",
                                          "Most expensive" = "expensive")
                              ),
-                 tableOutput("table_recent")),
-    mainPanel(plotlyOutput("main_plot_expenses", height = "80%"),
+                 tableOutput("table_recent"),
+    
+  plotlyOutput("main_plot_expenses", height = "80%"),
               column(6, textInput("filter_words", "Filter expenses containing:",
                       placeholder = "e.g. 'movie', 'drinks'...")),
               column(6, htmlOutput("expenses_summary"))
-              ),
-    position = "right"
-  )
+              ,
+
 )
 
 server <- function(input, output, session) {
