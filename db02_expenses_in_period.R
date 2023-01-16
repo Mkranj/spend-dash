@@ -36,27 +36,28 @@ currency <- unique(finance_data$Currency)[1]
 start_date <- min(date_transform_total)
 end_date <- max(date_transform_total)
 
+
+
 ui <- fluidPage(
+  # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "#abb1a1"),
   tags$head(tags$style(HTML("#filter_words {border-color: gray}"))),
-    sliderInput("date_considered", "Dates to show",
-                             min = start_date,
-                             max = end_date,
-                             value = c(start_date, end_date),
-                             timeFormat = "%d.%m.%Y"),
-                 selectInput("table_sort_type", "Show expenses:",
-                             choices = c("Most recent" = "recent",
-                                         "Most expensive" = "expensive")
-                             ),
-                 tableOutput("table_recent"),
-    
+  # UI controls ----
+  sliderInput("date_considered", "Dates to show",
+    min = start_date,
+    max = end_date,
+    value = c(start_date, end_date),
+    timeFormat = "%d.%m.%Y"),
+  textInput("filter_words", "Filter expenses containing:",
+            placeholder = "e.g. 'movie', 'drinks'..."),
+  selectInput("table_sort_type", "Show expenses:",
+            choices = c("Most recent" = "recent", "Most expensive" = "expensive")),
+  # UI plot ----
   plotlyOutput("main_plot_expenses", height = "80%"),
-              column(6, textInput("filter_words", "Filter expenses containing:",
-                      placeholder = "e.g. 'movie', 'drinks'...")),
-              column(6, htmlOutput("expenses_summary"))
-              ,
-
+  # UI table and summary ----
+  tableOutput("table_recent"),
+  htmlOutput("expenses_summary")
 )
 
 server <- function(input, output, session) {
