@@ -8,3 +8,6 @@ experiment*
 
 # Excalidraw drawings
 ED*
+
+#rsconnect files
+rsconnect/**
