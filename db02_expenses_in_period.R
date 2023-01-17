@@ -54,7 +54,13 @@ ui <- fluidPage(
       max = end_date,
       value = c(start_date, end_date),
       timeFormat = "%d.%m.%Y", width = "100%"))),
-    column(3, "PLACEHOLDER BUTTONS")
+    column(3, div(style = "margin-top: 40px;",
+           actionButton("button_1week", label = "1W"),
+           actionButton("button_1month", label = "1M"),
+           actionButton("button_3months", label = "3M"),
+           actionButton("button_1year", label = "1Y"),
+           actionButton("button_all_time", label = "ALL"))
+           )
   ),
   
   # UI plot ----
