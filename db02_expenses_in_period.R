@@ -36,12 +36,10 @@ currency <- unique(finance_data$Currency)[1]
 start_date <- min(date_transform_total)
 end_date <- max(date_transform_total)
 
-
-
 ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
-  chooseSliderSkin(color = "#abb1a1"),
+  chooseSliderSkin(color = "blue"),
   tags$head(tags$style(type = "text/css", "#filter_words {
   border-color: gray;
   }")),
@@ -130,7 +128,7 @@ server <- function(input, output, session) {
     if (nrow(expenses_daily_data()) == 1){
       plot <- plot + geom_point()
     } else {
-      plot <- plot + geom_line(color = "#000245")
+      plot <- plot + geom_line(color = "#151759")
     }
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50),
