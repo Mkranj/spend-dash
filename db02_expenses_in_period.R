@@ -47,16 +47,17 @@ ui <- fluidPage(
   }")),
   
   # UI controls ----
+  h1("Expenses Dashboard"),
   fluidRow(
-    column(9,div(style = "margin-left: 10px; text-align: center;", sliderInput("date_considered", "Dates to show",
+    column(3, textInput("filter_words", "Filter expenses containing:",
+                        placeholder = "e.g. 'movie', 'drinks'...")),
+    column(6,div(style = "margin-left: 10px; text-align: center;", sliderInput("date_considered", "Dates to show",
       min = start_date,
       max = end_date,
       value = c(start_date, end_date),
       timeFormat = "%d.%m.%Y", width = "100%"))),
     column(3, "PLACEHOLDER BUTTONS")
   ),
-  textInput("filter_words", "Filter expenses containing:",
-            placeholder = "e.g. 'movie', 'drinks'..."),
   
   # UI plot ----
   plotlyOutput("main_plot_expenses", height = "310px"),
