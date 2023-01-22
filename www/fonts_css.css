@@ -1,0 +1,32 @@
+* {font-family: Lato, sans-serif;}
+                        
+h1 {font-family: Lato, sans-serif;}
+
+
+.shiny-datatable-output {
+font-family: Lato, sans-serif;
+}
+
+.shiny-html-output {
+font-family: \"helvetica\", sans-serif;
+}
+
+#filter_words {
+border-color: gray;
+}
+.date_button {
+color: white;
+background-color: #151759;
+border-radius: 15%;
+border-color: white;
+}
+.date_button:hover, .date_button:visited, .date_button:focus {
+background-color: #151759;
+filter: brightness(75%);
+}
+.date_button:active:focus, .date_button:active {
+background-color: #151759;
+filter: brightness(60%);
+}
+
+/* #active:focus classifies both, just active is not specific enough */

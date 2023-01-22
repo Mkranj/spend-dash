@@ -45,27 +45,8 @@ ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "blue"),
-  tags$head(tags$style(type = "text/css", "
-                        * {font-family: Lato;}
-                        #filter_words {
-                        border-color: gray;
-                        }
-                       .date_button {
-                       color: white;
-                       background-color: #151759;
-                       border-radius: 15%;
-                       border-color: white;
-                       }
-                       .date_button:hover, .date_button:visited, .date_button:focus {
-                       background-color: #151759;
-                       filter: brightness(75%);
-                       }
-                       .date_button:active:focus, .date_button:active {
-                       background-color: #151759;
-                       filter: brightness(60%);
-                       }
-                       ")),
-  #active:focus classifies both, just active is not specific enough
+  tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "fonts_css.css")),
+  
   
   # UI controls ----
   h1("Expenses Dashboard"),
