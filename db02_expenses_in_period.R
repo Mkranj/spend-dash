@@ -150,7 +150,7 @@ server <- function(input, output, session) {
   }
   
   observeEvent(input$button_1week, {
-    dateButton_change_start_time(7, "date_considered", "days")
+    dateButton_change_start_time(6, "date_considered", "days")
   })
   
   observeEvent(input$button_1month, {
