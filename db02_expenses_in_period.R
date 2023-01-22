@@ -36,13 +36,28 @@ currency <- unique(finance_data$Currency)[1]
 start_date <- min(date_transform_total)
 end_date <- max(date_transform_total)
 
+# UI functions:
+dateButton <- function(id, label) {
+  actionButton(inputId = id, label = label, class = "date_button")
+}
+
 ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "blue"),
   tags$head(tags$style(type = "text/css", "#filter_words {
   border-color: gray;
-  }")),
+  }
+                       .date_button {
+                       color: white;
+                       background-color: darkblue;
+                       border-radius:15%;
+                       border-color: white;
+                       }
+                       .date_button:hover{
+                       box_shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.5);
+                       font_weight: bold;
+                       }")),
   
   # UI controls ----
   h1("Expenses Dashboard"),
@@ -55,7 +70,7 @@ ui <- fluidPage(
       value = c(start_date, end_date),
       timeFormat = "%d.%m.%Y", width = "100%"))),
     column(3, div(style = "margin-top: 40px;",
-           actionButton("button_1week", label = "1W"),
+           dateButton("button_1week", label = "1W"),
            actionButton("button_1month", label = "1M"),
            actionButton("button_3months", label = "3M"),
            actionButton("button_1year", label = "1Y"),
