@@ -138,13 +138,13 @@ server <- function(input, output, session) {
   dateButton_change_start_time <- function(no_time_units, slider_id, time_unit = "days"){
     new_start_date <- start_date
     if (time_unit == "days") {
-      new_start_date <- end_date - days(no_time_units)
+      new_start_date <- end_date - days(no_time_units) + seconds(1)
     }
     if (time_unit == "months") {
-      new_start_date <- end_date - months(no_time_units)
+      new_start_date <- end_date - months(no_time_units) + seconds(1)
     }
     if (time_unit == "years") {
-      new_start_date <- end_date - years(no_time_units)
+      new_start_date <- end_date - years(no_time_units) + seconds(1)
     }
     updateSliderInput(inputId = slider_id, value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
   }
