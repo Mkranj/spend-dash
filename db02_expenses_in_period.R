@@ -50,16 +50,16 @@ ui <- fluidPage(
   }
                        .date_button {
                        color: white;
-                       background-color: darkblue;
+                       background-color: #151759;
                        border-radius: 15%;
                        border-color: white;
                        }
                        .date_button:hover, .date_button:visited, .date_button:focus {
-                       background-color: darkblue;
+                       background-color: #151759;
                        filter: brightness(75%);
                        }
                        .date_button:active:focus, .date_button:active {
-                       background-color: darkblue;
+                       background-color: #151759;
                        filter: brightness(60%);
                        }
                        ")),
