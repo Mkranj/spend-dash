@@ -45,9 +45,11 @@ ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "blue"),
-  tags$head(tags$style(type = "text/css", "#filter_words {
-  border-color: gray;
-  }
+  tags$head(tags$style(type = "text/css", "
+                        * {font-family: Lato;}
+                        #filter_words {
+                        border-color: gray;
+                        }
                        .date_button {
                        color: white;
                        background-color: #151759;
