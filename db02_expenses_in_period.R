@@ -135,9 +135,13 @@ server <- function(input, output, session) {
   
   # date_button functionalities ----
   
-  observeEvent(input$button_1week,{
-    new_start_date <- end_date - days(7)
-    updateSliderInput(inputId = "date_considered", value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
+  dateButton_change_start_time <- function(no_days, slider_id){
+    new_start_date <- end_date - days(no_days)
+    updateSliderInput(inputId = slider_id, value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
+  }
+  
+  observeEvent(input$button_1week, {
+    dateButton_change_start_time(7, "date_considered")
   })
   
   plot_expenses <- reactive({
