@@ -137,7 +137,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button_1week,{
     new_start_date <- end_date - days(7)
-    updateSliderInput(inputId = "date_considered", value = c(new_start_date, end_date))
+    updateSliderInput(inputId = "date_considered", value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
   })
   
   plot_expenses <- reactive({
