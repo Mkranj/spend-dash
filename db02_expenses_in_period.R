@@ -135,29 +135,38 @@ server <- function(input, output, session) {
   
   # date_button functionalities ----
   
-  dateButton_change_start_time <- function(no_days, slider_id){
-    new_start_date <- end_date - days(no_days)
+  dateButton_change_start_time <- function(no_time_units, slider_id, time_unit = "days"){
+    new_start_date <- start_date
+    if (time_unit == "days") {
+      new_start_date <- end_date - days(no_time_units)
+    }
+    if (time_unit == "months") {
+      new_start_date <- end_date - months(no_time_units)
+    }
+    if (time_unit == "years") {
+      new_start_date <- end_date - years(no_time_units)
+    }
     updateSliderInput(inputId = slider_id, value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
   }
   
   observeEvent(input$button_1week, {
-    dateButton_change_start_time(7, "date_considered")
+    dateButton_change_start_time(7, "date_considered", "days")
   })
   
   observeEvent(input$button_1month, {
-    dateButton_change_start_time(31, "date_considered")
+    dateButton_change_start_time(1, "date_considered", "months")
   })
   
   observeEvent(input$button_3months, {
-    dateButton_change_start_time(3 * 31, "date_considered")
+    dateButton_change_start_time(3, "date_considered", "months")
   })
   
   observeEvent(input$button_1year, {
-    dateButton_change_start_time(365, "date_considered")
+    dateButton_change_start_time(1, "date_considered", "years")
   })
   
-  observeEvent(input$button_1week, {
-    dateButton_change_start_time(7, "date_considered")
+  observeEvent(input$button_all_time, {
+    dateButton_change_start_time(1, "date_considered", "all")
   })
   
   plot_expenses <- reactive({
