@@ -70,11 +70,12 @@ ui <- fluidPage(
   fluidRow(
     column(3, textInput("filter_words", "Filter expenses containing:",
                         placeholder = "e.g. 'movie', 'drinks'...")),
-    column(6,div(style = "margin-left: -50px; text-align: center;", sliderInput("date_considered", "Dates to show",
-      min = start_date,
-      max = end_date,
-      value = c(start_date, end_date),
-      timeFormat = "%d.%m.%Y", width = "100%"))),
+    column(6,div(style = "margin-left: -50px; text-align: center;", 
+                 sliderInput("date_considered", "Dates to show",
+                  min = start_date,
+                  max = end_date,
+                  value = c(start_date, end_date),
+                  timeFormat = "%d.%m.%Y", width = "100%"))),
     column(3, div(style = "margin-top: 40px;",
            dateButton("button_1week", label = "1W"),
            dateButton("button_1month", label = "1M"),
@@ -130,6 +131,13 @@ server <- function(input, output, session) {
     daily_data$no_of_expenses[!(daily_data$expense > 0)] <- 0
 
     daily_data
+  })
+  
+  # date_button functionalities ----
+  
+  observeEvent(input$button_1week,{
+    new_start_date <- end_date - days(7)
+    updateSliderInput(inputId = "date_considered", value = c(new_start_date, end_date))
   })
   
   plot_expenses <- reactive({
