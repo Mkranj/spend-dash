@@ -51,13 +51,19 @@ ui <- fluidPage(
                        .date_button {
                        color: white;
                        background-color: darkblue;
-                       border-radius:15%;
+                       border-radius: 15%;
                        border-color: white;
                        }
-                       .date_button:hover{
-                       box_shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.5);
-                       font_weight: bold;
-                       }")),
+                       .date_button:hover, .date_button:visited, .date_button:focus {
+                       background-color: darkblue;
+                       filter: brightness(75%);
+                       }
+                       .date_button:active:focus, .date_button:active {
+                       background-color: darkblue;
+                       filter: brightness(60%);
+                       }
+                       ")),
+  #active:focus classifies both, just active is not specific enough
   
   # UI controls ----
   h1("Expenses Dashboard"),
