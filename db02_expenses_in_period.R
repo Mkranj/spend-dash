@@ -144,6 +144,22 @@ server <- function(input, output, session) {
     dateButton_change_start_time(7, "date_considered")
   })
   
+  observeEvent(input$button_1month, {
+    dateButton_change_start_time(31, "date_considered")
+  })
+  
+  observeEvent(input$button_3months, {
+    dateButton_change_start_time(3 * 31, "date_considered")
+  })
+  
+  observeEvent(input$button_1year, {
+    dateButton_change_start_time(365, "date_considered")
+  })
+  
+  observeEvent(input$button_1week, {
+    dateButton_change_start_time(7, "date_considered")
+  })
+  
   plot_expenses <- reactive({
     plot_data <- expenses_daily_data()
     plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
