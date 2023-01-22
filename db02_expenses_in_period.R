@@ -77,10 +77,10 @@ ui <- fluidPage(
       timeFormat = "%d.%m.%Y", width = "100%"))),
     column(3, div(style = "margin-top: 40px;",
            dateButton("button_1week", label = "1W"),
-           actionButton("button_1month", label = "1M"),
-           actionButton("button_3months", label = "3M"),
-           actionButton("button_1year", label = "1Y"),
-           actionButton("button_all_time", label = "ALL"))
+           dateButton("button_1month", label = "1M"),
+           dateButton("button_3months", label = "3M"),
+           dateButton("button_1year", label = "1Y"),
+           dateButton("button_all_time", label = "ALL"))
            )
   ),
   
