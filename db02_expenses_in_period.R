@@ -47,7 +47,6 @@ ui <- fluidPage(
   chooseSliderSkin(color = "blue"),
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "fonts_css.css")),
   
-  
   # UI controls ----
   h1("Expenses Dashboard"),
   fluidRow(

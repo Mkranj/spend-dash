@@ -1,20 +1,12 @@
-* {font-family: Lato, sans-serif;}
-                        
-h1 {font-family: Lato, sans-serif;}
-
-
-.shiny-datatable-output {
-font-family: Lato, sans-serif;
-}
-
-.shiny-html-output {
-font-family: \"helvetica\", sans-serif;
+* {font-family: Lato, sans-serif;
 }
 
 #filter_words {
 border-color: gray;
 }
+
 .date_button {
+font-family: "Lato", sans-serif;
 color: white;
 background-color: #151759;
 border-radius: 15%;
