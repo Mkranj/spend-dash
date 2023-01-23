@@ -270,6 +270,9 @@ server <- function(input, output, session) {
       table_data <- arrange(table_data, desc(Amount), desc(date_transform)) 
       }
     else print("Unknown arrange choice")
+    if (!is.null(clicked_day())) {
+      table_data <- filter(table_data, date_transform == clicked_day())
+    }
     table_data %>%
       select(Date = date_format, Amount, Note, Category)
   },
