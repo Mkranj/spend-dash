@@ -244,8 +244,13 @@ server <- function(input, output, session) {
   output$main_plot_expenses <- renderPlotly(plot_expenses_to_plotly())
   
   expenses_summary_data <- reactive({
-    total_expense <- sum(expenses_individual_data()$Amount, na.rm = T) %>% round(2)
-    n_expenses <- expenses_individual_data() %>% filter(Amount > 0) %>% nrow()
+    all_expenses <- expenses_individual_data()
+    if (!is.null(clicked_day())) {
+      all_expenses <- filter(all_expenses, date_transform == clicked_day())
+    }
+    
+    total_expense <- sum(all_expenses$Amount, na.rm = T) %>% round(2)
+    n_expenses <- all_expenses %>% filter(Amount > 0) %>% nrow()
     avg_expense <- (total_expense/n_expenses) %>% round(2)
     summary_data <- paste0("Total expenses: ", total_expense, " ", currency,
            "<br/>Number of expenses: ", n_expenses,
