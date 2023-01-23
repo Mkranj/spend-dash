@@ -160,7 +160,7 @@ server <- function(input, output, session) {
     # Function to pass as an argument, to round y-axis
     round_y_axis <- function(y) round(y) 
     max_daily_expense <- max(plot_data$expense)
-    plot <- ggplot(plot_data, aes(x = as.Date(date_transform), y = expense,
+    plot <- ggplot(plot_data, aes(x = as.Date(date_transform, "%d.%m.%Y", tz = "NZ"), y = expense,
                                   # text - specific aesthetic we can later use to create tooltips
                                   text = paste("Date:", date_format,
                                               "<br>Expenses: ", expense), 
