@@ -48,7 +48,7 @@ ui <- fluidPage(
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "fonts_css.css")),
   
   # UI controls ----
-  h1("Expenses Dashboard"),
+  h1("Expenses Dashboard"), verbatimTextOutput("testing"),
   fluidRow(
     column(3, textInput("filter_words", "Filter expenses containing:",
                         placeholder = "e.g. 'movie', 'drinks'...")),
@@ -182,6 +182,25 @@ server <- function(input, output, session) {
   }
   )
   
+  plotly_clicks <- reactive({
+    event_data(event = "plotly_click", source = "A")  
+  })
+  # plotly_clicks()$pointNumber is the row of the df, starting with 0
+  
+  clicked_day <- reactiveVal(NULL)
+  
+  set_clicked_point <- reactive(
+   {
+    # Unselect point if clicked on the same day
+
+      point_data_no <- plotly_clicks()$pointNumber + 1
+      point_data <- expenses_daily_data()[point_data_no, "date_transform"]
+      point_data %>% unlist()
+    
+  })
+  
+  output$testing <- renderText(set_clicked_point())
+  
   plot_expenses_gg_modifiers <- reactive({
     plot <- plot_expenses_gg()
     plot
@@ -189,7 +208,7 @@ server <- function(input, output, session) {
     
   plot_expenses_to_plotly <- reactive({
     plot <- plot_expenses_gg_modifiers()
-    plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
+    plot <- plot %>% ggplotly(tooltip = c("text"), source = "A") %>% config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50), font = list(family = "Lato"),
              xaxis = list(title = list(text = NULL, standoff = 0), fixedrange = T),
              yaxis = list(fixedrange = T))
