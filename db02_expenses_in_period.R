@@ -181,9 +181,14 @@ server <- function(input, output, session) {
     plot
   }
   )
+  
+  plot_expenses_gg_modifiers <- reactive({
+    plot <- plot_expenses_gg()
+    plot
+  })
     
   plot_expenses_to_plotly <- reactive({
-    plot <- plot_expenses_gg()
+    plot <- plot_expenses_gg_modifiers()
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50), font = list(family = "Lato"),
              xaxis = list(title = list(text = NULL, standoff = 0), fixedrange = T),
