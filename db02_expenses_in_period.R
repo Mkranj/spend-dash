@@ -181,9 +181,10 @@ server <- function(input, output, session) {
     plot
   }
   )
-  
+  # If it's clicked on the same spot, it doesn't update! so no evaluation going on.
   plotly_clicks <- reactive({
-    event_data(event = "plotly_click", source = "A")  
+    data <- event_data(event = "plotly_click", source = "A")
+    data
   })
   # plotly_clicks()$pointNumber is the row of the df, starting with 0
   
@@ -204,7 +205,6 @@ server <- function(input, output, session) {
       } else {
         clicked_day(point_data)
       }
-      point_data
   })
   
   output$testing <- renderText(clicked_day())
