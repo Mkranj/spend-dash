@@ -260,11 +260,14 @@ server <- function(input, output, session) {
            "<br/>Number of expenses: ", n_expenses,
            "<br/>Average expense: ", avg_expense, " ", currency)
     paste0("<div style='border-style: groove;
-           border-color: gray;
+           border-color: #151759;
            border-radius: 5px;
            border-width: 2px;
            padding: 5px;
-           font-size: 20px;'>", summary_data, "</div>")
+           font-size: 20px;
+           color: #151759;
+           font-family: \"Lato\", sans-serif;
+           margin-top: 8%;'>", summary_data, "</div>")
   })
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
