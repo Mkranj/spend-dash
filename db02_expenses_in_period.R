@@ -189,17 +189,25 @@ server <- function(input, output, session) {
   
   clicked_day <- reactiveVal(NULL)
   
-  set_clicked_point <- reactive(
-   {
+  set_clicked_point <- observeEvent(plotly_clicks(), {
     # Unselect point if clicked on the same day
 
       point_data_no <- plotly_clicks()$pointNumber + 1
-      point_data <- expenses_daily_data()[point_data_no, "date_transform"]
-      point_data[[1]] # %>% format(format = "%d.%m.%Y")
-    
+      point_data <- expenses_daily_data()[point_data_no, "date_transform"][[1]]
+      # %>% format(format = "%d.%m.%Y")
+      if (!is.null(clicked_day())) {
+        if (clicked_day() != point_data) {
+          clicked_day(point_data)
+        } else {
+          clicked_day(NULL)
+        }
+      } else {
+        clicked_day(point_data)
+      }
+      point_data
   })
   
-  output$testing <- renderText(set_clicked_point())
+  output$testing <- renderText(clicked_day())
   
   plot_expenses_gg_modifiers <- reactive({
     plot <- plot_expenses_gg()
