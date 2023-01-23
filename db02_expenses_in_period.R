@@ -304,8 +304,6 @@ server <- function(input, output, session) {
   options = list(info = F, paging = F, searching = F, scrollY = "150px",  initComplete = JS(
     "function(settings, json) {",
     "$(this.api().table().header()).css({'background-color': '#151759', 'color': '#fff'});",
-    # "}",
-    # "function(settings, json) {",
     "$(this.api().table().node()).css({'border-bottom': '3px dotted #151759', 'margin-top': '-0.7%'});",
     "}"
   ))
