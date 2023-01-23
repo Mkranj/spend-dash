@@ -41,6 +41,14 @@ dateButton <- function(id, label) {
   actionButton(inputId = id, label = label, class = "date_button")
 }
 
+arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png', width = "30%"),
+                            style = "
+                              display: flex;
+                              justify-content: center;
+                              align-items: center;
+                              padding: 70% 0;" 
+)
+
 ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
@@ -71,8 +79,11 @@ ui <- fluidPage(
   plotlyOutput("main_plot_expenses", height = "310px"),
   
   # UI table and summary ----
+  
+  
+  
   fluidRow(column(6, dataTableOutput("table_recent")),
-           column(2, p(id = "arrow_image", img(src='Dark_blue_right_arrow.png', width = "10%", align = "center"))),
+           column(1, arrow_transition_image),
            column(4, htmlOutput("expenses_summary"))
            ),
   fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
