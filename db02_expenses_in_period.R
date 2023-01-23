@@ -195,7 +195,7 @@ server <- function(input, output, session) {
 
       point_data_no <- plotly_clicks()$pointNumber + 1
       point_data <- expenses_daily_data()[point_data_no, "date_transform"]
-      point_data %>% unlist()
+      point_data[[1]] # %>% format(format = "%d.%m.%Y")
     
   })
   
