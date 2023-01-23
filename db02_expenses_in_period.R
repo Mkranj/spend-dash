@@ -306,7 +306,7 @@ server <- function(input, output, session) {
     "$(this.api().table().header()).css({'background-color': '#151759', 'color': '#fff'});",
     # "}",
     # "function(settings, json) {",
-    "$(this.api().table().node()).css({'border': '2px dashed #151759', 'border-top': 'none'});",
+    "$(this.api().table().node()).css({'border-bottom': '2px dashed #151759'});",
     "}"
   ))
   )
