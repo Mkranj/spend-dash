@@ -4,6 +4,7 @@ library(shinythemes)
 library(shinyWidgets)
 library(lubridate)
 library(plotly)
+library(DT)
 
 # Condense income and expenses per day
 finance_data <- read.csv("expense_data_1.csv")
@@ -300,7 +301,15 @@ server <- function(input, output, session) {
     table_data %>%
       select(Date = date_format, Amount, Note, Category)
   },
-  options = list(info = F, paging = F, searching = F, scrollY = "150px"))
+  options = list(info = F, paging = F, searching = F, scrollY = "150px",  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#151759', 'color': '#fff'});",
+    # "}",
+    # "function(settings, json) {",
+    "$(this.api().table().node()).css({'border': '2px dashed #151759', 'border-top': 'none'});",
+    "}"
+  ))
+  )
 }
 
 shinyApp(ui, server)
