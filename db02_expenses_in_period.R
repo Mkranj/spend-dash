@@ -48,7 +48,7 @@ ui <- fluidPage(
   tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "fonts_css.css")),
   
   # UI controls ----
-  h1("Expenses Dashboard"), verbatimTextOutput("testing"),
+  h1("Expenses Dashboard"),
   fluidRow(
     column(3, textInput("filter_words", "Filter expenses containing:",
                         placeholder = "e.g. 'movie', 'drinks'...")),
@@ -214,9 +214,7 @@ server <- function(input, output, session) {
         clicked_day(NULL)
       }
   })
-  
-  output$testing <- renderText(clicked_day())
-  
+
   # If anything changes the dates considered, nullify clicked point
   observeEvent(input$date_considered, {
     clicked_day(NULL)
