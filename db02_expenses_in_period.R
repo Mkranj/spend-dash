@@ -151,7 +151,9 @@ server <- function(input, output, session) {
     dateButton_change_start_time(1, "date_considered", "all")
   })
   
-  plot_expenses <- reactive({
+  # Making plots ----
+  
+  plot_expenses_gg <- reactive({
     plot_data <- expenses_daily_data()
     plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
     
@@ -176,16 +178,22 @@ server <- function(input, output, session) {
     } else {
       plot <- plot + geom_line(color = "#151759")
     }
+    plot
+  }
+  )
+    
+  plot_expenses_to_plotly <- reactive({
+    plot <- plot_expenses_gg()
     plot <- plot %>% ggplotly(tooltip = c("text")) %>% config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50), font = list(family = "Lato"),
              xaxis = list(title = list(text = NULL, standoff = 0), fixedrange = T),
              yaxis = list(fixedrange = T))
     # margin changes after value 50
     plot
-    }
-  )
+  })
+    
   
-  output$main_plot_expenses <- renderPlotly(plot_expenses())
+  output$main_plot_expenses <- renderPlotly(plot_expenses_to_plotly())
   
   expenses_summary_data <- reactive({
     total_expense <- sum(expenses_individual_data()$Amount, na.rm = T) %>% round(2)
