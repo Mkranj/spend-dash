@@ -211,6 +211,13 @@ server <- function(input, output, session) {
   
   plot_expenses_gg_modifiers <- reactive({
     plot <- plot_expenses_gg()
+    plot_data <- expenses_daily_data()
+    plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
+    
+    if (!is.null(clicked_day())) {
+      plot <- plot + geom_point(data = filter(plot_data, date_transform == clicked_day()),
+                                size = 3,color = "#151759")
+    }
     plot
   })
     
