@@ -183,7 +183,7 @@ server <- function(input, output, session) {
   )
   # If it's clicked on the same spot, it doesn't update! so no evaluation going on.
   plotly_clicks <- reactive({
-    data <- event_data(event = "plotly_click", source = "A")
+    data <- event_data(event = "plotly_click", source = "A", priority = "event")
     data
   })
   # plotly_clicks()$pointNumber is the row of the df, starting with 0
