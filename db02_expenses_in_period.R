@@ -187,12 +187,15 @@ server <- function(input, output, session) {
     data
   })
   # plotly_clicks()$pointNumber is the row of the df, starting with 0
+  # With the additional geom_point() in modifiers, clicking on that dot
+  #  gives curveNumber 1
   
   clicked_day <- reactiveVal(NULL)
   
   set_clicked_point <- observeEvent(plotly_clicks(), {
     # Unselect point if clicked on the same day
-
+      point_clicked_highlighted <- plotly_clicks()$curveNumber
+      
       point_data_no <- plotly_clicks()$pointNumber + 1
       point_data <- expenses_daily_data()[point_data_no, "date_transform"][[1]]
       # %>% format(format = "%d.%m.%Y")
@@ -204,6 +207,10 @@ server <- function(input, output, session) {
         }
       } else {
         clicked_day(point_data)
+      }
+      
+      if (point_clicked_highlighted == 1) {
+        clicked_day(NULL)
       }
   })
   
@@ -217,8 +224,10 @@ server <- function(input, output, session) {
     if (!is.null(clicked_day())) {
       plot <- plot + geom_point(data = filter(plot_data, date_transform == clicked_day()),
                                 size = 3,color = "#151759")
+      plot
+      } else {
+      plot
     }
-    plot
   })
     
   plot_expenses_to_plotly <- reactive({
