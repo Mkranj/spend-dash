@@ -149,6 +149,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$button_all_time, {
     dateButton_change_start_time(1, "date_considered", "all")
+    clicked_day(NULL)
   })
   
   # Making plots ----
@@ -215,6 +216,11 @@ server <- function(input, output, session) {
   })
   
   output$testing <- renderText(clicked_day())
+  
+  # If anything changes the dates considered, nullify clicked point
+  observeEvent(input$date_considered, {
+    clicked_day(NULL)
+  })
   
   plot_expenses_gg_modifiers <- reactive({
     plot <- plot_expenses_gg()
