@@ -203,7 +203,8 @@ server <- function(input, output, session) {
     plot
   }
   )
-  # If it's clicked on the same spot, it doesn't update! so no evaluation going on.
+  # If it's clicked on the same spot, it doesn't update by default!
+  # Priority=event makes evaluation go off on every click.
   plotly_clicks <- reactive({
     data <- event_data(event = "plotly_click", source = "A", priority = "event")
     data
