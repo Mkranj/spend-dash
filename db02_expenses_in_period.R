@@ -6,6 +6,8 @@ library(lubridate)
 library(plotly)
 library(DT)
 
+source("www/ui_customisation.R")
+
 # Condense income and expenses per day
 finance_data <- read.csv("expense_data_1.csv")
 finance_data <- select(finance_data, !c(Subcategory, Account.1, Note.1, INR))
@@ -272,15 +274,9 @@ server <- function(input, output, session) {
     summary_data <- paste0("Total expenses: ", total_expense, " ", currency,
            "<br/>Number of expenses: ", n_expenses,
            "<br/>Average expense: ", avg_expense, " ", currency)
-    paste0("<div style='border-style: groove;
-           border-color: #151759;
-           border-radius: 5px;
-           border-width: 2px;
-           padding: 5px;
-           font-size: 20px;
-           color: #151759;
-           font-family: \"Lato\", sans-serif;
-           margin-top: 8%;'>", summary_data, "</div>")
+    paste0("<div style='",
+           summary_div_style,
+           "'>", summary_data, "</div>")
   })
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
