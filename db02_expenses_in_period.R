@@ -6,6 +6,7 @@ library(lubridate)
 library(plotly)
 library(DT)
 
+# Strings detailing UI stylings held in this file
 source("www/ui_customisation.R")
 
 # Condense income and expenses per day
