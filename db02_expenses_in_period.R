@@ -288,7 +288,8 @@ server <- function(input, output, session) {
   
   output$table_recent <- renderDataTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
-    table_data$date_transform <- as.Date(table_data$date_transform) %>% as.character()
+    table_data$date_transform <- as.Date(table_data$date_transform) %>%
+      as.character()
     if (input$table_sort_type == "recent") {
       table_data <- arrange(table_data, desc(date_transform))
       }
@@ -297,17 +298,14 @@ server <- function(input, output, session) {
       }
     else print("Unknown arrange choice")
     if (!is.null(clicked_day())) {
-      table_data <- filter(table_data, date_transform == clicked_day() %>% as.Date() %>% as.character())
+      table_data <- filter(table_data, date_transform == clicked_day() %>%
+                             as.Date() %>% as.character())
     }
     table_data %>%
       select(Date = date_format, Amount, Note, Category)
   },
-  options = list(info = F, paging = F, searching = F, scrollY = "150px",  initComplete = JS(
-    "function(settings, json) {",
-    "$(this.api().table().header()).css({'background-color': '#151759', 'color': '#fff'});",
-    "$(this.api().table().node()).css({'border-bottom': '3px dotted #151759', 'margin-top': '-0.7%'});",
-    "}"
-  ))
+  options = list(info = F, paging = F, searching = F, scrollY = "150px",
+                 initComplete = table_ind_expenses_css)
   )
 }
 
