@@ -45,9 +45,9 @@ dateButton <- function(id, label) {
   actionButton(inputId = id, label = label, class = "date_button")
 }
 
-arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png', width = "30%"),
-                            style = arrow_transition_css
-)
+arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png',
+                                width = "30%"),
+                            style = arrow_transition_css)
 
 # For HTML output, easily apply css to the string you want to display
 style_div_output <- function(displayed_string, style_options = NULL) {
@@ -62,7 +62,8 @@ ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
   chooseSliderSkin(color = "blue"),
-  tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "fonts_css.css")),
+  tags$head(tags$link(rel = "stylesheet", type = "text/css",
+                      href = "fonts_css.css")),
   
   # UI controls ----
   h1("Expenses Dashboard"),
@@ -149,7 +150,9 @@ server <- function(input, output, session) {
     if (time_unit == "years") {
       new_start_date <- end_date - years(no_time_units) + seconds(1)
     }
-    updateSliderInput(inputId = slider_id, value = c(new_start_date, end_date), timeFormat = "%d.%m.%Y")
+    updateSliderInput(inputId = slider_id,
+                      value = c(new_start_date, end_date),
+                      timeFormat = "%d.%m.%Y")
   }
   
   observeEvent(input$button_1week, {
@@ -177,17 +180,23 @@ server <- function(input, output, session) {
   
   plot_expenses_gg <- reactive({
     plot_data <- expenses_daily_data()
-    plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
+    plot_data$date_format <- plot_data$date_transform %>%
+      format(format = "%d.%m.%Y")
     
     # Function to pass as an argument, to round y-axis
     round_y_axis <- function(y) round(y) 
     max_daily_expense <- max(plot_data$expense)
-    plot <- ggplot(plot_data, aes(x = as.Date(date_transform, "%d.%m.%Y", tz = "NZ"), y = expense,
-                                  # text - specific aesthetic we can later use to create tooltips
-                                  text = paste("Date:", date_format,
-                                              "<br>Expenses: ", expense), 
-                                  # group = 1 - needed if including text - otherwise geom_line tries to group by text and doesn't display anything!
-                                  group = 1)) +
+    plot <- ggplot(plot_data,
+                   aes(x = as.Date(date_transform, "%d.%m.%Y", tz = "NZ"),
+                       y = expense,
+                       # text - specific aesthetic we can later use
+                       # to create tooltips
+                       text = paste("Date:", date_format,
+                                    "<br>Expenses: ", expense), 
+                       # group = 1 - needed if including text - otherwise 
+                       # geom_line tries to group by text
+                       # and doesn't display anything!
+                       group = 1)) +
       scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
       xlab("Date") + ylab("Amount spent") + theme_minimal() +
       scale_y_continuous(limits = c(0, NA), 
@@ -245,10 +254,12 @@ server <- function(input, output, session) {
   plot_expenses_gg_modifiers <- reactive({
     plot <- plot_expenses_gg()
     plot_data <- expenses_daily_data()
-    plot_data$date_format <- plot_data$date_transform %>% format(format = "%d.%m.%Y")
+    plot_data$date_format <- plot_data$date_transform %>%
+      format(format = "%d.%m.%Y")
     
     if (!is.null(clicked_day())) {
-      plot <- plot + geom_point(data = filter(plot_data, date_transform == clicked_day()),
+      plot <- plot + 
+        geom_point(data = filter(plot_data, date_transform == clicked_day()),
                                 size = 3,color = "#151759")
       plot
       } else {
@@ -258,9 +269,11 @@ server <- function(input, output, session) {
     
   plot_expenses_to_plotly <- reactive({
     plot <- plot_expenses_gg_modifiers()
-    plot <- plot %>% ggplotly(tooltip = c("text"), source = "A") %>% config(displayModeBar = FALSE ) %>%
+    plot <- plot %>% ggplotly(tooltip = c("text"), source = "A") %>% 
+      config(displayModeBar = FALSE ) %>%
       layout(margin = list(t = 0, b = 50), font = list(family = "Lato"),
-             xaxis = list(title = list(text = NULL, standoff = 0), fixedrange = T),
+             xaxis = list(title = list(text = NULL, standoff = 0),
+                          fixedrange = T),
              yaxis = list(fixedrange = T))
     # margin changes after value 50
     plot
