@@ -7,3 +7,9 @@ summary_div_style <- "border-style: groove;
   color: #151759;
   font-family: \"Lato\", sans-serif;
   margin-top: 8%;"
+
+arrow_transition_css <- "
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 70% 0;" 

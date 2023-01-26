@@ -46,11 +46,7 @@ dateButton <- function(id, label) {
 }
 
 arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png', width = "30%"),
-                            style = "
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              padding: 70% 0;" 
+                            style = arrow_transition_css
 )
 
 # For HTML output, easily apply css to the string you want to display
