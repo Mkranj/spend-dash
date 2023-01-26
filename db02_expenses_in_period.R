@@ -53,6 +53,15 @@ arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png', width = "30%"
                               padding: 70% 0;" 
 )
 
+# For HTML output, easily apply css to the string you want to display
+style_div_output <- function(displayed_string, style_options = NULL) {
+  div_statement <- paste0("<div style='",
+                          style_options,
+                          "'>", displayed_string, "</div>")
+  div_statement
+}
+
+# UI: -----
 ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
@@ -275,9 +284,7 @@ server <- function(input, output, session) {
     summary_data <- paste0("Total expenses: ", total_expense, " ", currency,
            "<br/>Number of expenses: ", n_expenses,
            "<br/>Average expense: ", avg_expense, " ", currency)
-    paste0("<div style='",
-           summary_div_style,
-           "'>", summary_data, "</div>")
+    style_div_output(summary_data, summary_div_style)
   })
   
   output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
