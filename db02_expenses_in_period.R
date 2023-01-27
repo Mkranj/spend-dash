@@ -70,7 +70,7 @@ ui <- fluidPage(
            column(10,
                h1("EXPENSES DASHBOARD")),
            column(2, align = "right",
-                  actionButton("btn_mode_daily", label = "Daily", class = "mode_button", width = "60%"),
+                  actionButton("btn_mode_daily", label = "Daily", class = "mode_button", width = "60%", style = "margin-top: 10px"),
                   actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "mode_button", width = "60%")
                   )
            ),

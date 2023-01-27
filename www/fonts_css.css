@@ -28,6 +28,8 @@ margin-top: -10px;
 }
 
 .mode_button {
+padding: 2px;
+margin-top: 1%;
 background-color: #c2c3f0;
 color: black;
 border: solid;
