@@ -21,6 +21,8 @@ background-color: #151759;
 filter: brightness(60%);
 }
 
+/* #active:focus classifies both, just active is not specific enough */
+
 .header_row {
 background-color: #c2c3f0;
 margin-bottom: 5px;
@@ -33,8 +35,9 @@ margin-top: 1%;
 background-color: #c2c3f0;
 color: black;
 border: solid;
-border-radius: 15%;
+border-radius: 10%;
 border-color: #151759
 }
 
-/* #active:focus classifies both, just active is not specific enough */
+/* When making mode_button pressed formatting, make a separate class
+for when it's automatically pressed at app startup*/
