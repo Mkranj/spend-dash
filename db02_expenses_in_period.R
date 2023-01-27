@@ -68,7 +68,7 @@ ui <- fluidPage(
   # UI controls ----
   fluidRow(style = header_row_css,
            column(12,
-               h1("Expenses Dashboard"))
+               h1("EXPENSES DASHBOARD"))
            ),
   fluidRow(
     column(3, textInput("filter_words", "Filter expenses containing:",
