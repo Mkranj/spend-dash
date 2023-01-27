@@ -61,7 +61,7 @@ style_div_output <- function(displayed_string, style_options = NULL) {
 ui <- fluidPage(
   # Setup theme ----
   theme = shinytheme("flatly"),
-  chooseSliderSkin(color = "blue"),
+  chooseSliderSkin(color = "#151759"),
   tags$head(tags$link(rel = "stylesheet", type = "text/css",
                       href = "fonts_css.css")),
   
