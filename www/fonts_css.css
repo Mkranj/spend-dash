@@ -24,21 +24,21 @@ filter: brightness(60%);
 /* #active:focus classifies both, just active is not specific enough */
 
 .header_row {
-background-color: #151759;
-color: white; 
+background-color: #c2c3f0;
+color: white;
 }
 
 .header_title {
-margin-bottom: 5px;
 margin-top: -10px;
 }
 
 .mode_button {
+color: #151759;
 padding: 2px;
 margin-top: 1%;
 border: solid;
 border-radius: 10%;
-border-color: #white
+border-color: #151759;
 }
 
 /* When making mode_button pressed formatting, make a separate class

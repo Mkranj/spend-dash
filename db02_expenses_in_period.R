@@ -66,7 +66,7 @@ ui <- fluidPage(
                       href = "fonts_css.css")),
   
   # UI controls ----
-  fluidRow(class = "header_row",
+  fluidRow(class = "header_row", style = "margin-bottom: 5px;",
            column(10,
                h1("EXPENSES DASHBOARD"), class = "header_title"),
            column(2, align = "right",
