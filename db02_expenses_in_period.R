@@ -67,11 +67,11 @@ ui <- fluidPage(
   
   # UI controls ----
   fluidRow(class = "header_row",
-           column(11,
+           column(10,
                h1("EXPENSES DASHBOARD")),
-           column(1,
-                  actionButton("btn_mode_daily", label = "Daily", class = "mode_button"),
-                  actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "mode_button")
+           column(2, align = "right",
+                  actionButton("btn_mode_daily", label = "Daily", class = "mode_button", width = "60%"),
+                  actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "mode_button", width = "60%")
                   )
            ),
   fluidRow(
