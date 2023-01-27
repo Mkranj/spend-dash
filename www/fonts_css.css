@@ -34,6 +34,7 @@ margin-top: -10px;
 
 .mode_button {
 color: #151759;
+font-weight: bold;
 padding: 2px;
 margin-top: 1%;
 border: solid;
@@ -42,4 +43,5 @@ border-color: #151759;
 }
 
 /* When making mode_button pressed formatting, make a separate class
-for when it's automatically pressed at app startup*/
+for when it's automatically pressed at app startup
+possibly: filter: brightness(85%);*/
