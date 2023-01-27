@@ -21,4 +21,18 @@ background-color: #151759;
 filter: brightness(60%);
 }
 
+.header_row {
+background-color: #c2c3f0;
+margin-bottom: 5px;
+margin-top: -10px;
+}
+
+.mode_button {
+background-color: #c2c3f0;
+color: black;
+border: solid;
+border-radius: 15%;
+border-color: #151759
+}
+
 /* #active:focus classifies both, just active is not specific enough */
