@@ -33,13 +33,21 @@ margin-top: -10px;
 }
 
 .mode_button {
-color: #151759;
 font-weight: bold;
 padding: 2px;
 margin-top: 1%;
 border: solid;
+border-color: #c2c3f0;
 border-radius: 10%;
-border-color: #151759;
+}
+
+.mode_button_active {
+font-weight: bold;
+padding: 2px;
+margin-top: 1%;
+background-color: #3639a2;
+border-color: #3639a2;
+border-radius: 10%;
 }
 
 /* When making mode_button pressed formatting, make a separate class
