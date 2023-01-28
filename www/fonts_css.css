@@ -41,6 +41,11 @@ border-color: #c2c3f0;
 border-radius: 10%;
 }
 
+.mode_button:hover {
+background-color: #c2c3f0;
+filter: brightness(85%);
+}
+
 .mode_button_active {
 font-weight: bold;
 padding: 2px;
