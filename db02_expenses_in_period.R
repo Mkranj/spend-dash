@@ -335,6 +335,7 @@ server <- function(input, output, session) {
       select(Date = date_format, Amount, Note, Category)
   },
   options = list(info = F, paging = F, searching = F, scrollY = "150px",
+                 ordering = F,
                  initComplete = table_ind_expenses_css,
                  columnDefs = list(
                    list(targets = c(2,4), width = '6em'),
