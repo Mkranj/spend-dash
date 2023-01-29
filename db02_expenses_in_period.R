@@ -77,8 +77,10 @@ ui <- fluidPage(
   fluidRow(
     column(3,
            textInput("filter_words", "Filter expenses containing:",
-                        placeholder = "e.g. 'movie', 'drinks'..."),
-           htmlOutput("warn_no_expense")),
+                     placeholder = "e.g. 'movie', 'drinks'...") %>%
+             div(style = "margin-bottom: -10px;"),
+           htmlOutput("warn_no_expense", class = "filter_warning")
+           ),
     column(6,div(style = "margin-left: -50px; text-align: center;", 
                  sliderInput("date_considered", "Dates to show",
                   min = start_date,

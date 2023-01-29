@@ -74,3 +74,10 @@ border-radius: 10%;
 /* When making mode_button pressed formatting, make a separate class
 for when it's automatically pressed at app startup
 possibly: filter: brightness(85%);*/
+
+.filter_warning {
+text-align: center;
+margin-top: -3px;
+margin-bottom: 3px;
+width: 80%;
+}
