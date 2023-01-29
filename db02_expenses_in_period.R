@@ -130,11 +130,13 @@ server <- function(input, output, session) {
     if (length(matching_filter) > 0 & input$filter_words != "") {
       filtered_data <- filtered_data[matching_filter, ]
       output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
+      output$warn_no_expense <- renderUI(HTML(""))
     } else if (input$filter_words != "") {
-      output$expenses_summary <- renderUI(
-        paste("NO MATCHES FOUND<br/>", expenses_summary_data()) %>% HTML())
+      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
+      output$warn_no_expense <- renderUI(HTML("No matching expenses, showing all"))
     } else if (input$filter_words == "") {
       output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
+      output$warn_no_expense <- renderUI(HTML(""))
     }
     
     filtered_data
