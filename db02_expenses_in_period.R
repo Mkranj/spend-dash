@@ -127,6 +127,8 @@ server <- function(input, output, session) {
     
     # Some are blank, some are NA -- by default searches for "" string,
     # which doesn't match NA. But "" should include everything
+
+    # TO DO- clean these if's up
     if (length(matching_filter) > 0 & input$filter_words != "") {
       filtered_data <- filtered_data[matching_filter, ]
       output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
