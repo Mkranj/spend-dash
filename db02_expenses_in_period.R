@@ -75,8 +75,10 @@ ui <- fluidPage(
                   )
            ),
   fluidRow(
-    column(3, textInput("filter_words", "Filter expenses containing:",
-                        placeholder = "e.g. 'movie', 'drinks'...")),
+    column(3,
+           textInput("filter_words", "Filter expenses containing:",
+                        placeholder = "e.g. 'movie', 'drinks'..."),
+           htmlOutput("warn_no_expense")),
     column(6,div(style = "margin-left: -50px; text-align: center;", 
                  sliderInput("date_considered", "Dates to show",
                   min = start_date,
@@ -110,6 +112,8 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+  
+  output$warn_no_expense <- renderUI(HTML("No matching expenses, showing all"))
   
   expenses_individual_data <- reactive({
     filtered_data <- expenses %>% 
