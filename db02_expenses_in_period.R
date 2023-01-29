@@ -339,7 +339,8 @@ server <- function(input, output, session) {
                  initComplete = table_ind_expenses_css,
                  columnDefs = list(
                    list(targets = c(2,4), width = '6em'),
-                   list(targets = 1, width = '5em')))
+                   list(targets = 1, width = '5em'),
+                   list(targets = 0, width = '2em')))
   )
 }
 
