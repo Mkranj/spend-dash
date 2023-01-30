@@ -310,9 +310,15 @@ server <- function(input, output, session) {
     summary_data
   })
   
-  output$expenses_summary <- renderDataTable(expenses_summary_data(), rownames = F, colnames = NULL,
-                             options = list(info = F, paging = F, searching = F,
-                                            ordering = F))
+  output$expenses_summary <- renderDataTable({
+    summ_dt <- expenses_summary_data()
+    summ_dt <- datatable(summ_dt, rownames = F, colnames = NULL,
+                         options = list(info = F, paging = F, searching = F,
+                                        ordering = F)) %>%
+      formatStyle("items", target = "row", backgroundColor = styleEqual(c("Total expenses", "Number of expenses", "Average expense"),
+                                                                        c("rgba(54, 57, 162, 0.3)", "white", "rgba(54, 57, 162, 0.3)")) )
+    summ_dt
+    })
   
   output$table_recent <- renderDataTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
