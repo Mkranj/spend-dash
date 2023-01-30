@@ -87,7 +87,7 @@ ui <- fluidPage(
                   max = end_date,
                   value = c(start_date, end_date),
                   timeFormat = "%d.%m.%Y", width = "100%"))),
-    column(3, div(style = "margin-top: 40px;",
+    column(3, div(style = "margin-top: 2.3em;",
            dateButton("button_1week", label = "1W"),
            dateButton("button_1month", label = "1M"),
            dateButton("button_3months", label = "3M"),
