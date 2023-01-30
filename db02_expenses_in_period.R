@@ -312,7 +312,7 @@ server <- function(input, output, session) {
   
   output$expenses_summary <- renderDataTable({
     summ_dt <- expenses_summary_data()
-    summ_dt <- datatable(summ_dt, rownames = F, colnames = NULL,
+    summ_dt <- datatable(summ_dt, rownames = F, colnames = NULL, selection = "none",
                          options = list(info = F, paging = F, searching = F,
                                         ordering = F)) %>%
       formatStyle("items", target = "row", backgroundColor = styleEqual(c("Total expenses", "Number of expenses", "Average expense"),
@@ -338,13 +338,15 @@ server <- function(input, output, session) {
     table_data %>%
       select(Date = date_format, Amount, Note, Category)
   },
+  selection = "none",
   options = list(info = F, paging = F, searching = F, scrollY = "150px",
                  ordering = F,
                  initComplete = table_ind_expenses_css,
                  columnDefs = list(
                    list(targets = c(2,4), width = '6em'),
                    list(targets = 1, width = '5em'),
-                   list(targets = 0, width = '2em')))
+                   list(targets = 0, width = '2em'))
+                 )
   )
 }
 
