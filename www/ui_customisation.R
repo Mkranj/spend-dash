@@ -8,12 +8,6 @@ summary_div_style <- "border-style: groove;
   font-family: \"Lato\", sans-serif;
   margin-top: 8%;"
 
-arrow_transition_css <- "
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 70% 0;" 
-
 table_ind_expenses_css <- JS(
   "function(settings, json) {",
   "$(this.api().table().header()).css({'background-color': '#151759', 'color': '#fff'});",

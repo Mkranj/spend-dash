@@ -45,10 +45,6 @@ dateButton <- function(id, label) {
   actionButton(inputId = id, label = label, class = "date_button")
 }
 
-arrow_transition_image <- p(img(src = 'Dark_blue_right_arrow.png',
-                                width = "30%"),
-                            style = arrow_transition_css)
-
 # For HTML output, easily apply css to the string you want to display
 style_div_output <- function(displayed_string, style_options = NULL) {
   div_statement <- paste0("<div style='",
