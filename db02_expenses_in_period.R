@@ -105,7 +105,7 @@ ui <- fluidPage(
   
   fluidRow(column(6, dataTableOutput("table_recent")),
            column(1, arrow_transition_image),
-           column(4, htmlOutput("expenses_summary"))
+           column(4, dataTableOutput("expenses_summary"))
            ),
   fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
                                    choices = c("Most recent" = "recent",
@@ -131,13 +131,10 @@ server <- function(input, output, session) {
     # TO DO- clean these if's up
     if (length(matching_filter) > 0 & input$filter_words != "") {
       filtered_data <- filtered_data[matching_filter, ]
-      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
       output$warn_no_expense <- renderUI(HTML(""))
     } else if (input$filter_words != "") {
-      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
       output$warn_no_expense <- renderUI(HTML("No matching expenses, showing all"))
     } else if (input$filter_words == "") {
-      output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
       output$warn_no_expense <- renderUI(HTML(""))
     }
     
@@ -308,13 +305,12 @@ server <- function(input, output, session) {
     total_expense <- sum(all_expenses$Amount, na.rm = T) %>% round(2)
     n_expenses <- all_expenses %>% filter(Amount > 0) %>% nrow()
     avg_expense <- (total_expense/n_expenses) %>% round(2)
-    summary_data <- paste0("Total expenses: ", total_expense, " ", currency,
-           "<br/>Number of expenses: ", n_expenses,
-           "<br/>Average expense: ", avg_expense, " ", currency)
-    style_div_output(summary_data, summary_div_style)
+    summary_data <- data.frame(items = c("Total expenses", "Number of expenses", "Average expense"),
+                               amounts = c(total_expense, n_expenses, avg_expense))
+    summary_data
   })
   
-  output$expenses_summary <- renderUI(expenses_summary_data() %>% HTML())
+  output$expenses_summary <- renderDataTable(expenses_summary_data())
   
   output$table_recent <- renderDataTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
