@@ -14,9 +14,3 @@ table_ind_expenses_css <- JS(
   "$(this.api().table().node()).css({'border-bottom': '3px dotted #151759'});",
   "}"
 )
-
-header_row_css <- "
-background-color: #c2c3f0;
-margin-bottom: 5px;
-margin-top: -10px;
-"
