@@ -78,10 +78,10 @@ ui <- fluidPage(
     column(3,
            textInput("filter_words", "Filter expenses containing:",
                      placeholder = "e.g. dinner, drinks...") %>%
-             div(style = "margin-bottom: -10px;"),
+             div(style = "margin-bottom: -10px; margin-right: 1.5em; padding-right: 0em;"),
            htmlOutput("warn_no_expense", class = "filter_warning")
            ),
-    column(6,div(style = "margin-left: -50px; text-align: center;", 
+    column(6,div(style = "text-align: center; margin-left: -2em;", 
                  sliderInput("date_considered", "Dates to show",
                   min = start_date,
                   max = end_date,
