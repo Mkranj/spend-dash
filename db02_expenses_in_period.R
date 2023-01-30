@@ -310,7 +310,9 @@ server <- function(input, output, session) {
     summary_data
   })
   
-  output$expenses_summary <- renderDataTable(expenses_summary_data())
+  output$expenses_summary <- renderDataTable(expenses_summary_data(), rownames = F, colnames = NULL,
+                             options = list(info = F, paging = F, searching = F,
+                                            ordering = F))
   
   output$table_recent <- renderDataTable({
     table_data <- expenses_individual_data() %>% filter(!is.na(Amount))
