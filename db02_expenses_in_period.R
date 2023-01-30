@@ -77,7 +77,7 @@ ui <- fluidPage(
   fluidRow(
     column(3,
            textInput("filter_words", "Filter expenses containing:",
-                     placeholder = "e.g. 'dinner', 'drinks'...") %>%
+                     placeholder = "e.g. dinner, drinks...") %>%
              div(style = "margin-bottom: -10px;"),
            htmlOutput("warn_no_expense", class = "filter_warning")
            ),
