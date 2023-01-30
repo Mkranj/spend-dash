@@ -74,7 +74,7 @@ ui <- fluidPage(
     column(3,
            textInput("filter_words", "Filter expenses containing:",
                      placeholder = "e.g. dinner, drinks...") %>%
-             div(style = "margin-bottom: -10px; margin-right: 1.5em; padding-right: 0em;"),
+             div(style = "margin-bottom: -1em; margin-right: 1.5em; padding-right: 0em;"),
            htmlOutput("warn_no_expense", class = "filter_warning")
            ),
     column(6,div(style = "text-align: center; margin-left: -2em;", 
@@ -335,7 +335,7 @@ server <- function(input, output, session) {
       select(Date = date_format, Amount, Note, Category)
   },
   selection = "none",
-  options = list(info = F, paging = F, searching = F, scrollY = "150px",
+  options = list(info = F, paging = F, searching = F, scrollY = "10.4em",
                  ordering = F,
                  initComplete = table_ind_expenses_css,
                  columnDefs = list(
