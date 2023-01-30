@@ -104,8 +104,8 @@ ui <- fluidPage(
   
   
   fluidRow(column(6, dataTableOutput("table_recent")),
-           column(1, arrow_transition_image),
-           column(3, dataTableOutput("expenses_summary"))
+           column(3, style = "margin-top: 1.45em;",
+                  dataTableOutput("expenses_summary"))
            ),
   fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
                                    choices = c("Most recent" = "recent",
