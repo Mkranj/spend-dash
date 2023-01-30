@@ -97,7 +97,7 @@ ui <- fluidPage(
   ),
   
   # UI plot ----
-  plotlyOutput("main_plot_expenses", height = "310px"),
+  plotlyOutput("main_plot_expenses", height = "21em"),
   
   # UI table and summary ----
   
