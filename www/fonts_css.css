@@ -5,6 +5,10 @@
 border-color: gray;
 }
 
+#filter_words_monthly {
+border-color: gray;
+}
+
 .date_button {
 font-family: "Lato", sans-serif;
 color: white;
