@@ -60,17 +60,17 @@ ui <- fluidPage(
   chooseSliderSkin(color = "#3639a2"),
   tags$head(tags$link(rel = "stylesheet", type = "text/css",
                       href = "fonts_css.css")),
-  
+  fluidRow(class = "header_row", style = "margin-bottom: 5px;",
+           column(10,
+                  h1("EXPENSES DASHBOARD"), class = "header_title"),
+           column(2, align = "right",
+                  actionButton("btn_mode_daily", label = "Daily", class = "header_row mode_button_active", width = "60%"),
+                  actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "header_row mode_button", width = "60%")
+           )
+  ),
   tabsetPanel(type = "hidden",
   tabPanel(title = "daily",
-           fluidRow(class = "header_row", style = "margin-bottom: 5px;",
-                    column(10,
-                           h1("EXPENSES DASHBOARD"), class = "header_title"),
-                    column(2, align = "right",
-                           actionButton("btn_mode_daily", label = "Daily", class = "header_row mode_button_active", width = "60%"),
-                           actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "header_row mode_button", width = "60%")
-                    )
-           ),
+           
            fluidRow(
              column(3,
                     textInput("filter_words", "Filter expenses containing:",
