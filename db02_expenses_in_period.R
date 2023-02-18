@@ -70,7 +70,7 @@ ui <- fluidPage(
            )
   ),
   # Tabset setup ----
-  tabsetPanel(type = "hidden",
+  tabsetPanel(id = "tab_selector", type = "hidden",
   # Tab 1 - Daily expenses ----
   tabPanel(title = "daily",
    fluidRow(
@@ -399,6 +399,17 @@ server <- function(input, output, session) {
                    list(targets = 0, width = '2em'))
                  )
   )
+  
+  # Switching tabs ----
+  observeEvent(input$"btn_mode_daily", {
+    if (input$tab_selector != "daily")
+      updateTabsetPanel(session, "tab_selector", selected = "daily")
+  })
+  
+  observeEvent(input$"btn_mode_monthly", {
+    if (input$tab_selector != "monthly")
+      updateTabsetPanel(session, "tab_selector", selected = "monthly")
+  })
 }
 
 shinyApp(ui, server)
