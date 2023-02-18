@@ -61,52 +61,55 @@ ui <- fluidPage(
   tags$head(tags$link(rel = "stylesheet", type = "text/css",
                       href = "fonts_css.css")),
   
-  # UI controls ----
-  fluidRow(class = "header_row", style = "margin-bottom: 5px;",
-           column(10,
-               h1("EXPENSES DASHBOARD"), class = "header_title"),
-           column(2, align = "right",
-                  actionButton("btn_mode_daily", label = "Daily", class = "header_row mode_button_active", width = "60%"),
-                  actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "header_row mode_button", width = "60%")
-                  )
+  tabsetPanel(type = "hidden",
+  tabPanel(title = "daily",
+           fluidRow(class = "header_row", style = "margin-bottom: 5px;",
+                    column(10,
+                           h1("EXPENSES DASHBOARD"), class = "header_title"),
+                    column(2, align = "right",
+                           actionButton("btn_mode_daily", label = "Daily", class = "header_row mode_button_active", width = "60%"),
+                           actionButton("btn_mode_monthly", label = "Monthly (WIP)", class = "header_row mode_button", width = "60%")
+                    )
            ),
-  fluidRow(
-    column(3,
-           textInput("filter_words", "Filter expenses containing:",
-                     placeholder = "e.g. dinner, drinks...") %>%
-             div(style = "margin-bottom: -1em; margin-right: 1.5em; padding-right: 0em;"),
-           htmlOutput("warn_no_expense", class = "filter_warning")
+           fluidRow(
+             column(3,
+                    textInput("filter_words", "Filter expenses containing:",
+                              placeholder = "e.g. dinner, drinks...") %>%
+                      div(style = "margin-bottom: -1em; margin-right: 1.5em; padding-right: 0em;"),
+                    htmlOutput("warn_no_expense", class = "filter_warning")
+             ),
+             column(6,div(style = "text-align: center; margin-left: -2em;", 
+                          sliderInput("date_considered", "Dates to show",
+                                      min = start_date,
+                                      max = end_date,
+                                      value = c(start_date, end_date),
+                                      timeFormat = "%d.%m.%Y", width = "100%"))),
+             column(3, div(style = "margin-top: 2.3em;",
+                           dateButton("button_1week", label = "1W"),
+                           dateButton("button_1month", label = "1M"),
+                           dateButton("button_3months", label = "3M"),
+                           dateButton("button_1year", label = "1Y"),
+                           dateButton("button_all_time", label = "ALL"))
+             )
            ),
-    column(6,div(style = "text-align: center; margin-left: -2em;", 
-                 sliderInput("date_considered", "Dates to show",
-                  min = start_date,
-                  max = end_date,
-                  value = c(start_date, end_date),
-                  timeFormat = "%d.%m.%Y", width = "100%"))),
-    column(3, div(style = "margin-top: 2.3em;",
-           dateButton("button_1week", label = "1W"),
-           dateButton("button_1month", label = "1M"),
-           dateButton("button_3months", label = "3M"),
-           dateButton("button_1year", label = "1Y"),
-           dateButton("button_all_time", label = "ALL"))
-           )
-  ),
-  
-  # UI plot ----
-  plotlyOutput("main_plot_expenses", height = "21em"),
-  
-  # UI table and summary ----
-  
-  
-  
-  fluidRow(column(6, dataTableOutput("table_recent")),
-           column(3, style = "margin-top: 1.45em;",
-                  dataTableOutput("expenses_summary"))
+           
+           # UI plot ----
+           plotlyOutput("main_plot_expenses", height = "21em"),
+           
+           # UI table and summary ----
+           
+           
+           
+           fluidRow(column(6, dataTableOutput("table_recent")),
+                    column(3, style = "margin-top: 1.45em;",
+                           dataTableOutput("expenses_summary"))
            ),
-  fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
-                                   choices = c("Most recent" = "recent",
-                                               "Most expensive" = "expensive"))))
-  
+           fluidRow(column(6, radioButtons("table_sort_type", label = NULL, inline= T,
+                                           choices = c("Most recent" = "recent",
+                                                       "Most expensive" = "expensive"))))
+    ),
+  tabPanel(title = "monthly")
+    )
 )
 
 server <- function(input, output, session) {
