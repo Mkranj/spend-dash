@@ -147,6 +147,55 @@ server <- function(input, output, session) {
     daily_data
   })
   
+  expenses_individual_data_monthly_tab <- reactive({
+    # Different sliders and filters apply to this one - CHANGE
+    filtered_data <- expenses %>% 
+      filter(date_transform >= input$date_considered[1] - days(1),
+             date_transform <= input$date_considered[2])
+    # Filter by input words, if any matches, update data
+    matching_filter <- grep(pattern = input$filter_words,
+                            x = filtered_data$Note, ignore.case = T)
+    
+    # Some are blank, some are NA -- by default searches for "" string,
+    # which doesn't match NA. But "" should include everything
+    
+    # TO DO- clean these if's up
+    if (length(matching_filter) > 0 & input$filter_words != "") {
+      filtered_data <- filtered_data[matching_filter, ]
+      output$warn_no_expense <- renderUI(HTML(""))
+    } else if (input$filter_words != "") {
+      output$warn_no_expense <- renderUI(HTML("No matching expenses, showing all"))
+    } else if (input$filter_words == "") {
+      output$warn_no_expense <- renderUI(HTML(""))
+    }
+    
+    filtered_data
+  })
+  
+  expenses_monthly_data <- reactive({
+    monthly_data <- group_by(expenses_individual_data_monthly_tab(),
+                             year = year(date_transform),
+                             month = month(date_transform)) %>% 
+      summarise(total_expenses = sum(Amount, na.rm = T),
+                no_of_expenses = n(),
+                average_expense = expense/no_of_expenses,
+                largest_expense = max(Amount, na.rm = T))
+    
+    # If a month has no expenses, set values to zero
+    monthly_data$no_of_expenses[!(monthly_data$expense > 0)] <- 0
+    monthly_data$average_expense[!(monthly_data$expense > 0)] <- 0
+    monthly_data$largest_expense[!(monthly_data$expense > 0)] <- 0
+    
+    combined_year_month <- paste(monthly_data$year, monthly_data$month, "01",
+                                 sep = "-") %>%
+      as.Date(text_year_month, format = "%Y-%m-%d")
+    monthly_data$year <- NULL
+    monthly_data$month <- NULL
+    monthly_data <- cbind(year_month = combined_year_month, monthly_data)
+    
+    monthly_data
+  })
+  
   # date_button functionalities ----
   
   dateButton_change_start_time <- function(no_time_units, slider_id, time_unit = "days"){
