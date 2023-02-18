@@ -111,8 +111,23 @@ ui <- fluidPage(
                                                "Most expensive" = "expensive"))))
     ),
   # Tab 2 - Monthly expenses ----
-  tabPanel(title = "monthly")
+  tabPanel(title = "monthly",
+           fluidRow(
+             column(3,
+                    textInput("filter_words_monthly", "Filter expenses containing:",
+                              placeholder = "e.g. dinner, drinks...") %>%
+                      div(style = "margin-bottom: -1em; margin-right: 1.5em; padding-right: 0em;"),
+                    htmlOutput("warn_no_expense_monthly", class = "filter_warning")
+             ),
+             column(6,div(style = "text-align: center; margin-left: -2em;", 
+                          sliderInput("date_considered_monthly", "Dates to show",
+                                      min = start_date,
+                                      max = end_date,
+                                      value = c(start_date, end_date),
+                                      timeFormat = "%m.%Y", width = "100%")))
+             )
     )
+  )
 )
 
 server <- function(input, output, session) {
@@ -156,23 +171,23 @@ server <- function(input, output, session) {
   expenses_individual_data_monthly_tab <- reactive({
     # Different sliders and filters apply to this one - CHANGE
     filtered_data <- expenses %>% 
-      filter(date_transform >= input$date_considered[1] - days(1),
-             date_transform <= input$date_considered[2])
+      filter(date_transform >= input$date_considered_monthly[1] - days(1),
+             date_transform <= input$date_considered_monthly[2])
     # Filter by input words, if any matches, update data
-    matching_filter <- grep(pattern = input$filter_words,
+    matching_filter <- grep(pattern = input$filter_words_monthly,
                             x = filtered_data$Note, ignore.case = T)
     
     # Some are blank, some are NA -- by default searches for "" string,
     # which doesn't match NA. But "" should include everything
     
     # TO DO- clean these if's up
-    if (length(matching_filter) > 0 & input$filter_words != "") {
+    if (length(matching_filter) > 0 & input$filter_words_monthly != "") {
       filtered_data <- filtered_data[matching_filter, ]
-      output$warn_no_expense <- renderUI(HTML(""))
-    } else if (input$filter_words != "") {
-      output$warn_no_expense <- renderUI(HTML("No matching expenses, showing all"))
-    } else if (input$filter_words == "") {
-      output$warn_no_expense <- renderUI(HTML(""))
+      output$warn_no_expense_monthly <- renderUI(HTML(""))
+    } else if (input$filter_words_monthly != "") {
+      output$warn_no_expense_monthly <- renderUI(HTML("No matching expenses, showing all"))
+    } else if (input$filter_words_monthly == "") {
+      output$warn_no_expense_monthly <- renderUI(HTML(""))
     }
     
     filtered_data
