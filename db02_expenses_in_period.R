@@ -447,7 +447,7 @@ server <- function(input, output, session) {
                        y = total_expenses,
                        # text - specific aesthetic we can later use
                        # to create tooltips
-                       text = paste("Date:", year_month,
+                       text = paste("Date:", format(year_month, "%m.%Y"),
                                     "<br>Expenses: ", total_expenses), 
                        # group = 1 - needed if including text - otherwise 
                        # geom_line tries to group by text
