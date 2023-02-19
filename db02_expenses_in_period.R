@@ -131,7 +131,7 @@ ui <- fluidPage(
            
            # UI table and summary ----
            
-           fluidRow(column(6, dataTableOutput("table_monthly")),
+           fluidRow(column(8, dataTableOutput("table_monthly")),
                     column(3, style = "margin-top: 1.45em;",
                            dataTableOutput("monthly_summary"))
            ),
@@ -506,6 +506,8 @@ server <- function(input, output, session) {
     monthly_data <- expenses_monthly_data()
     monthly_data$year_month <- format(monthly_data$year_month, "%m.%Y")
     colnames(monthly_data) <- c("Month", "Total expenses", "Number of expenses", "Average expense", "Largest expense")
+    monthly_data["Average expense"] <- monthly_data["Average expense"] %>% round(2)
+    monthly_data["Total expenses"] <- monthly_data["Total expenses"] %>% round(2)
     monthly_data
   },
   selection = "none",
