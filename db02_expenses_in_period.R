@@ -481,8 +481,37 @@ server <- function(input, output, session) {
     plot
   })
   
-  
   output$monthly_plot_expenses <- renderPlotly(plot_monthly_to_plotly())
+  
+  # Calculations - monthly tab----
+  
+  expenses_summary_data_monthly <- reactive({
+    all_expenses <- expenses_individual_data_monthly_tab()
+    
+    total_expense <- sum(all_expenses$Amount, na.rm = T) %>% round(2)
+    n_expenses <- all_expenses %>% filter(Amount > 0) %>% nrow()
+    avg_expense <- (total_expense/n_expenses) %>% round(2)
+    
+    per_month_data <- expenses_monthly_data()
+    n_months <- nrow(per_month_data)
+    
+    avg_per_month <- (total_expense/n_months) %>% round(2)
+    
+    summary_data <- data.frame(items = c("Total expenses", "Average expenses per month", "Number of expenses", "Average expense"),
+                               amounts = c(total_expense, avg_per_month, n_expenses, avg_expense))
+    summary_data
+  })
+  
+  output$monthly_summary <- renderDataTable({
+    summ_dt <- expenses_summary_data_monthly()
+    summ_dt <- datatable(summ_dt, rownames = F, colnames = NULL, selection = "none",
+                         options = list(info = F, paging = F, searching = F,
+                                        ordering = F)) %>%
+      formatStyle("items", target = "row", backgroundColor = styleEqual(c("Total expenses", "Average expenses per month", "Number of expenses", "Average expense"),
+                                                                        c("rgba(54, 57, 162, 0.3)", "white", "rgba(54, 57, 162, 0.3)", "white")) )
+    summ_dt
+  })
+  
 }
 
 shinyApp(ui, server)
