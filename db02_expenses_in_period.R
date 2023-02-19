@@ -503,7 +503,10 @@ server <- function(input, output, session) {
   })
   
   output$table_monthly <- renderDataTable({
-    expenses_monthly_data()
+    monthly_data <- expenses_monthly_data()
+    monthly_data$year_month <- format(monthly_data$year_month, "%m.%Y")
+    colnames(monthly_data) <- c("Month", "Total expenses", "Number of expenses", "Average expense", "Largest expense")
+    monthly_data
   },
   selection = "none",
   options = list(info = F, paging = F, searching = F, scrollY = "10.4em",
