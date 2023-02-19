@@ -502,6 +502,20 @@ server <- function(input, output, session) {
     summary_data
   })
   
+  output$table_monthly <- renderDataTable({
+    expenses_monthly_data()
+  },
+  selection = "none",
+  options = list(info = F, paging = F, searching = F, scrollY = "10.4em",
+                 ordering = F,
+                 initComplete = table_ind_expenses_css,
+                 columnDefs = list(
+                   list(targets = c(2,4), width = '6em'),
+                   list(targets = 1, width = '5em'),
+                   list(targets = 0, width = '2em'))
+  )
+  )
+  
   output$monthly_summary <- renderDataTable({
     summ_dt <- expenses_summary_data_monthly()
     summ_dt <- datatable(summ_dt, rownames = F, colnames = NULL, selection = "none",
@@ -510,7 +524,8 @@ server <- function(input, output, session) {
       formatStyle("items", target = "row", backgroundColor = styleEqual(c("Total expenses", "Average expenses per month", "Number of expenses", "Average expense"),
                                                                         c("rgba(54, 57, 162, 0.3)", "white", "rgba(54, 57, 162, 0.3)", "white")) )
     summ_dt
-  })
+  }
+  )
   
 }
 
