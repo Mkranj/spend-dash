@@ -125,7 +125,16 @@ ui <- fluidPage(
                                       max = end_date,
                                       value = c(start_date, end_date),
                                       timeFormat = "%m.%Y", width = "100%")))
-             )
+             ),
+           # UI plot ----
+           plotlyOutput("monthly_plot_expenses", height = "21em"),
+           
+           # UI table and summary ----
+           
+           fluidRow(column(6, dataTableOutput("table_monthly")),
+                    column(3, style = "margin-top: 1.45em;",
+                           dataTableOutput("monthly_summary"))
+           ),
     )
   )
 )
@@ -199,7 +208,7 @@ server <- function(input, output, session) {
                              month = month(date_transform)) %>% 
       summarise(total_expenses = sum(Amount, na.rm = T),
                 no_of_expenses = n(),
-                average_expense = expense/no_of_expenses,
+                average_expense = total_expenses/no_of_expenses,
                 largest_expense = max(Amount, na.rm = T))
     
     # If a month has no expenses, set values to zero
@@ -425,6 +434,55 @@ server <- function(input, output, session) {
     if (input$tab_selector != "monthly")
       updateTabsetPanel(session, "tab_selector", selected = "monthly")
   })
+  
+  # Plot for monthly expenses ----
+  plot_monthly_gg <- reactive({
+    plot_data <- expenses_monthly_data()
+    
+    # Function to pass as an argument, to round y-axis
+    round_y_axis <- function(y) round(y) 
+    max_daily_expense <- max(plot_data$total_expenses)
+    plot <- ggplot(plot_data,
+                   aes(x = year_month,
+                       y = total_expenses,
+                       # text - specific aesthetic we can later use
+                       # to create tooltips
+                       text = paste("Date:", year_month,
+                                    "<br>Expenses: ", total_expenses), 
+                       # group = 1 - needed if including text - otherwise 
+                       # geom_line tries to group by text
+                       # and doesn't display anything!
+                       group = 1)) +
+      scale_x_date(date_labels = "%m.%Y", date_breaks = "1 months") +
+      xlab("Date") + ylab("Amount spent") + theme_minimal() +
+      scale_y_continuous(limits = c(0, NA), 
+                         expand = expansion(mult = c(0, 0.05), add = c(50,0)),
+                         labels = round_y_axis, 
+                         breaks = seq(0, max_daily_expense, by = 5000)) +
+      theme(panel.grid.major = element_line(colour="grey"))
+    if (nrow(expenses_daily_data()) == 1){
+      plot <- plot + geom_point()
+    } else {
+      plot <- plot + geom_line(color = "#151759")
+    }
+    plot
+  }
+  )
+  
+  plot_monthly_to_plotly <- reactive({
+    plot <- plot_monthly_gg()
+    plot <- plot %>% ggplotly(tooltip = c("text"), source = "A") %>% 
+      config(displayModeBar = FALSE ) %>%
+      layout(margin = list(t = 0, b = 50), font = list(family = "Lato"),
+             xaxis = list(title = list(text = NULL, standoff = 0),
+                          fixedrange = T),
+             yaxis = list(fixedrange = T))
+    # margin changes after value 50
+    plot
+  })
+  
+  
+  output$monthly_plot_expenses <- renderPlotly(plot_monthly_to_plotly())
 }
 
 shinyApp(ui, server)
