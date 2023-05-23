@@ -426,12 +426,10 @@ server <- function(input, output, session) {
   
   # Switching tabs ----
   observeEvent(input$"btn_mode_daily", {
-    if (input$tab_selector != "daily")
       updateTabsetPanel(session, "tab_selector", selected = "daily")
   })
   
   observeEvent(input$"btn_mode_monthly", {
-    if (input$tab_selector != "monthly")
       updateTabsetPanel(session, "tab_selector", selected = "monthly")
   })
   
