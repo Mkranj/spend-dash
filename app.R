@@ -2,6 +2,9 @@ source("app_setup.R")
 source("data_prep.R")
 
 ui <- fluidPage(
+  fluidRow(style = "margin-bottom: 1em;",
+           h1("EXPENSES DASHBOARD")
+          ),
   dataTableOutput("monthly_data"),
   plotlyOutput("monthly_plot")
 )
