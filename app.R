@@ -5,8 +5,8 @@ ui <- fluidPage(
   fluidRow(style = "margin-bottom: 1em;",
            h1("EXPENSES DASHBOARD")
           ),
-  dataTableOutput("monthly_data"),
-  plotlyOutput("monthly_plot")
+  fluidRow(dataTableOutput("monthly_data")),
+  fluidRow(plotlyOutput("monthly_plot"))
 )
 
 server <- function(input, output, session) {
