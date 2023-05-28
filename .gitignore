@@ -6,9 +6,11 @@
 
 # Experimentation scripts
 experiment*
+db*
 
 # Excalidraw drawings
 ED*
+**.excalidraw
 
 #rsconnect files
 rsconnect/**
