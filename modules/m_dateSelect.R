@@ -16,6 +16,11 @@ dateSelectServer <- function(id) {
     function(input, output, session) {
       
       date_range <- reactive({
+        validate(
+          need(input$startingDate <= input$endDate,
+               "End date should be equal or later than the start date!")
+        )
+        
         list(start = input$startingDate,
              end = input$endDate)
       })
@@ -25,16 +30,18 @@ dateSelectServer <- function(id) {
   )
 }
 
-ui <- fluidPage(
-  dateSelectUI("dates", minDate = "2020-01-01", maxDate = "2021-06-01"),
-  textOutput("selected")
-)
-
-server <- function(input, output, session) {
-  
-  output$selected <- renderText({
-    paste(dateSelectServer("dates")()$start, dateSelectServer("dates")()$end)
-    })
-}
-
-shinyApp(ui, server)
+## EXAMPLE USAGE
+# 
+# ui <- fluidPage(
+#   dateSelectUI("dates", minDate = "2020-01-01", maxDate = "2021-06-01"),
+#   textOutput("selected")
+# )
+# 
+# server <- function(input, output, session) {
+#   
+#   output$selected <- renderText({
+#     paste(dateSelectServer("dates")()$start, dateSelectServer("dates")()$end)
+#     })
+# }
+# 
+# shinyApp(ui, server)
