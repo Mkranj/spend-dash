@@ -1,12 +1,24 @@
 source("app_setup.R")
 source("data_prep.R")
 
-ui <- fluidPage(
-  fluidRow(style = "margin-bottom: 1em;",
-           h1("EXPENSES DASHBOARD")
-          ),
-  fluidRow(dataTableOutput("monthly_data")),
-  fluidRow(plotlyOutput("monthly_plot"))
+# UI definitions
+
+sidebar <- dashboardSidebar(
+  
+)
+
+header <- dashboardHeader(title = "EXPENSES DASHBOARD",
+                          titleWidth = "27rem")
+
+body <- dashboardBody(
+  fluidRow(dataTableOutput("monthly_data") %>% box(width = 12)),
+  fluidRow(plotlyOutput("monthly_plot") %>% box(width = 12))
+)
+
+ui <- dashboardPage(
+  header = header,
+  sidebar = sidebar,
+  body = body
 )
 
 server <- function(input, output, session) {
