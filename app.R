@@ -4,7 +4,7 @@ source("data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  
+  dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
 )
 
 header <- dashboardHeader(title = "EXPENSES DASHBOARD",
@@ -22,6 +22,10 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output, session) {
+  
+  date_range <- reactive({
+    dateSelectServer("date_range")
+  })
   
   individual_expenses <- reactive({
     expenses
