@@ -60,7 +60,11 @@ server <- function(input, output, session) {
         xaxis = list(
           tickformat = "%b %Y",
           dtick = "M1",
-          tick0 = "2000-01-01"
+          tick0 = "2000-01-01",
+          title = list(text = NULL)
+        ),
+        yaxis = list(
+          title = "Expenses"
         )
       )
   })
