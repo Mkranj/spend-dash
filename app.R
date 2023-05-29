@@ -7,8 +7,7 @@ sidebar <- dashboardSidebar(
   dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
 )
 
-header <- dashboardHeader(title = "EXPENSES DASHBOARD",
-                          titleWidth = "27rem")
+header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
   fluidRow(dataTableOutput("monthly_data") %>% box(width = 12)),
