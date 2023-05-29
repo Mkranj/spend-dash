@@ -14,7 +14,7 @@ expenses <- filter(finance_data, Income.Expense == "Expense")
 expenses <- rename(expenses,
                    "Time" = Date) %>%
   mutate(
-    Date = strptime(Time, "%m/%d/%Y")
+    Date = strptime(Time, "%m/%d/%Y") %>% as.Date()
   )
   
 # Some data is in INR,  other in USD. We'll recalculate everything to USD
@@ -29,3 +29,6 @@ expenses <-
                     Amount),
     Currency = "USD"
   )
+
+first_date <- expenses$Date %>% min(na.rm = T)
+last_date <- expenses$Date %>% max(na.rm = T)
