@@ -23,12 +23,14 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   
-  date_range <- reactive({
-    dateSelectServer("date_range")
-  })
+  date_range <- dateSelectServer("date_range")
+  
   
   individual_expenses <- reactive({
-    expenses
+    expenses %>% filter(
+      Date >= date_range()$start,
+      Date <= date_range()$end,
+    )
   })
   
   expenses_by_month <- reactive({
