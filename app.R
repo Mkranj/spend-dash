@@ -55,7 +55,8 @@ server <- function(input, output, session) {
       cbind(., Date = date_from_year_month(.$Year, .$Month))
   
     plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
-            type = "scatter", mode = "lines")  %>%
+            type = "scatter", mode = "lines", name = NULL,
+            hovertemplate = "%{x}<br>%{y:$.2f} USD<extra></extra>")  %>%
       layout(
         xaxis = list(
           tickformat = "%b %Y",
