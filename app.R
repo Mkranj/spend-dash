@@ -55,7 +55,14 @@ server <- function(input, output, session) {
       cbind(., Date = date_from_year_month(.$Year, .$Month))
   
     plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
-            type = "scatter", mode = "lines") 
+            type = "scatter", mode = "lines")  %>%
+      layout(
+        xaxis = list(
+          tickformat = "%b %Y",
+          dtick = "M1",
+          tick0 = "2000-01-01"
+        )
+      )
   })
   
 }
