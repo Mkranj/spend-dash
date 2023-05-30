@@ -4,7 +4,8 @@ source("data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
+  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
+  DailyExpensesPopupUI("dailies")
 )
 
 header <- dashboardHeader(title = "SpendDash")
@@ -31,6 +32,21 @@ server <- function(input, output, session) {
       Date >= date_range()$start,
       Date <= date_range()$end,
     )
+  })
+  
+  expenses_by_day <- reactive({
+    individual_expenses()  %>%
+      group_by(Date) %>%
+      summarize(NumberOfExpenses = n(),
+                TotalAmount = sum(Amount, na.rm = T),
+                AverageExpense = TotalAmount / NumberOfExpenses,
+                .groups = "drop") %>%
+      cover_all_dates_in_period() %>%
+      # Fill in NA's after joining with 0's
+      mutate(
+        across(c(2:4),
+               ~ ifelse(is.na(.x), 0, .x))
+      )
   })
   
   expenses_by_month <- reactive({
@@ -68,6 +84,8 @@ server <- function(input, output, session) {
         )
       )
   })
+  
+  DailyExpensesPopupServer("dailies", input_data = expenses_by_day)
   
 }
 

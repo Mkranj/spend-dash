@@ -8,7 +8,9 @@ library(lubridate)
 library(DT)
 
 source("functions/plotting.R")
+source("functions/data_manipulation.R")
 
 source("modules/m_dateSelect.R")
+source("modules/m_daily_popup.R")
 
 
