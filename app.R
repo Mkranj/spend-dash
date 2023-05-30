@@ -35,12 +35,18 @@ server <- function(input, output, session) {
   })
   
   expenses_by_day <- reactive({
-    individual_expenses() %>%
+    individual_expenses()  %>%
       group_by(Date) %>%
       summarize(NumberOfExpenses = n(),
-                TotalAmount = sum(Amount),
+                TotalAmount = sum(Amount, na.rm = T),
                 AverageExpense = TotalAmount / NumberOfExpenses,
-                .groups = "drop") 
+                .groups = "drop") %>%
+      cover_all_dates_in_period() %>%
+      # Fill in NA's after joining with 0's
+      mutate(
+        across(c(2:4),
+               ~ ifelse(is.na(.x), 0, .x))
+      )
   })
   
   expenses_by_month <- reactive({
