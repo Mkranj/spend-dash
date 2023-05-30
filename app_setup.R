@@ -10,5 +10,6 @@ library(DT)
 source("functions/plotting.R")
 
 source("modules/m_dateSelect.R")
+source("modules/m_daily_popup.R")
 
 
