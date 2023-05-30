@@ -11,8 +11,8 @@ sidebar <- dashboardSidebar(
 header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
-  fluidRow(valueBoxOutput("vb_total_amount"),
-           valueBoxOutput("vb_no_of_expenses")),
+  fluidRow(valueBoxOutput("vb_total_amount", width = 6),
+           valueBoxOutput("vb_no_of_expenses", width = 6)),
   fluidRow(plotlyOutput("monthly_plot") %>% box(width = 12)),
   fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
 )
