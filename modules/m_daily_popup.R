@@ -9,13 +9,14 @@ DailyExpensesPopupServer <- function(id, input_data) {
   moduleServer(
     id,
     function(input, output, session) {
+    
       stopifnot(is.reactive(input_data))
+      ns <- NS(id)
     
-    
-    eventReactive(input$show_modal, {
+    observeEvent(input$show_modal, {
       showModal(
         modalDialog(
-          plotlyOutput("dailies_plot"),
+          plotlyOutput(ns("dailies_plot")),
           modalButton("Close")
         )
       )
@@ -25,7 +26,7 @@ DailyExpensesPopupServer <- function(id, input_data) {
       
       data <- input_data()
       
-      plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
+      plot_ly(data, x = ~Date, y = ~TotalAmount,
               type = "scatter", mode = "lines", name = NULL,
               hovertemplate = "%{x}<br>%{y:$.2f} USD<extra></extra>")  %>%
         layout(
@@ -41,3 +42,21 @@ DailyExpensesPopupServer <- function(id, input_data) {
     }  
   )
 }
+
+## EXAMPLE USAGE
+# 
+# ui <- fluidPage(
+#   DailyExpensesPopupUI("dailies")
+# )
+# 
+# server <- function(input, output, session) {
+#   DailyExpensesPopupServer("dailies", input_data = reactive({
+#     expenses %>% group_by(Date) %>%
+#       summarize(NumberOfExpenses = n(),
+#                 TotalAmount = sum(Amount),
+#                 AverageExpense = TotalAmount / NumberOfExpenses,
+#                 .groups = "drop")
+#   }))
+# }
+# 
+# shinyApp(ui, server)
