@@ -32,3 +32,12 @@ expenses <-
 
 first_date <- expenses$Date %>% min(na.rm = T)
 last_date <- expenses$Date %>% max(na.rm = T)
+
+# Artificially lenghten the amount of data, for development testing
+if (!is.null(DEV_EXPAND_DATA_TIMES) &
+    !is.null(DEV_EXPAND_FUTURE_DAYS)) {
+  expenses <- expenses %>% expand_data_to_future(
+    duplicate_times = DEV_EXPAND_DATA_TIMES,
+    max_advancement_days = DEV_EXPAND_FUTURE_DAYS
+  )
+}
