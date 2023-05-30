@@ -1,7 +1,7 @@
 DailyExpensesPopupUI <- function(id) {
   ns <- NS(id)
   tagList(
-    actionBttn(inputId = ns("show_modal"), label = "Show dailies")
+    actionButton(inputId = ns("show_modal"), label = "Show dailies")
   )
 }
 
@@ -44,7 +44,7 @@ DailyExpensesPopupServer <- function(id, input_data) {
   )
 }
 
-## EXAMPLE USAGE
+# # EXAMPLE USAGE
 # 
 # ui <- fluidPage(
 #   DailyExpensesPopupUI("dailies")
