@@ -88,8 +88,9 @@ server <- function(input, output, session) {
   })
   
   output$vb_total_amount <- renderValueBox({
-    valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T),
-             subtitle = "Total expenses")
+    valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
+               round(2),
+             subtitle = "Total amount spent")
   })
   
   output$vb_no_of_expenses <- renderValueBox({
