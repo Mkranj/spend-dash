@@ -12,4 +12,3 @@ expand_data_to_future <- function(input_data, duplicate_times = 2,
   rbind(data, new_data)
 }
 
-expand_data_to_future(expenses)
