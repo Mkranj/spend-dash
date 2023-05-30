@@ -11,8 +11,10 @@ sidebar <- dashboardSidebar(
 header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
-  fluidRow(dataTableOutput("monthly_data") %>% box(width = 12)),
-  fluidRow(plotlyOutput("monthly_plot") %>% box(width = 12))
+  fluidRow(valueBoxOutput("vb_total_amount", width = 6),
+           valueBoxOutput("vb_no_of_expenses", width = 6)),
+  fluidRow(plotlyOutput("monthly_plot") %>% box(width = 12)),
+  fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
 )
 
 ui <- dashboardPage(
@@ -83,6 +85,17 @@ server <- function(input, output, session) {
           title = "Expenses"
         )
       )
+  })
+  
+  output$vb_total_amount <- renderValueBox({
+    valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
+               round(2),
+             subtitle = "Total amount spent")
+  })
+  
+  output$vb_no_of_expenses <- renderValueBox({
+    valueBox(value = individual_expenses() %>% nrow(),
+             subtitle = "Number of different expenses")
   })
   
   DailyExpensesPopupServer("dailies", input_data = expenses_by_day)
