@@ -16,8 +16,8 @@ DailyExpensesPopupServer <- function(id, input_data) {
     observeEvent(input$show_modal, {
       showModal(
         modalDialog(
-          plotlyOutput(ns("dailies_plot")),
-          modalButton("Close")
+          plotlyOutput(ns("dailies_plot")), 
+          footer = modalButton("Close")
         )
       )
     })
