@@ -66,7 +66,8 @@ server <- function(input, output, session) {
       formatRound(columns = c("TotalAmount", "AverageExpense"), digits = 2)
   })
   
-  expenses_over_time_plotServer("expenses_plot", expenses_by_month)
+  expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
+                                expenses_by_month = expenses_by_month)
   
   output$vb_total_amount <- renderValueBox({
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
@@ -79,7 +80,7 @@ server <- function(input, output, session) {
              subtitle = "Number of different expenses")
   })
   
-  DailyExpensesPopupServer("dailies", input_data = expenses_by_day)
+  DailyExpensesPopupServer("dailies", expenses_by_day)
   
 }
 
