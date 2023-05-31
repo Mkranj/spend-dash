@@ -13,7 +13,7 @@ header <- dashboardHeader(title = "SpendDash")
 body <- dashboardBody(
   fluidRow(valueBoxOutput("vb_total_amount", width = 6),
            valueBoxOutput("vb_no_of_expenses", width = 6)),
-  fluidRow(plotlyOutput("monthly_plot") %>% box(width = 12)),
+  fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
   fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
 )
 
@@ -66,26 +66,7 @@ server <- function(input, output, session) {
       formatRound(columns = c("TotalAmount", "AverageExpense"), digits = 2)
   })
   
-  output$monthly_plot <- renderPlotly({
-    # We're adding a Date column from individual years and months
-    plot_data <- expenses_by_month() %>%
-      cbind(., Date = date_from_year_month(.$Year, .$Month))
-  
-    plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
-            type = "scatter", mode = "lines", name = NULL,
-            hovertemplate = "%{x}<br>%{y:$.2f} USD<extra></extra>")  %>%
-      layout(
-        xaxis = list(
-          tickformat = "%b %Y",
-          dtick = "M1",
-          tick0 = "2000-01-01",
-          title = list(text = NULL)
-        ),
-        yaxis = list(
-          title = "Expenses"
-        )
-      )
-  })
+  expenses_over_time_plotServer("expenses_plot", expenses_by_month)
   
   output$vb_total_amount <- renderValueBox({
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
