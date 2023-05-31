@@ -1,4 +1,4 @@
-data_filename <- "expense_data_1.csv"
+data_filename <- "data_files/expense_data_1.csv"
 
 finance_data <- read.csv(data_filename)
 
