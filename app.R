@@ -1,5 +1,5 @@
-source("app_setup.R")
-source("data_prep.R")
+source("scripts/app_setup.R")
+source("scripts/data_prep.R")
 
 # UI definitions
 
