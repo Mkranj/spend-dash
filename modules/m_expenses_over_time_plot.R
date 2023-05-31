@@ -1,7 +1,9 @@
 expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
-    plotlyOutput(ns("expenses_plot"))
+    div(plotlyOutput(ns("expenses_plot"))),
+    div(actionButton(ns("lower_lvl"), "Days"),
+             actionButton(ns("higher_lvl"), "Months"))
   )
 }
 
@@ -11,8 +13,9 @@ expenses_over_time_plotServer <- function(id, expenses_by_month) {
     function(input, output, session) {
       stopifnot(is.reactive(expenses_by_month))
       
-      output$expenses_plot <- renderPlotly({
-        # We're adding a Date column from individual years and months
+      current_view <- reactiveVal("Month")
+      
+      monthly_plot <- reactive({
         plot_data <- expenses_by_month() %>%
           cbind(., Date = date_from_year_month(.$Year, .$Month))
         
@@ -32,6 +35,13 @@ expenses_over_time_plotServer <- function(id, expenses_by_month) {
           )
       })
       
+      observe({
+        if (current_view() == "Month") {
+          output$expenses_plot <- renderPlotly(monthly_plot())
+        } else if (current_view() == "Day") {
+          output$expenses_plot <- renderPlotly(daily_plot())
+        }
+      })
       
     }
   )
