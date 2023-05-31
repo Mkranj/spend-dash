@@ -32,6 +32,9 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 hovertemplate = "%{x}<br>%{y:$.2f} USD<extra></extra>")  %>%
           layout(
             xaxis = list(
+              tickformat = "%b %Y",
+              dtick = "M1",
+              tick0 = "2000-01-01",
               title = list(text = NULL)
             ),
             yaxis = list(
