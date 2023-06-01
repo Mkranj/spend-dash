@@ -4,8 +4,7 @@ source("scripts/data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
-  DailyExpensesPopupUI("dailies")
+  dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
 )
 
 header <- dashboardHeader(title = "SpendDash")
