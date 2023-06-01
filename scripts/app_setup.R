@@ -13,6 +13,7 @@ source("functions/development_tools.R")
 
 source("modules/m_dateSelect.R")
 source("modules/m_daily_popup.R")
+source("modules/m_expenses_over_time_plot.R")
 
 source("env_variables.R")
 
