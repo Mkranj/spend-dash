@@ -40,7 +40,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
             yaxis = list(
               title = "Expenses"
             )
-          )
+          ) %>% config(displayModeBar = F)
       })
       
       monthly_plot <- reactive({
@@ -60,7 +60,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
             yaxis = list(
               title = "Expenses"
             )
-          )
+          ) %>% config(displayModeBar = F)
       })
       
       observe({
