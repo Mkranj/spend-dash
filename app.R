@@ -11,6 +11,7 @@ sidebar <- dashboardSidebar(
 header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
+  includeCSS("www/styling.css"),
   fluidRow(valueBoxOutput("vb_total_amount", width = 6),
            valueBoxOutput("vb_no_of_expenses", width = 6)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
