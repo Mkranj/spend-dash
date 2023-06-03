@@ -3,10 +3,10 @@ dateSelectUI <- function(id, minDate, maxDate) {
   tagList(
     airDatepickerInput(ns("startingDate"), label = "Start date:",
                        minDate = minDate, maxDate = maxDate,
-                       value = minDate, autoClose = T, addon = "left") %>% span(), 
+                       value = minDate, autoClose = T, addon = "right"), 
     airDatepickerInput(ns("endDate"), label = "End date:",
                        minDate = minDate, maxDate = maxDate,
-                       value = maxDate, autoClose = T, addon = "none")
+                       value = maxDate, autoClose = T, addon = "right")
   )
 }
 
