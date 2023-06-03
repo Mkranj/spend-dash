@@ -3,10 +3,15 @@ dateSelectUI <- function(id, minDate, maxDate) {
   tagList(
     airDatepickerInput(ns("startingDate"), label = "Start date:",
                        minDate = minDate, maxDate = maxDate,
-                       value = minDate, autoClose = T, addon = "right"), 
+                       value = minDate, autoClose = T, addon = "right") %>%
+      # Create a tooltip just for the calendar button
+      tagAppendAttributes(title = "Earliest available date",
+                          .cssSelector=".action-button"), 
     airDatepickerInput(ns("endDate"), label = "End date:",
                        minDate = minDate, maxDate = maxDate,
-                       value = maxDate, autoClose = T, addon = "right")
+                       value = maxDate, autoClose = T, addon = "right") %>%
+      tagAppendAttributes(title = "Latest available date",
+                          .cssSelector=".action-button")
   )
 }
 
