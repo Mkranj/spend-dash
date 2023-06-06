@@ -19,7 +19,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
                          value = maxDate, autoClose = T, addon = "none") ,
     span(class = "datepicker",
       actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
-                   title = "Earliest available date"),
+                   title = "Latest available date"),
       actionButton(ns("end_minus"), label = "", icon = icon("minus"),
                    title = "-1 month"),
       actionButton(ns("end-plus"), label = "", icon = icon("plus"),
@@ -28,7 +28,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
   )
 }
 
-dateSelectServer <- function(id) {
+dateSelectServer <- function(id, minDate, maxDate) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -41,6 +41,14 @@ dateSelectServer <- function(id) {
         
         list(start = input$startingDate,
              end = input$endDate)
+      })
+      
+      observeEvent(input$earliest_date, {
+        updateAirDateInput(session, inputId = "startingDate", value = minDate)
+      })
+      
+      observeEvent(input$latest_date, {
+        updateAirDateInput(session, inputId = "endDate", value = maxDate)
       })
       
       date_range

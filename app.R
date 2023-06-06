@@ -27,7 +27,8 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   
   # Module outputs ----
-  date_range <- dateSelectServer("date_range")
+  date_range <- dateSelectServer("date_range", 
+                                 minDate = first_date, maxDate = last_date)
   
   # Data ----
   individual_expenses <- reactive({
