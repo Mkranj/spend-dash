@@ -10,7 +10,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
                    title = "Earliest available date"),
       actionButton(ns("start_minus"), label = "", icon = icon("minus"),
                    title = "-1 month"),
-      actionButton(ns("start-plus"), label = "", icon = icon("plus"),
+      actionButton(ns("start_plus"), label = "", icon = icon("plus"),
                    title = "+1 month")
     ),
     
@@ -22,7 +22,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
                    title = "Latest available date"),
       actionButton(ns("end_minus"), label = "", icon = icon("minus"),
                    title = "-1 month"),
-      actionButton(ns("end-plus"), label = "", icon = icon("plus"),
+      actionButton(ns("end_plus"), label = "", icon = icon("plus"),
                    title = "+1 month")
     )
   )
@@ -51,6 +51,40 @@ dateSelectServer <- function(id, minDate, maxDate) {
         updateAirDateInput(session, inputId = "endDate", value = maxDate)
       })
       
+      observeEvent(input$start_minus, {
+        month_minus <- input$startingDate - months(1)
+        
+        if (month_minus < minDate) month_minus <- minDate
+        
+        updateAirDateInput(session, inputId = "startingDate", value = month_minus)
+      })
+      
+      observeEvent(input$start_plus, {
+        month_plus <- input$startingDate + months(1)
+        
+        if (month_plus > maxDate) month_plus <- maxDate
+        
+        updateAirDateInput(session, inputId = "startingDate", value = month_plus)
+      })
+      
+      observeEvent(input$end_minus, {
+        month_minus <- input$endDate - months(1)
+        
+        if (month_minus < minDate) month_minus <- minDate
+        
+        updateAirDateInput(session, inputId = "endDate", value = month_minus)
+      })
+      
+      observeEvent(input$end_plus, {
+        month_plus <- input$endDate + months(1)
+        
+        if (month_plus > maxDate) month_plus <- maxDate
+        
+        updateAirDateInput(session, inputId = "endDate", value = month_plus)
+      })
+      
+      
+      # Return:
       date_range
     }
   )
