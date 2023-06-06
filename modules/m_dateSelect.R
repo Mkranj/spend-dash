@@ -1,17 +1,28 @@
 dateSelectUI <- function(id, minDate, maxDate) {
   ns <- NS(id)
   tagList(
-    airDatepickerInput(ns("startingDate"), label = "Start date:",
-                       minDate = minDate, maxDate = maxDate,
-                       value = minDate, autoClose = T, addon = "right") %>%
-      # Create a tooltip just for the calendar button
-      tagAppendAttributes(title = "Earliest available date",
-                          .cssSelector=".action-button"), 
-    airDatepickerInput(ns("endDate"), label = "End date:",
-                       minDate = minDate, maxDate = maxDate,
-                       value = maxDate, autoClose = T, addon = "right") %>%
-      tagAppendAttributes(title = "Latest available date",
-                          .cssSelector=".action-button")
+    span(
+      airDatepickerInput(ns("startingDate"), label = "Start date:",
+                         minDate = minDate, maxDate = maxDate,
+                         value = minDate, autoClose = T, addon = "none"),
+      actionButton(ns("earliest_date"), label = "", icon = icon("rotate-left"),
+                   title = "Earliest available date"),
+      actionButton(ns("start_minus"), label = "", icon = icon("minus"),
+                   title = "Earliest available date"),
+      actionButton(ns("start-plus"), label = "", icon = icon("plus"),
+                   title = "Earliest available date")
+    ),
+    span(
+      airDatepickerInput(ns("endDate"), label = "End date:",
+                         minDate = minDate, maxDate = maxDate,
+                         value = maxDate, autoClose = T, addon = "none") ,
+      actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
+                   title = "Earliest available date"),
+      actionButton(ns("end_minus"), label = "", icon = icon("minus"),
+                   title = "Earliest available date"),
+      actionButton(ns("end-plus"), label = "", icon = icon("plus"),
+                   title = "Earliest available date")
+    )
   )
 }
 
