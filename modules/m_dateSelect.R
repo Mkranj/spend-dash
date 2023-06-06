@@ -1,10 +1,11 @@
 dateSelectUI <- function(id, minDate, maxDate) {
   ns <- NS(id)
   tagList(
-    span(
-      airDatepickerInput(ns("startingDate"), label = "Start date:",
+    
+    airDatepickerInput(ns("startingDate"), label = "Start date:",
                          minDate = minDate, maxDate = maxDate,
                          value = minDate, autoClose = T, addon = "none"),
+    span(class = "datepicker",
       actionButton(ns("earliest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
       actionButton(ns("start_minus"), label = "", icon = icon("minus"),
@@ -12,10 +13,11 @@ dateSelectUI <- function(id, minDate, maxDate) {
       actionButton(ns("start-plus"), label = "", icon = icon("plus"),
                    title = "Earliest available date")
     ),
-    span(
-      airDatepickerInput(ns("endDate"), label = "End date:",
+    
+    airDatepickerInput(ns("endDate"), label = "End date:",
                          minDate = minDate, maxDate = maxDate,
                          value = maxDate, autoClose = T, addon = "none") ,
+    span(class = "datepicker",
       actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
       actionButton(ns("end_minus"), label = "", icon = icon("minus"),
