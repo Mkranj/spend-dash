@@ -9,9 +9,9 @@ dateSelectUI <- function(id, minDate, maxDate) {
       actionButton(ns("earliest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
       actionButton(ns("start_minus"), label = "", icon = icon("minus"),
-                   title = "Earliest available date"),
+                   title = "-1 month"),
       actionButton(ns("start-plus"), label = "", icon = icon("plus"),
-                   title = "Earliest available date")
+                   title = "+1 month")
     ),
     
     airDatepickerInput(ns("endDate"), label = "End date:",
@@ -21,9 +21,9 @@ dateSelectUI <- function(id, minDate, maxDate) {
       actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
       actionButton(ns("end_minus"), label = "", icon = icon("minus"),
-                   title = "Earliest available date"),
+                   title = "-1 month"),
       actionButton(ns("end-plus"), label = "", icon = icon("plus"),
-                   title = "Earliest available date")
+                   title = "+1 month")
     )
   )
 }
