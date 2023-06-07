@@ -11,8 +11,9 @@ header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
   includeCSS("www/styling.css"),
-  fluidRow(valueBoxOutput("vb_total_amount", width = 6),
-           valueBoxOutput("vb_no_of_expenses", width = 6)),
+  fluidRow(valueBoxOutput("vb_total_amount", width = 4),
+           valueBoxOutput("vb_average_monthly_expense", width = 4),
+           valueBoxOutput("vb_three_month_average", width = 4)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
   fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
 )
@@ -90,9 +91,14 @@ server <- function(input, output, session) {
              subtitle = "Total amount spent")
   })
   
-  output$vb_no_of_expenses <- renderValueBox({
-    valueBox(value = individual_expenses() %>% nrow(),
-             subtitle = "Number of different expenses")
+  output$vb_average_monthly_expense <- renderValueBox({
+    valueBox(value = average_monthly_expense(),
+             subtitle = "Average expenses per month")
+  })
+  
+  output$vb_three_month_average <- renderValueBox({
+    valueBox(value = span(span("ICON"), average_three_month_period()),
+             subtitle = "Three-month average expenses")
   })
   
   DailyExpensesPopupServer("dailies", expenses_by_day)
