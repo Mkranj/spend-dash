@@ -11,8 +11,9 @@ header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
   includeCSS("www/styling.css"),
-  fluidRow(valueBoxOutput("vb_total_amount", width = 6),
-           valueBoxOutput("vb_no_of_expenses", width = 6)),
+  fluidRow(valueBoxOutput("vb_total_amount", width = 4),
+           valueBoxOutput("vb_average_monthly_expense", width = 4),
+           valueBoxOutput("vb_three_month_average", width = 4)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
   fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
 )
@@ -61,6 +62,20 @@ server <- function(input, output, session) {
                 .groups = "drop") 
   })
   
+  # Single values determining averages
+  average_monthly_expense <- reactive({
+    expenses_by_month() %>% summarise(average = mean(TotalAmount)) %>% 
+      pull(average)  
+  })
+  
+  average_three_month_expenses <- reactive({
+    expenses_by_month() %>% slice_tail(n = 3) %>% 
+      summarise(average = mean(TotalAmount)) %>% 
+      pull(average)  
+  })
+  
+
+  
   # Outputs ----
   output$monthly_data <- renderDataTable({
     datatable(expenses_by_month()) %>%
@@ -72,13 +87,27 @@ server <- function(input, output, session) {
   
   output$vb_total_amount <- renderValueBox({
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
-               round(2),
+               round(0),
              subtitle = "Total amount spent")
   })
   
-  output$vb_no_of_expenses <- renderValueBox({
-    valueBox(value = individual_expenses() %>% nrow(),
-             subtitle = "Number of different expenses")
+  output$vb_average_monthly_expense <- renderValueBox({
+    valueBox(value = average_monthly_expense() %>% round(),
+             subtitle = "Average expenses per month")
+  })
+  
+  output$vb_three_month_average <- renderValueBox({
+    valueBox(value = span(three_month_avg_icon(),
+                          average_three_month_expenses() %>% round()),
+             subtitle = "Three-month average expenses")
+  })
+  
+  three_month_avg_icon <- reactive({
+    if (average_three_month_expenses() > average_monthly_expense()) {
+      return(icon("arrow-up", class = "increased-expenses"))
+    } else if (average_three_month_expenses() < average_monthly_expense()) {
+      return(icon("arrow-down", class = "lowered-expenses"))
+    } else return(NULL)
   })
   
   DailyExpensesPopupServer("dailies", expenses_by_day)
