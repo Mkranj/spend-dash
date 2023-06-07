@@ -68,7 +68,7 @@ server <- function(input, output, session) {
       pull(average)  
   })
   
-  average_three_month_period <- reactive({
+  average_three_month_expenses <- reactive({
     expenses_by_month() %>% slice_tail(n = 3) %>% 
       summarise(average = mean(TotalAmount)) %>% 
       pull(average)  
@@ -97,14 +97,14 @@ server <- function(input, output, session) {
   })
   
   output$vb_three_month_average <- renderValueBox({
-    valueBox(value = span(three_month_avg_icon(), average_three_month_period()),
+    valueBox(value = span(three_month_avg_icon(), average_three_month_expenses()),
              subtitle = "Three-month average expenses")
   })
   
   three_month_avg_icon <- reactive({
-    if (average_three_month_period() > average_monthly_expense()) {
+    if (average_three_month_expenses() > average_monthly_expense()) {
       return(icon("arrow-up"))
-    } else if (average_three_month_period() < average_monthly_expense()) {
+    } else if (average_three_month_expenses() < average_monthly_expense()) {
       return(icon("arrow-down"))
     } else return(NULL)
   })
