@@ -61,6 +61,13 @@ server <- function(input, output, session) {
                 .groups = "drop") 
   })
   
+  # Single values determining averages
+  average_monthly_expense <- reactive({
+    expenses_by_month() %>% summarise(average = mean(TotalAmount)) %>% 
+      pull(average)  
+  })
+  
+  
   # Outputs ----
   output$monthly_data <- renderDataTable({
     datatable(expenses_by_month()) %>%
