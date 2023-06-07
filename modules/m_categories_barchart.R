@@ -1,7 +1,7 @@
 categories_barchart_UI <- function(id) {
   ns <- NS(id)
   tagList(
-    plotlyOutput(ns("categories_bar"))
+    plotlyOutput(ns("categories_bar"), height = "180px")
     )
 }
 
