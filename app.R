@@ -87,17 +87,18 @@ server <- function(input, output, session) {
   
   output$vb_total_amount <- renderValueBox({
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
-               round(2),
+               round(0),
              subtitle = "Total amount spent")
   })
   
   output$vb_average_monthly_expense <- renderValueBox({
-    valueBox(value = average_monthly_expense(),
+    valueBox(value = average_monthly_expense() %>% round(),
              subtitle = "Average expenses per month")
   })
   
   output$vb_three_month_average <- renderValueBox({
-    valueBox(value = span(three_month_avg_icon(), average_three_month_expenses()),
+    valueBox(value = span(three_month_avg_icon(),
+                          average_three_month_expenses() %>% round()),
              subtitle = "Three-month average expenses")
   })
   
