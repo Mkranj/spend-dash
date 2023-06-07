@@ -67,6 +67,13 @@ server <- function(input, output, session) {
       pull(average)  
   })
   
+  average_three_month_period <- reactive({
+    expenses_by_month() %>% slice_tail(n = 3) %>% 
+      summarise(average = mean(TotalAmount)) %>% 
+      pull(average)  
+  })
+  
+
   
   # Outputs ----
   output$monthly_data <- renderDataTable({
