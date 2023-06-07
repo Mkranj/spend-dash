@@ -20,9 +20,10 @@ categories_barchart_Server <- function(id, individual_expenses) {
       plot_object <- reactive({
         req(plot_data)
         
-        plot_ly(plot_data(), x = ~Category) %>% add_bars(y = ~Amount) %>%
+        plot_ly(plot_data()) %>% add_bars(x = ~Category, y = ~Amount) %>%
           layout(
             xaxis = list(
+              categoryorder = "total descending",
               title = list(text = NULL)
             ),
             yaxis = list(
