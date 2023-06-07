@@ -2,3 +2,12 @@
 .datepicker {
   display: flex;
 }
+
+/*Arrows*/
+.increased-expenses {
+  color: red;
+}
+
+.lowered-expenses {
+  color: green;
+}

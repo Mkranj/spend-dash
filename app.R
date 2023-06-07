@@ -103,9 +103,9 @@ server <- function(input, output, session) {
   
   three_month_avg_icon <- reactive({
     if (average_three_month_expenses() > average_monthly_expense()) {
-      return(icon("arrow-up"))
+      return(icon("arrow-up", class = "increased-expenses"))
     } else if (average_three_month_expenses() < average_monthly_expense()) {
-      return(icon("arrow-down"))
+      return(icon("arrow-down", class = "lowered-expenses"))
     } else return(NULL)
   })
   
