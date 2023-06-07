@@ -52,15 +52,15 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$start_minus, {
-        month_minus <- input$startingDate - months(1)
-        
+        month_minus <- input$startingDate %m+% months(-1)
+
         if (month_minus < minDate) month_minus <- minDate
         
         updateAirDateInput(session, inputId = "startingDate", value = month_minus)
       })
       
       observeEvent(input$start_plus, {
-        month_plus <- input$startingDate + months(1)
+        month_plus <- input$startingDate %m+% months(1)
         
         if (month_plus > maxDate) month_plus <- maxDate
         
@@ -68,7 +68,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$end_minus, {
-        month_minus <- input$endDate - months(1)
+        month_minus <- input$endDate %m+% months(-1)
         
         if (month_minus < minDate) month_minus <- minDate
         
@@ -76,7 +76,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$end_plus, {
-        month_plus <- input$endDate + months(1)
+        month_plus <- input$endDate %m+% months(1)
         
         if (month_plus > maxDate) month_plus <- maxDate
         
@@ -92,18 +92,18 @@ dateSelectServer <- function(id, minDate, maxDate) {
 
 ## EXAMPLE USAGE
 # 
-# ui <- fluidPage(
-#   dateSelectUI("dates", minDate = "2020-01-01", maxDate = "2021-06-01"),
-#   textOutput("selected")
-# )
-# 
-# server <- function(input, output, session) {
-#   
-#   recieved_dates <- dateSelectServer("dates", minDate = "2020-01-01", maxDate = "2021-06-01")
-#   
-#   output$selected <- renderText({
-#     paste(recieved_dates()$start, recieved_dates()$end)
-#     })
-# }
-# 
-# shinyApp(ui, server)
+ui <- fluidPage(
+  dateSelectUI("dates", minDate = "2020-01-01", maxDate = "2021-06-01"),
+  textOutput("selected")
+)
+
+server <- function(input, output, session) {
+
+  recieved_dates <- dateSelectServer("dates", minDate = "2020-01-01", maxDate = "2021-06-01")
+
+  output$selected <- renderText({
+    paste(recieved_dates()$start, recieved_dates()$end)
+    })
+}
+
+shinyApp(ui, server)
