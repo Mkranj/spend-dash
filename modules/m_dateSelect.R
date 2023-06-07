@@ -99,8 +99,10 @@ dateSelectServer <- function(id, minDate, maxDate) {
 # 
 # server <- function(input, output, session) {
 #   
+#   recieved_dates <- dateSelectServer("dates", minDate = "2020-01-01", maxDate = "2021-06-01")
+#   
 #   output$selected <- renderText({
-#     paste(dateSelectServer("dates")()$start, dateSelectServer("dates")()$end)
+#     paste(recieved_dates()$start, recieved_dates()$end)
 #     })
 # }
 # 
