@@ -1,7 +1,7 @@
 expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
-    div(plotlyOutput(ns("expenses_plot"))),
+    div(plotlyOutput(ns("expenses_plot"), height = "200px")),
     div(actionButton(ns("lower_lvl"), "Days"),
              actionButton(ns("higher_lvl"), "Months"))
   )
