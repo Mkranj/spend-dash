@@ -38,7 +38,8 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
               title = list(text = NULL)
             ),
             yaxis = list(
-              title = "Expenses"
+              title = "Expenses",
+              zeroline = F
             )
           ) %>% config(displayModeBar = F)
       })
@@ -58,7 +59,8 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
               title = list(text = NULL)
             ),
             yaxis = list(
-              title = "Expenses"
+              title = "Expenses",
+              zeroline = F
             )
           ) %>% config(displayModeBar = F)
       })
