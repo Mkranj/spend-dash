@@ -97,8 +97,16 @@ server <- function(input, output, session) {
   })
   
   output$vb_three_month_average <- renderValueBox({
-    valueBox(value = span(span("ICON"), average_three_month_period()),
+    valueBox(value = span(three_month_avg_icon(), average_three_month_period()),
              subtitle = "Three-month average expenses")
+  })
+  
+  three_month_avg_icon <- reactive({
+    if (average_three_month_period() > average_monthly_expense()) {
+      return(icon("arrow-up"))
+    } else if (average_three_month_period() < average_monthly_expense()) {
+      return(icon("arrow-down"))
+    } else return(NULL)
   })
   
   DailyExpensesPopupServer("dailies", expenses_by_day)
