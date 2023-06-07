@@ -10,6 +10,7 @@ sidebar <- dashboardSidebar(
 header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
+  includeCSS("www/styling.css"),
   fluidRow(valueBoxOutput("vb_total_amount", width = 6),
            valueBoxOutput("vb_no_of_expenses", width = 6)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
@@ -25,7 +26,8 @@ ui <- dashboardPage(
 server <- function(input, output, session) {
   
   # Module outputs ----
-  date_range <- dateSelectServer("date_range")
+  date_range <- dateSelectServer("date_range", 
+                                 minDate = first_date, maxDate = last_date)
   
   # Data ----
   individual_expenses <- reactive({
