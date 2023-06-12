@@ -19,8 +19,8 @@ categories_barchart_Server <- function(id, individual_expenses) {
       plot_data <- reactive({
         plot_data <- individual_expenses() %>%
           group_by(Category) %>% 
-          summarise(Amount = sum(Amount),
-                    Monthly_amount = Amount / no_of_months(),
+          summarise(Amount = sum(Amount) %>% ceiling(),
+                    Monthly_amount = (Amount / no_of_months()) %>% ceiling(),
                     No_expenses = n(), .groups = "drop")
       })
       
