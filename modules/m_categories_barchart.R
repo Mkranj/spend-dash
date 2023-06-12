@@ -31,7 +31,7 @@ categories_barchart_Server <- function(id, individual_expenses) {
           layout(
             xaxis = list(
               categoryorder = "total descending",
-              title = list(text = NULL)
+              title = list(text = "Monthly Average")
             ),
             yaxis = list(
               title = "Expenses",
