@@ -11,16 +11,23 @@ categories_barchart_Server <- function(id, individual_expenses) {
     function(input, output, session) {
       stopifnot(is.reactive(individual_expenses))
       
+      no_of_months <- reactive({
+        individual_expenses() %>% group_by(year(Date), month(Date)) %>% 
+          summarise(N = n()) %>% nrow()
+      })
+      
       plot_data <- reactive({
         plot_data <- individual_expenses() %>%
           group_by(Category) %>% 
-          summarise(Amount = sum(Amount), No_expenses = n(), .groups = "drop")
+          summarise(Amount = sum(Amount),
+                    Monthly_amount = Amount / no_of_months(),
+                    No_expenses = n(), .groups = "drop")
       })
       
       plot_object <- reactive({
         req(plot_data)
         
-        plot_ly(plot_data()) %>% add_bars(x = ~Category, y = ~Amount) %>%
+        plot_ly(plot_data()) %>% add_bars(x = ~Category, y = ~Monthly_amount) %>%
           layout(
             xaxis = list(
               categoryorder = "total descending",
