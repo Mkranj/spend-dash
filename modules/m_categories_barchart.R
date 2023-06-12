@@ -13,7 +13,7 @@ categories_barchart_Server <- function(id, individual_expenses) {
       
       no_of_months <- reactive({
         individual_expenses() %>% group_by(year(Date), month(Date)) %>% 
-          summarise(N = n()) %>% nrow()
+          summarise(N = n(), .groups = "drop") %>% nrow()
       })
       
       plot_data <- reactive({
