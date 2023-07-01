@@ -1,3 +1,6 @@
+# Create a pair of datepicker, for determining the start and end of the period
+# for which expenses should be analysed.
+
 dateSelectUI <- function(id, minDate, maxDate) {
   ns <- NS(id)
   tagList(
