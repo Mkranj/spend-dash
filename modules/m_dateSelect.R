@@ -52,7 +52,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$start_minus, {
-        month_minus <- input$startingDate %m+% months(-1)
+        month_minus <- input$startingDate %>% change_month("backward", "first")
 
         if (month_minus < minDate) month_minus <- minDate
         
@@ -60,7 +60,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$start_plus, {
-        month_plus <- input$startingDate %m+% months(1)
+        month_plus <- input$startingDate %>% change_month("forward", "first")
         
         if (month_plus > maxDate) month_plus <- maxDate
         
@@ -68,7 +68,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$end_minus, {
-        month_minus <- input$endDate %m+% months(-1)
+        month_minus <- input$endDate %>% change_month("backward", "last")
         
         if (month_minus < minDate) month_minus <- minDate
         
@@ -76,7 +76,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       })
       
       observeEvent(input$end_plus, {
-        month_plus <- input$endDate %m+% months(1)
+        month_plus <- input$endDate %>% change_month("forward", "last")
         
         if (month_plus > maxDate) month_plus <- maxDate
         
