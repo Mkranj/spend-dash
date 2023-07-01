@@ -18,9 +18,17 @@ check_is_day <- function(date, day) {
   day(date) == day
 }
 
-#' Change to beggining/end of month
+#' Change to beginning/end of month
 #' 
-#' Move to next/previous month if needed
+#' For exploring expenses, it is desirable to be able to easily select whole
+#' months, especially since we calculate a lot of monthly averages. However,
+#' we also want to be able to specify exact days in range if needed. This
+#' function is used for moving forward and backward a month at a time. If you're
+#' in the middle of the month, it will first give a date in the same month, but
+#' at the beginning or end, as specified. Only with further use will it advance
+#' to next months. It also keeps the end date at the very end of the month,
+#' while just substracting months would then pick only the 30th (or 28th) after
+#' it has been encountered.
 #'
 #' @param date Date object
 #' @param direction One of `forward` or `backward`. Which direction in time to shift to?
