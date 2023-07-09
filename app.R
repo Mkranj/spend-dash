@@ -39,12 +39,15 @@ server <- function(input, output, session) {
     )
     
     if (categories_exist()) {
-      if(!is.null(input$categories_filtered)){
-      data <- data %>% filter(
-        Category %in% input$categories_filtered
-      )}
+      # If all checkboxes are unselected, show data for everything.
+      if (!is.null(input$categories_filtered)) {
+        data <- data %>% filter(
+          Category %in% input$categories_filtered
+        )
+      }
     }
     
+    data
   })
   
   expenses_by_day <- reactive({
