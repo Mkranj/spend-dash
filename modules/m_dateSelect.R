@@ -37,6 +37,8 @@ dateSelectServer <- function(id, minDate, maxDate) {
     function(input, output, session) {
       
       notification_duration_sec <- 2
+      # All notifications share ID so they get overwritten instead of spammed
+      notification_id <- "date_change"
       
       date_range <- reactive({
         
@@ -50,6 +52,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
           updateAirDateInput(session, inputId = "startingDate", value = input$endDate)
           showNotification("Start date cannot be set later than end date.",
                            duration = notification_duration_sec,
+                           id = notification_id,
                            closeButton = F)
           }
       })
@@ -59,6 +62,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
           updateAirDateInput(session, inputId = "endDate", value = input$startingDate)
           showNotification("End date cannot be set earlier than start date.",
                            duration = notification_duration_sec,
+                           id = notification_id,
                            closeButton = F)
         }
       })
@@ -88,6 +92,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
           month_plus <- input$endDate
           showNotification("Start date cannot be set later than end date.",
                            duration = notification_duration_sec,
+                           id = notification_id,
                            closeButton = F)
         }
         
@@ -102,6 +107,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
           month_minus <- input$startingDate
           showNotification("End date cannot be set earlier than start date.",
                            duration = notification_duration_sec,
+                           id = notification_id,
                            closeButton = F)
         }
         
