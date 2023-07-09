@@ -33,10 +33,18 @@ server <- function(input, output, session) {
   
   # Data ----
   individual_expenses <- reactive({
-    expenses %>% filter(
+    data <- expenses %>% filter(
       Date >= date_range()$start,
       Date <= date_range()$end,
     )
+    
+    if (categories_exist()) {
+      if(!is.null(input$categories_filtered))
+      data <- data %>% filter(
+        Category %in% input$categories_filtered
+      )
+    }
+    
   })
   
   expenses_by_day <- reactive({
@@ -78,8 +86,11 @@ server <- function(input, output, session) {
   # Categories found in data
   
   existing_categories <- reactive({
+    categories_exist(T)
     expenses %>% pull(Category) %>% unique() %>% sort()
   })
+  
+  categories_exist <- reactiveVal(F)
   
   output$categories_ui <- renderUI({
     req(existing_categories())
@@ -89,6 +100,7 @@ server <- function(input, output, session) {
                        inline = T
     )
   })
+  
   
   # Outputs ----
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
