@@ -101,7 +101,7 @@ server <- function(input, output, session) {
     req(existing_categories())
     checkboxGroupInput("categories_filtered", "Categories",
                        choices = existing_categories(),
-                       selected = existing_categories(),
+                       selected = NULL,
                        inline = T
     )
   })
