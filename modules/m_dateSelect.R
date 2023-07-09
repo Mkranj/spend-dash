@@ -76,6 +76,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
         month_plus <- input$startingDate %>% change_month("forward", "first")
         
         if (month_plus > maxDate) month_plus <- maxDate
+        if (month_plus > input$endDate) month_plus <- input$endDate
         
         updateAirDateInput(session, inputId = "startingDate", value = month_plus)
       })
@@ -84,6 +85,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
         month_minus <- input$endDate %>% change_month("backward", "last")
         
         if (month_minus < minDate) month_minus <- minDate
+        if (month_minus < input$startingDate) month_minus <- input$startingDate
         
         updateAirDateInput(session, inputId = "endDate", value = month_minus)
       })
