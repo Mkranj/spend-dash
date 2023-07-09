@@ -36,15 +36,33 @@ dateSelectServer <- function(id, minDate, maxDate) {
     id,
     function(input, output, session) {
       
+      notification_duration_sec <- 2
+      
       date_range <- reactive({
-        validate(
-          need(input$startingDate <= input$endDate,
-               "End date should be equal or later than the start date!")
-        )
         
         list(start = input$startingDate,
              end = input$endDate)
       })
+      
+      # Ensure start and end don't overlap
+      observeEvent(input$startingDate, {
+        if (input$startingDate > input$endDate) {
+          updateAirDateInput(session, inputId = "startingDate", value = input$endDate)
+          showNotification("Start date cannot be set later than end date.",
+                           duration = notification_duration_sec,
+                           closeButton = F)
+          }
+      })
+      
+      observeEvent(input$endDate, {
+        if (input$endDate < input$startingDate) {
+          updateAirDateInput(session, inputId = "endDate", value = input$startingDate)
+          showNotification("End date cannot be set earlier than start date.",
+                           duration = notification_duration_sec,
+                           closeButton = F)
+        }
+      })
+      
       
       observeEvent(input$earliest_date, {
         updateAirDateInput(session, inputId = "startingDate", value = minDate)
@@ -66,6 +84,12 @@ dateSelectServer <- function(id, minDate, maxDate) {
         month_plus <- input$startingDate %>% change_month("forward", "first")
         
         if (month_plus > maxDate) month_plus <- maxDate
+        if (month_plus > input$endDate) {
+          month_plus <- input$endDate
+          showNotification("Start date cannot be set later than end date.",
+                           duration = notification_duration_sec,
+                           closeButton = F)
+        }
         
         updateAirDateInput(session, inputId = "startingDate", value = month_plus)
       })
@@ -74,6 +98,12 @@ dateSelectServer <- function(id, minDate, maxDate) {
         month_minus <- input$endDate %>% change_month("backward", "last")
         
         if (month_minus < minDate) month_minus <- minDate
+        if (month_minus < input$startingDate) {
+          month_minus <- input$startingDate
+          showNotification("End date cannot be set earlier than start date.",
+                           duration = notification_duration_sec,
+                           closeButton = F)
+        }
         
         updateAirDateInput(session, inputId = "endDate", value = month_minus)
       })
