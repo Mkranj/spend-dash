@@ -39,15 +39,16 @@ server <- function(input, output, session) {
     )
     
     if (categories_exist()) {
-      if(!is.null(input$categories_filtered))
+      if(!is.null(input$categories_filtered)){
       data <- data %>% filter(
         Category %in% input$categories_filtered
-      )
+      )}
     }
     
   })
   
   expenses_by_day <- reactive({
+    req(individual_expenses())
     individual_expenses()  %>%
       group_by(Date) %>%
       summarize(NumberOfExpenses = n(),
@@ -63,6 +64,7 @@ server <- function(input, output, session) {
   })
   
   expenses_by_month <- reactive({
+    req(individual_expenses())
     individual_expenses() %>%
       group_by(Year = year(Date), Month = month(Date)) %>%
       summarize(NumberOfExpenses = n(),
@@ -107,6 +109,7 @@ server <- function(input, output, session) {
                                 expenses_by_month = expenses_by_month)
   
   output$vb_total_amount <- renderValueBox({
+    req(individual_expenses())
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
                round(0),
              subtitle = "Total amount spent")
