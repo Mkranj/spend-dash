@@ -105,7 +105,6 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
-  DailyExpensesPopupServer("dailies", expenses_by_day)
   categories_barchart_Server("categories_plot", individual_expenses)
 }
 
