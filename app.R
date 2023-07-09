@@ -15,8 +15,7 @@ body <- dashboardBody(
            valueBoxOutput("vb_average_monthly_expense", width = 4),
            valueBoxOutput("vb_three_month_average", width = 4)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
-  fluidRow(categories_barchart_UI("categories_plot") %>% box(width = 12)),
-  fluidRow(dataTableOutput("monthly_data") %>% box(width = 12))
+  fluidRow(categories_barchart_UI("categories_plot") %>% box(width = 12))
 )
 
 ui <- dashboardPage(
@@ -78,11 +77,6 @@ server <- function(input, output, session) {
 
   
   # Outputs ----
-  output$monthly_data <- renderDataTable({
-    datatable(expenses_by_month()) %>%
-      formatRound(columns = c("TotalAmount", "AverageExpense"), digits = 2)
-  })
-  
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
                                 expenses_by_month = expenses_by_month)
   
