@@ -82,6 +82,7 @@ server <- function(input, output, session) {
   })
   
   output$categories_ui <- renderUI({
+    req(existing_categories())
     checkboxGroupInput("categories_filtered", "Categories",
                        choices = existing_categories(),
                        selected = existing_categories(),
