@@ -4,7 +4,8 @@ source("scripts/data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
+  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
+  uiOutput("categories_ui")
 )
 
 header <- dashboardHeader(title = "SpendDash")
@@ -32,13 +33,25 @@ server <- function(input, output, session) {
   
   # Data ----
   individual_expenses <- reactive({
-    expenses %>% filter(
+    data <- expenses %>% filter(
       Date >= date_range()$start,
       Date <= date_range()$end,
     )
+    
+    if (categories_exist()) {
+      # If all checkboxes are unselected, show data for everything.
+      if (!is.null(input$categories_filtered)) {
+        data <- data %>% filter(
+          Category %in% input$categories_filtered
+        )
+      }
+    }
+    
+    data
   })
   
   expenses_by_day <- reactive({
+    req(individual_expenses())
     individual_expenses()  %>%
       group_by(Date) %>%
       summarize(NumberOfExpenses = n(),
@@ -54,6 +67,7 @@ server <- function(input, output, session) {
   })
   
   expenses_by_month <- reactive({
+    req(individual_expenses())
     individual_expenses() %>%
       group_by(Year = year(Date), Month = month(Date)) %>%
       summarize(NumberOfExpenses = n(),
@@ -74,13 +88,31 @@ server <- function(input, output, session) {
       pull(average)  
   })
   
-
+  # Categories found in data
+  
+  existing_categories <- reactive({
+    categories_exist(T)
+    expenses %>% pull(Category) %>% unique() %>% sort()
+  })
+  
+  categories_exist <- reactiveVal(F)
+  
+  output$categories_ui <- renderUI({
+    req(existing_categories())
+    checkboxGroupInput("categories_filtered", "Categories",
+                       choices = existing_categories(),
+                       selected = NULL,
+                       inline = T
+    )
+  })
+  
   
   # Outputs ----
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
                                 expenses_by_month = expenses_by_month)
   
   output$vb_total_amount <- renderValueBox({
+    req(individual_expenses())
     valueBox(value = individual_expenses()$Amount %>% sum(na.rm = T) %>%
                round(0),
              subtitle = "Total amount spent")
