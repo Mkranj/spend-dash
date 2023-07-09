@@ -37,14 +37,24 @@ dateSelectServer <- function(id, minDate, maxDate) {
     function(input, output, session) {
       
       date_range <- reactive({
-        validate(
-          need(input$startingDate <= input$endDate,
-               "End date should be equal or later than the start date!")
-        )
         
         list(start = input$startingDate,
              end = input$endDate)
       })
+      
+      # Ensure start and end don't overlap
+      observeEvent(input$startingDate, {
+        if (input$startingDate > input$endDate) {
+          updateAirDateInput(session, inputId = "startingDate", value = input$endDate)
+          }
+      })
+      
+      observeEvent(input$endDate, {
+        if (input$endDate < input$startingDate) {
+          updateAirDateInput(session, inputId = "endDate", value = input$startingDate)
+        }
+      })
+      
       
       observeEvent(input$earliest_date, {
         updateAirDateInput(session, inputId = "startingDate", value = minDate)
