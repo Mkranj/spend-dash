@@ -4,7 +4,8 @@ source("scripts/data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date)
+  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
+  uiOutput("categories_ui")
 )
 
 header <- dashboardHeader(title = "SpendDash")
@@ -74,7 +75,19 @@ server <- function(input, output, session) {
       pull(average)  
   })
   
-
+  # Categories found in data
+  
+  existing_categories <- reactive({
+    expenses %>% pull(Category) %>% unique() %>% sort()
+  })
+  
+  output$categories_ui <- renderUI({
+    checkboxGroupInput("categories_filtered", "Categories",
+                       choices = existing_categories(),
+                       selected = existing_categories(),
+                       inline = T
+    )
+  })
   
   # Outputs ----
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
