@@ -21,7 +21,10 @@ cover_all_months_in_period <- function(data) {
   right_join(data,
              data.frame(Date = all_months),
              by = "Date"
-  ) %>% arrange(Date)
+  ) %>% 
+    arrange(Date) %>%
+    mutate(across(where(is.numeric),
+           ~replace_na(., 0)))
 }
 
 #' helper for change_month
