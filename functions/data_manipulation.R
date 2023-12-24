@@ -6,6 +6,24 @@ cover_all_dates_in_period <- function(data) {
   ) %>% arrange(Date)
 }
 
+cover_all_months_in_period <- function(data) {
+  # Make all of them be the first day of the month
+  starting_date <- min(data$Date)
+  # day(starting_date) <- 1
+  
+  ending_date <- max(data$Date)
+  # day(ending_date) <- 1
+  
+  all_months <- seq(starting_date,
+                    ending_date,
+                    by = "months")
+  
+  right_join(data,
+             data.frame(Date = all_months),
+             by = "Date"
+  ) %>% arrange(Date)
+}
+
 #' helper for change_month
 #' 
 #' Check if the day part of date is a certain number
