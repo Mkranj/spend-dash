@@ -105,11 +105,22 @@ server <- function(input, output, session) {
   
   output$categories_ui <- renderUI({
     req(existing_categories())
-    checkboxGroupInput("categories_filtered", "Categories",
+    checkboxTag <- checkboxGroupInput("categories_filtered", "Categories",
                        choices = existing_categories(),
                        selected = NULL,
                        inline = T
     )
+    
+    msg <- p("Check to show ONLY selected categories.")
+    
+    # We want the message to show up between the title and 
+    # individual categories
+    finalTag <- htmltools::tagQuery(checkboxTag)$
+      find(".control-label")$
+      after(msg)$
+      allTags()
+    
+    finalTag
   })
   
   

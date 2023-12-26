@@ -11,3 +11,8 @@
 .lowered-expenses {
   color: green;
 }
+
+#categories_filtered .checkbox-inline {
+  margin-right:10px;
+  margin-left:0px;
+}
