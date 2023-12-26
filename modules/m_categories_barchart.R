@@ -13,16 +13,22 @@ categories_barchart_Server <- function(id, individual_expenses) {
       
       no_of_months <- reactive({
         req(individual_expenses())
-        individual_expenses() %>% group_by(year(Date), month(Date)) %>% 
+        individual_expenses() %>%
+          cover_all_dates_in_period() %>%
+          group_by(year(Date), month(Date)) %>% 
           summarise(N = n(), .groups = "drop") %>% nrow()
       })
       
       plot_data <- reactive({
         req(individual_expenses())
+        
         plot_data <- individual_expenses() %>%
+          cover_all_dates_in_period() %>%
           group_by(Category) %>% 
-          summarise(Amount = sum(Amount) %>% ceiling(),
-                    Monthly_amount = (Amount / no_of_months()) %>% ceiling(),
+          # Added empty dates resulted in NA categories
+          filter(!is.na(Category)) %>%
+          summarise(Amount = sum(Amount) %>% round(),
+                    Monthly_amount = (Amount / no_of_months()) %>% round(),
                     No_expenses = n(), .groups = "drop")
       })
       

@@ -68,12 +68,18 @@ server <- function(input, output, session) {
   
   expenses_by_month <- reactive({
     req(individual_expenses())
+    
     individual_expenses() %>%
       group_by(Year = year(Date), Month = month(Date)) %>%
       summarize(NumberOfExpenses = n(),
                 TotalAmount = sum(Amount),
                 AverageExpense = TotalAmount / NumberOfExpenses,
-                .groups = "drop") 
+                .groups = "drop") %>%
+      # Re-introduce the Date variable with 01 as the day
+      mutate(Date = paste0(Year, "-", Month, "-01") %>%
+               as_date()
+      ) %>%
+      cover_all_months_in_period() 
   })
   
   # Single values determining averages
