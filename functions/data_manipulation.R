@@ -21,6 +21,17 @@ cover_all_dates_in_period <- function(data,
   ) %>% arrange(Date)
 }
 
+#' Create df with all months in period
+#' 
+#' Not just those observed in data. So if we select a period of six months,
+#' the resulting df will have six monthly rows even if expenses only occur in
+#' one of them.
+#'
+#' @param data Dataframe with summary information on a monthly basis.
+#' @param start single Date. If not provided, takes earliest from Date column in data.
+#' @param end single Date. If not provided, takes latest from Date column in data.
+#'
+#' @return dataframe by months.
 cover_all_months_in_period <- function(data,
                                        start = NA,
                                        end = NA) {
