@@ -1,3 +1,10 @@
+#' Create df with all days in period
+#' 
+#' Not just those observed in data. 
+#'
+#' @param data Dataframe with summary information on a daily basis.
+#' @param start single Date. If not provided, takes earliest from Date column in data.
+#' @param end single Date. If not provided, takes latest from Date column in data.
 cover_all_dates_in_period <- function(data,
                                       start = NA,
                                       end = NA) {
