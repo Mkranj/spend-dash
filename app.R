@@ -66,7 +66,10 @@ server <- function(input, output, session) {
                 TotalAmount = sum(Amount, na.rm = T),
                 AverageExpense = TotalAmount / NumberOfExpenses,
                 .groups = "drop") %>%
-      cover_all_dates_in_period() %>%
+      cover_all_dates_in_period(
+        start = date_range()$start %>% as_date(),
+        end = date_range()$end %>% as_date()
+      ) %>%
       # Fill in NA's after joining with 0's
       mutate(
         across(c(2:4),

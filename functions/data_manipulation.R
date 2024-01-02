@@ -1,6 +1,21 @@
-cover_all_dates_in_period <- function(data) {
+cover_all_dates_in_period <- function(data,
+                                      start = NA,
+                                      end = NA) {
+  
+  if (is.na(start)) {
+    starting_date <- min(data$Date)
+  } else {
+    starting_date <- start 
+  }
+  
+  if (is.na(end)) {
+    ending_date <- max(data$Date)
+  } else {
+    ending_date <- end
+  }
+  
   right_join(data,
-             data.frame(Date = (min(data$Date) : max(data$Date)) %>%
+             data.frame(Date = (starting_date : ending_date) %>%
                           as_date()),
              by = "Date"
   ) %>% arrange(Date)
@@ -9,7 +24,8 @@ cover_all_dates_in_period <- function(data) {
 cover_all_months_in_period <- function(data,
                                        start = NA,
                                        end = NA) {
-  # Make all of them be the first day of the month
+  # Make all of them be the first day of the month so it matches up
+  # with summarised df
   if (is.na(start)) {
   starting_date <- min(data$Date)
   } else {
