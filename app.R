@@ -87,7 +87,10 @@ server <- function(input, output, session) {
       mutate(Date = paste0(Year, "-", Month, "-01") %>%
                as_date()
       ) %>%
-      cover_all_months_in_period() 
+      cover_all_months_in_period(
+        start = date_range()$start %>% as_date(),
+        end = date_range()$end %>% as_date()
+      ) 
   })
   
   # Single values determining averages

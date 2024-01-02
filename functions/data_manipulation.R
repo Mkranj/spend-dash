@@ -6,13 +6,23 @@ cover_all_dates_in_period <- function(data) {
   ) %>% arrange(Date)
 }
 
-cover_all_months_in_period <- function(data) {
+cover_all_months_in_period <- function(data,
+                                       start = NA,
+                                       end = NA) {
   # Make all of them be the first day of the month
+  if (is.na(start)) {
   starting_date <- min(data$Date)
-  # day(starting_date) <- 1
+  } else {
+  starting_date <- start 
+  day(starting_date) <- 1
+  }
   
-  ending_date <- max(data$Date)
-  # day(ending_date) <- 1
+  if (is.na(end)) {
+    ending_date <- max(data$Date)
+  } else {
+    ending_date <- end
+    day(ending_date) <- 1
+  }
   
   all_months <- seq(starting_date,
                     ending_date,
