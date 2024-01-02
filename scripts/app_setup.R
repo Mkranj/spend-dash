@@ -6,6 +6,7 @@ library(shinyWidgets)
 library(shinydashboard)
 library(lubridate)
 library(DT)
+library(tidyr)
 
 source("functions/plotting.R")
 source("functions/data_manipulation.R")
