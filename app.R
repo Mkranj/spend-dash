@@ -47,6 +47,14 @@ server <- function(input, output, session) {
       }
     }
     
+    # Special case: No rows matching filters. Make a single row with 0 spending
+    # so other components can still consume a dataframe
+    if (nrow(data) == 0) {
+      data[1, ] <- NA
+      data$Date <- date_range()$start
+      data$Category <- "(none)"
+      data$Amount <- 0
+    }
     data
   })
   
