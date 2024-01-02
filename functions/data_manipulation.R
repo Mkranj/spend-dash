@@ -1,18 +1,62 @@
-cover_all_dates_in_period <- function(data) {
+#' Create df with all days in period
+#' 
+#' Not just those observed in data. 
+#'
+#' @param data Dataframe with summary information on a daily basis.
+#' @param start single Date. If not provided, takes earliest from Date column in data.
+#' @param end single Date. If not provided, takes latest from Date column in data.
+cover_all_dates_in_period <- function(data,
+                                      start = NA,
+                                      end = NA) {
+  
+  if (is.na(start)) {
+    starting_date <- min(data$Date)
+  } else {
+    starting_date <- start 
+  }
+  
+  if (is.na(end)) {
+    ending_date <- max(data$Date)
+  } else {
+    ending_date <- end
+  }
+  
   right_join(data,
-             data.frame(Date = (min(data$Date) : max(data$Date)) %>%
+             data.frame(Date = (starting_date : ending_date) %>%
                           as_date()),
              by = "Date"
   ) %>% arrange(Date)
 }
 
-cover_all_months_in_period <- function(data) {
-  # Make all of them be the first day of the month
+#' Create df with all months in period
+#' 
+#' Not just those observed in data. So if we select a period of six months,
+#' the resulting df will have six monthly rows even if expenses only occur in
+#' one of them.
+#'
+#' @param data Dataframe with summary information on a monthly basis.
+#' @param start single Date. If not provided, takes earliest from Date column in data.
+#' @param end single Date. If not provided, takes latest from Date column in data.
+#'
+#' @return dataframe by months.
+cover_all_months_in_period <- function(data,
+                                       start = NA,
+                                       end = NA) {
+  # Make all of them be the first day of the month so it matches up
+  # with summarised df
+  if (is.na(start)) {
   starting_date <- min(data$Date)
-  # day(starting_date) <- 1
+  } else {
+  starting_date <- start 
+  day(starting_date) <- 1
+  }
   
-  ending_date <- max(data$Date)
-  # day(ending_date) <- 1
+  if (is.na(end)) {
+    ending_date <- max(data$Date)
+  } else {
+    ending_date <- end
+    day(ending_date) <- 1
+  }
   
   all_months <- seq(starting_date,
                     ending_date,

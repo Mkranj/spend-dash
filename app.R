@@ -47,6 +47,14 @@ server <- function(input, output, session) {
       }
     }
     
+    # Special case: No rows matching filters. Make a single row with 0 spending
+    # so other components can still consume a dataframe
+    if (nrow(data) == 0) {
+      data[1, ] <- NA
+      data$Date <- date_range()$start
+      data$Category <- "(none)"
+      data$Amount <- 0
+    }
     data
   })
   
@@ -58,7 +66,10 @@ server <- function(input, output, session) {
                 TotalAmount = sum(Amount, na.rm = T),
                 AverageExpense = TotalAmount / NumberOfExpenses,
                 .groups = "drop") %>%
-      cover_all_dates_in_period() %>%
+      cover_all_dates_in_period(
+        start = date_range()$start %>% as_date(),
+        end = date_range()$end %>% as_date()
+      ) %>%
       # Fill in NA's after joining with 0's
       mutate(
         across(c(2:4),
@@ -79,7 +90,10 @@ server <- function(input, output, session) {
       mutate(Date = paste0(Year, "-", Month, "-01") %>%
                as_date()
       ) %>%
-      cover_all_months_in_period() 
+      cover_all_months_in_period(
+        start = date_range()$start %>% as_date(),
+        end = date_range()$end %>% as_date()
+      ) 
   })
   
   # Single values determining averages
