@@ -2,8 +2,8 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(actionButton(ns("lower_lvl"), "Days"),
-             actionButton(ns("higher_lvl"), "Months"))
+    div(uiOutput(ns("view_buttons"))
+        )
   )
 }
 
@@ -14,7 +14,17 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       stopifnot(is.reactive(expenses_by_day))
       stopifnot(is.reactive(expenses_by_month))
       
+      ns <- NS(id)
+      
       current_view <- reactiveVal("Month")
+      
+      output$view_buttons <- renderUI({
+        days_btn <- actionButton(ns("lower_lvl"), "Days")
+        months_btn <- actionButton(ns("higher_lvl"), "Months")
+      
+        tagList(days_btn,
+                months_btn)
+      })
       
       observeEvent(input$lower_lvl, {
         current_view("Day")
