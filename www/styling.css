@@ -22,3 +22,8 @@
   border: darkblue 2px solid;
   border-radius: 7px;
 }
+
+.active-btnview:hover, .active-btnview:active, .active-btnview:focus {
+  border: darkblue 2px solid;
+  border-radius: 7px;
+}
