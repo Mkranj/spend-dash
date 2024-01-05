@@ -48,13 +48,14 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         plot_data <- expenses_by_day()
         
         plot_object <- plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
-                type = "scatter", mode = "lines", name = NULL,
-                hovertemplate = "%{x|%d.%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>") %>%
+                type = "scatter",
+                mode = "lines",
+                name = NULL,
+                hovertemplate = "%{x|%d.%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
+                ) %>%
           layout(
             xaxis = list(
-              tickformat = "%b %Y",
-              dtick = "M1",
-              tick0 = "2000-01-01",
+              tickformat = "%d.%m.%y",
               title = list(text = NULL)
             ),
             yaxis = list(
