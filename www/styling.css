@@ -16,3 +16,14 @@
   margin-right:10px;
   margin-left:0px;
 }
+
+/*Active view button - monthly or daily*/
+.active-btnview {
+  border: darkblue 2px solid;
+  border-radius: 7px;
+}
+
+.active-btnview:hover, .active-btnview:active, .active-btnview:focus {
+  border: darkblue 2px solid;
+  border-radius: 7px;
+}
