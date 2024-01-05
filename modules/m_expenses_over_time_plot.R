@@ -21,7 +21,17 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       output$view_buttons <- renderUI({
         days_btn <- actionButton(ns("lower_lvl"), "Days")
         months_btn <- actionButton(ns("higher_lvl"), "Months")
-      
+        
+        if (current_view() == "Day") {
+          days_btn <- days_btn %>% tagAppendAttributes(
+            class = "active-btnview"
+          )
+        } else if (current_view() == "Month") {
+          months_btn <- months_btn %>% tagAppendAttributes(
+            class = "active-btnview"
+          )
+        }
+        
         tagList(days_btn,
                 months_btn)
       })
