@@ -48,9 +48,12 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         plot_data <- expenses_by_month() %>%
           cbind(., Date = date_from_year_month(.$Year, .$Month))
         
-        plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
-                type = "scatter", mode = "lines", name = NULL,
-                hovertemplate = "%{x|%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>") %>%
+        plot_object <- plot_ly(plot_data, x = ~Date, y = ~TotalAmount,
+                type = "scatter",
+                mode = "lines",
+                name = NULL,
+                hovertemplate = "%{x|%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
+                ) %>%
           layout(
             xaxis = list(
               tickformat = "%b %Y",
@@ -63,6 +66,14 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
               zeroline = F
             )
           ) %>% config(displayModeBar = F)
+        
+        # If the plot has a single x value, lines won't be shown, so we need
+        # to display points instead.
+        if (nrow(plot_data) == 1) {
+          plot_object <- plot_object %>% style(mode = "markers")
+        }
+        
+        plot_object
       })
       
       observe({
