@@ -85,9 +85,11 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 ) %>%
           layout(
             xaxis = list(
-              tickformat = "%b %Y",
+              tickformat = "%m. %Y",
+              # dtick so that every month is shown, and only once.
+              # Otherwise, it would show up multiple times when only a few
+              # months are in range.
               dtick = "M1",
-              tick0 = "2000-01-01",
               title = list(text = NULL)
             ),
             yaxis = list(
