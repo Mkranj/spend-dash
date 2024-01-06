@@ -61,8 +61,8 @@ server <- function(input, output, session) {
 
   # Setup values for the datepicker based on dates found in data
   date_range <- dateSelectServer("date_range", 
-                                 minDate = first_date,
-                                 maxDate = last_date)
+                                 minDate = data_first_date,
+                                 maxDate = data_last_date)
   
   individual_expenses <- reactive({
     req(expenses_data())
