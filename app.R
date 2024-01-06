@@ -42,13 +42,30 @@ uploading_modal_ui <- modalDialog(
 
 server <- function(input, output, session) {
   
-  # Module outputs ----
-  date_range <- dateSelectServer("date_range", 
-                                 minDate = first_date, maxDate = last_date)
-  
+   
   # Data ----
+  
+  # Initial data - read from file. ReactiveVal that can be updated by user.
+  expenses_data <- reactiveVal(
+    # Initial value - read from .csv
+    expenses
+  )
+  
+  data_first_date <- reactive({
+    expenses_data()$Date %>% min(na.rm = T)
+  })
+  
+  data_last_date <- reactive({
+    expenses_data()$Date %>% max(na.rm = T)
+  })
+
+  # Setup values for the datepicker based on dates found in data
+  date_range <- dateSelectServer("date_range", 
+                                 minDate = first_date,
+                                 maxDate = last_date)
+  
   individual_expenses <- reactive({
-    data <- expenses %>% filter(
+    data <- expenses_data() %>% filter(
       Date >= date_range()$start,
       Date <= date_range()$end,
     )
