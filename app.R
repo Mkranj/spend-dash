@@ -5,7 +5,7 @@ source("scripts/data_prep.R")
 
 sidebar <- dashboardSidebar(
   actionButton("upload_new", "Read data from file", width = "90%"),
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
+  dateSelectUI("date_range"),
   uiOutput("categories_ui")
 )
 
