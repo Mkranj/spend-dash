@@ -26,6 +26,20 @@ ui <- dashboardPage(
   body = body
 )
 
+uploading_modal_ui <- modalDialog(
+  title = "Read data from file",
+  h1("Analyse your data"),
+  p("Choose file from disk."),
+  p("Supported filetypes: .xlsx and .csv"),
+  p("The file must contain columns with these names: \"Date\" and \"Amount\". You can see an example of valid data in the picture below."),
+  easyClose = F,
+  size = "l",
+  footer = tagList(
+    actionButton("user_sent_data", "Use selected data"),
+    modalButton("Cancel")
+  )
+)
+
 server <- function(input, output, session) {
   
   # Module outputs ----
@@ -170,6 +184,10 @@ server <- function(input, output, session) {
   })
   
   categories_barchart_Server("categories_plot", individual_expenses)
+  
+  observeEvent(input$upload_new, {
+    showModal(uploading_modal_ui)
+  })
 }
 
 shinyApp(ui, server)
