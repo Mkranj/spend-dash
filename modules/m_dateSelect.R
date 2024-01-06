@@ -5,9 +5,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
   ns <- NS(id)
   tagList(
     
-    airDatepickerInput(ns("startingDate"), label = "Start date:",
-                         minDate = minDate, maxDate = maxDate,
-                         value = minDate, autoClose = T, addon = "none"),
+    uiOutput(ns("picker_start")),
     span(class = "datepicker",
       actionButton(ns("earliest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
@@ -17,9 +15,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
                    title = "+1 month")
     ),
     
-    airDatepickerInput(ns("endDate"), label = "End date:",
-                         minDate = minDate, maxDate = maxDate,
-                         value = maxDate, autoClose = T, addon = "none") ,
+    uiOutput(ns("picker_end")),
     span(class = "datepicker",
       actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
                    title = "Latest available date"),
@@ -35,15 +31,30 @@ dateSelectServer <- function(id, minDate, maxDate) {
   moduleServer(
     id,
     function(input, output, session) {
+      ns <- NS(id)
       
       notification_duration_sec <- 2
       # All notifications share ID so they get overwritten instead of spammed
       notification_id <- "date_change"
       
       date_range <- reactive({
+        req(input$startingDate)
+        req(input$endDate)
         
         list(start = input$startingDate,
              end = input$endDate)
+      })
+      
+      output$picker_start <- renderUI({
+        airDatepickerInput(ns("startingDate"), label = "Start date:",
+                           minDate = minDate, maxDate = maxDate,
+                           value = minDate, autoClose = T, addon = "none")
+      })
+      
+      output$picker_end <- renderUI({
+        airDatepickerInput(ns("endDate"), label = "End date:",
+                           minDate = minDate, maxDate = maxDate,
+                           value = maxDate, autoClose = T, addon = "none")
       })
       
       # Ensure start and end don't overlap

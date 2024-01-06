@@ -65,6 +65,7 @@ server <- function(input, output, session) {
                                  maxDate = last_date)
   
   individual_expenses <- reactive({
+    req(expenses_data())
     data <- expenses_data() %>% filter(
       Date >= date_range()$start,
       Date <= date_range()$end,
