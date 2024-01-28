@@ -26,6 +26,26 @@ ui <- dashboardPage(
   body = body
 )
 
+# Default fileInput has multiple elements. We need only the selection button.
+fileInput_button <- fileInput("user_sent_data", "Use selected data")
+
+fileInput_button <- htmltools::tagQuery(fileInput_button)$
+  find(".input-group-btn.input-group-prepend")$
+  selectedTags()
+
+# We need to replace the text in the span, so we'll extract the unchanging part,
+# empty the original (text + extracted part) and the fill it back with the extracted part
+fileInput_text <- "Choose file..."
+
+input_part <- htmltools::tagQuery(fileInput_button)$find("input")$
+  selectedTags()
+
+fileInput_button <- htmltools::tagQuery(fileInput_button)$
+  find("span")$
+  empty()$ # getting rid of the text and input_part
+  append(fileInput_text, input_part)$
+  allTags()
+
 uploading_modal_ui <- modalDialog(
   title = "Read data from file",
   h1("Analyse your data"),
@@ -35,7 +55,7 @@ uploading_modal_ui <- modalDialog(
   easyClose = F,
   size = "l",
   footer = tagList(
-    actionButton("user_sent_data", "Use selected data"),
+    fileInput_button,
     modalButton("Cancel")
   )
 )
