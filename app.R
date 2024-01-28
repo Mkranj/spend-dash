@@ -27,7 +27,7 @@ ui <- dashboardPage(
 )
 
 # Default fileInput has multiple elements. We need only the selection button.
-fileInput_button <- fileInput("user_sent_data", "Use selected data")
+fileInput_button <- fileInput("user_sent_data", "Use selected data", accept = c(".csv", ".xlsx"))
 
 fileInput_button <- htmltools::tagQuery(fileInput_button)$
   find(".input-group-btn.input-group-prepend")$
@@ -188,6 +188,17 @@ server <- function(input, output, session) {
       allTags()
     
     finalTag
+  })
+  
+  # Uploading custom data ----
+  observeEvent(input$user_sent_data, {
+    file_location <- input$user_sent_data$datapath
+    
+    new_data <- read.csv2(file = file_location)
+    #TODO Data validation
+    new_data$Date <- as_date(new_data$Date)
+    
+    expenses_data(new_data)
   })
   
   
