@@ -4,7 +4,8 @@ source("scripts/data_prep.R")
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  dateSelectUI("date_range", minDate = first_date, maxDate = last_date),
+  actionButton("upload_new", "Read data from file", width = "90%"),
+  dateSelectUI("date_range"),
   uiOutput("categories_ui")
 )
 
@@ -25,15 +26,67 @@ ui <- dashboardPage(
   body = body
 )
 
+# Default fileInput has multiple elements. We need only the selection button.
+fileInput_button <- fileInput("user_sent_data", "Use selected data", accept = c(".csv", ".xlsx"))
+
+fileInput_button <- htmltools::tagQuery(fileInput_button)$
+  find(".input-group-btn.input-group-prepend")$
+  selectedTags()
+
+# We need to replace the text in the span, so we'll extract the unchanging part,
+# empty the original (text + extracted part) and the fill it back with the extracted part
+fileInput_text <- "Choose file..."
+
+input_part <- htmltools::tagQuery(fileInput_button)$find("input")$
+  selectedTags()
+
+fileInput_button <- htmltools::tagQuery(fileInput_button)$
+  find("span")$
+  empty()$ # getting rid of the text and input_part
+  append(fileInput_text, input_part)$
+  allTags()
+
+uploading_modal_ui <- modalDialog(
+  title = "Read data from file",
+  h1("Analyse your data"),
+  p("Choose file from disk."),
+  p("Supported filetypes: .xlsx and .csv"),
+  p("The file must contain columns with these names: \"Date\" and \"Amount\". You can see an example of valid data in the picture below."),
+  easyClose = F,
+  size = "l",
+  footer = tagList(
+    fileInput_button,
+    modalButton("Cancel")
+  )
+)
+
 server <- function(input, output, session) {
   
-  # Module outputs ----
-  date_range <- dateSelectServer("date_range", 
-                                 minDate = first_date, maxDate = last_date)
-  
+   
   # Data ----
+  
+  # Initial data - read from file. ReactiveVal that can be updated by user.
+  expenses_data <- reactiveVal(
+    # Initial value - read from .csv
+    expenses
+  )
+  
+  data_first_date <- reactive({
+    expenses_data()$Date %>% min(na.rm = T)
+  })
+  
+  data_last_date <- reactive({
+    expenses_data()$Date %>% max(na.rm = T)
+  })
+
+  # Setup values for the datepicker based on dates found in data
+  date_range <- dateSelectServer("date_range", 
+                                 minDate = data_first_date,
+                                 maxDate = data_last_date)
+  
   individual_expenses <- reactive({
-    data <- expenses %>% filter(
+    req(expenses_data())
+    data <- expenses_data() %>% filter(
       Date >= date_range()$start,
       Date <= date_range()$end,
     )
@@ -137,6 +190,17 @@ server <- function(input, output, session) {
     finalTag
   })
   
+  # Uploading custom data ----
+  observeEvent(input$user_sent_data, {
+    file_location <- input$user_sent_data$datapath
+    
+    new_data <- read.csv2(file = file_location)
+    #TODO Data validation
+    new_data$Date <- as_date(new_data$Date)
+    
+    expenses_data(new_data)
+  })
+  
   
   # Outputs ----
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
@@ -169,6 +233,10 @@ server <- function(input, output, session) {
   })
   
   categories_barchart_Server("categories_plot", individual_expenses)
+  
+  observeEvent(input$upload_new, {
+    showModal(uploading_modal_ui)
+  })
 }
 
 shinyApp(ui, server)

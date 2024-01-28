@@ -1,13 +1,11 @@
 # Create a pair of datepicker, for determining the start and end of the period
 # for which expenses should be analysed.
 
-dateSelectUI <- function(id, minDate, maxDate) {
+dateSelectUI <- function(id) {
   ns <- NS(id)
   tagList(
     
-    airDatepickerInput(ns("startingDate"), label = "Start date:",
-                         minDate = minDate, maxDate = maxDate,
-                         value = minDate, autoClose = T, addon = "none"),
+    uiOutput(ns("picker_start")),
     span(class = "datepicker",
       actionButton(ns("earliest_date"), label = "", icon = icon("rotate-left"),
                    title = "Earliest available date"),
@@ -17,9 +15,7 @@ dateSelectUI <- function(id, minDate, maxDate) {
                    title = "+1 month")
     ),
     
-    airDatepickerInput(ns("endDate"), label = "End date:",
-                         minDate = minDate, maxDate = maxDate,
-                         value = maxDate, autoClose = T, addon = "none") ,
+    uiOutput(ns("picker_end")),
     span(class = "datepicker",
       actionButton(ns("latest_date"), label = "", icon = icon("rotate-left"),
                    title = "Latest available date"),
@@ -35,15 +31,33 @@ dateSelectServer <- function(id, minDate, maxDate) {
   moduleServer(
     id,
     function(input, output, session) {
+      ns <- NS(id)
+      
+      stopifnot(is.reactive(minDate))
+      stopifnot(is.reactive(maxDate))
       
       notification_duration_sec <- 2
       # All notifications share ID so they get overwritten instead of spammed
       notification_id <- "date_change"
       
       date_range <- reactive({
+        req(input$startingDate)
+        req(input$endDate)
         
         list(start = input$startingDate,
              end = input$endDate)
+      })
+      
+      output$picker_start <- renderUI({
+        airDatepickerInput(ns("startingDate"), label = "Start date:",
+                           minDate = minDate(), maxDate = maxDate(),
+                           value = minDate(), autoClose = T, addon = "none")
+      })
+      
+      output$picker_end <- renderUI({
+        airDatepickerInput(ns("endDate"), label = "End date:",
+                           minDate = minDate(), maxDate = maxDate(),
+                           value = maxDate(), autoClose = T, addon = "none")
       })
       
       # Ensure start and end don't overlap
@@ -69,17 +83,17 @@ dateSelectServer <- function(id, minDate, maxDate) {
       
       
       observeEvent(input$earliest_date, {
-        updateAirDateInput(session, inputId = "startingDate", value = minDate)
+        updateAirDateInput(session, inputId = "startingDate", value = minDate())
       })
       
       observeEvent(input$latest_date, {
-        updateAirDateInput(session, inputId = "endDate", value = maxDate)
+        updateAirDateInput(session, inputId = "endDate", value = maxDate())
       })
       
       observeEvent(input$start_minus, {
         month_minus <- input$startingDate %>% change_month("backward", "first")
 
-        if (month_minus < minDate) month_minus <- minDate
+        if (month_minus < minDate()) month_minus <- minDate()
         
         updateAirDateInput(session, inputId = "startingDate", value = month_minus)
       })
@@ -87,7 +101,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       observeEvent(input$start_plus, {
         month_plus <- input$startingDate %>% change_month("forward", "first")
         
-        if (month_plus > maxDate) month_plus <- maxDate
+        if (month_plus > maxDate()) month_plus <- maxDate()
         if (month_plus > input$endDate) {
           month_plus <- input$endDate
           showNotification("Start date cannot be set later than end date.",
@@ -102,7 +116,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       observeEvent(input$end_minus, {
         month_minus <- input$endDate %>% change_month("backward", "last")
         
-        if (month_minus < minDate) month_minus <- minDate
+        if (month_minus < minDate()) month_minus <- minDate()
         if (month_minus < input$startingDate) {
           month_minus <- input$startingDate
           showNotification("End date cannot be set earlier than start date.",
@@ -117,7 +131,7 @@ dateSelectServer <- function(id, minDate, maxDate) {
       observeEvent(input$end_plus, {
         month_plus <- input$endDate %>% change_month("forward", "last")
         
-        if (month_plus > maxDate) month_plus <- maxDate
+        if (month_plus > maxDate()) month_plus <- maxDate()
         
         updateAirDateInput(session, inputId = "endDate", value = month_plus)
       })

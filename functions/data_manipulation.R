@@ -58,9 +58,26 @@ cover_all_months_in_period <- function(data,
     day(ending_date) <- 1
   }
   
-  all_months <- seq(starting_date,
-                    ending_date,
-                    by = "months")
+  all_months <- tryCatch({
+    # regular case, make a sequence of each month in period
+    seq(starting_date,
+        ending_date,
+        by = "months")
+    },
+    error = function(e) {
+      error_msg <- as.character(e)
+      # Special case - for a split second the second date can be later than
+      # the first, in which case seq() returns an error. This only happens for
+      # months, not days. Just set the sequence to a single date to avoid
+      # errors.
+      if (grepl("wrong sign in", error_msg)) {
+        return(starting_date)
+      } else {
+        # If anything else caused the error, propagate it.
+        stop(error_msg)
+      }
+    }
+    )
   
   right_join(data,
              data.frame(Date = all_months),
