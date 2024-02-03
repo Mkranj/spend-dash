@@ -36,6 +36,7 @@ test_that("available columns correctly detected", {
                list("Date" = T, "Amount" = T, "Description" = T, "Category" = F)
   )
   
+  # Even with lowercase name, it gets detected correctly
   df_desc <- data.frame("description" = NA)
   
   expect_equal(detect_data_columns(df_desc),
@@ -147,4 +148,11 @@ test_that("Integration: load_and_prepare_data runs with no unexpected errors on
   expect_named(loaded_data, c("data", "detected_columns"))
   expect_equal(names(loaded_data$detected_columns),
                c("Date", "Amount", "Description", "Category"))
+  
+  # The columns are correctly detected
+  expect_equal(loaded_data$detected_columns,
+               list(Date = T,
+                    Amount = T,
+                    Description = T,
+                    Category = F))
 })
