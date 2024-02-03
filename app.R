@@ -194,11 +194,11 @@ server <- function(input, output, session) {
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
     
-    new_data <- read.csv2(file = file_location)
-    #TODO Data validation
-    new_data$Date <- as_date(new_data$Date)
+    imported_data <- load_and_prepare_data(file_location)
     
-    expenses_data(new_data)
+    new_dataframe <- imported_data$data
+    new_available_columns <- imported_data$detected_columns
+    expenses_data(new_dataframe)
   })
   
   

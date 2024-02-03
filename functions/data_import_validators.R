@@ -40,23 +40,25 @@ colnames_to_lowercase <- function(df) {
 # Column detection ----
 
 detect_data_columns <- function(df) {
-  date_present <- "date" %in% colnames(df)
-  amount_present <- "amount" %in% colnames(df)
-  description_present <- "description" %in% colnames(df)
-  category_present <- "category" %in% colnames(df)
+  df_colnames <- tolower(colnames(df))
+  
+  date_present <- "date" %in% df_colnames
+  amount_present <- "amount" %in% df_colnames
+  description_present <- "description" %in% df_colnames
+  category_present <- "category" %in% df_colnames
   
   
-  list(date = date_present,
-       amount = amount_present,
-       description = description_present,
-       category = category_present)
+  list(Date = date_present,
+       Amount = amount_present,
+       Description = description_present,
+       Category = category_present)
 }
 
 validate_date_amount_present <- function(detected_columns) {
-  if (detected_columns$date == F) {
+  if (detected_columns$Date == F) {
     stop("Error: 'date' column not found")
   }
-  if (detected_columns$amount == F) {
+  if (detected_columns$Amount == F) {
     stop("Error: 'amount' column not found")
   }
   
@@ -67,6 +69,16 @@ validate_date_amount_present <- function(detected_columns) {
 
 validate_date_column <- function(df) {
   date_col <- pull(df, date)
+  
+  # Reading with data.table gives IDate class object which will break joins
+  # with regular dates, so they need to be converted.
+  if ("IDate" %in% class(date_col)) {
+    date_col <- date_col %>% as_date()
+    modified_df <- df
+    modified_df$date <- date_col
+    return(modified_df)
+  }
+  
   if (is.Date(date_col)) return(df)
   
   # If the date column has been read as POSIXct, that already contains appropriate
@@ -114,11 +126,11 @@ validate_amount_column <- function(df) {
 empty_string_to_na <- function(df, detected_columns) {
   modified_df <- df
   
-  if (detected_columns$description) {
+  if (detected_columns$Description) {
     modified_df$description[modified_df$description == ""] <- NA_character_
   }
   
-  if (detected_columns$category) {
+  if (detected_columns$Category) {
     modified_df$category[modified_df$category == ""] <- NA_character_
   }
   
@@ -140,6 +152,9 @@ load_and_prepare_data <- function(filename){
   
   validated_df <- validated_df |> validate_date_column() |> 
     validate_amount_column() |> empty_string_to_na(detected_columns)
+  
+  # All column should have the first letter uppercase, to conform to rest of app
+  colnames(validated_df) <- stringr::str_to_title(colnames(validated_df))
   
   list(data = validated_df,
        detected_columns = detected_columns)
