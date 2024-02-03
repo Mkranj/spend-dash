@@ -141,6 +141,9 @@ load_and_prepare_data <- function(filename){
   validated_df <- validated_df |> validate_date_column() |> 
     validate_amount_column() |> empty_string_to_na(detected_columns)
   
+  # All column should have the first letter uppercase, to conform to rest of app
+  colnames(validated_df) <- stringr::str_to_title(colnames(validated_df))
+  
   list(data = validated_df,
        detected_columns = detected_columns)
 }
