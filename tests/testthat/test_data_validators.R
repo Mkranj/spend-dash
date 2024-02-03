@@ -21,25 +21,25 @@ test_that("available columns correctly detected", {
   df_all_four <- data.frame("date" = NA, "amount" = NA, "description" = NA, "category" = NA)
   
   expect_equal(detect_data_columns(df_all_four),
-               list("date" = T, "amount" = T, "description" = T, "category" = T)
+               list("Date" = T, "Amount" = T, "Description" = T, "Category" = T)
   )
   
   df_date_amount <- data.frame("date" = NA, "amount" = NA)
   
   expect_equal(detect_data_columns(df_date_amount),
-               list("date" = T, "amount" = T, "description" = F, "category" = F)
+               list("Date" = T, "Amount" = T, "Description" = F, "Category" = F)
   )
   
-  df_date_amount_desc <- data.frame("date" = NA, "amount" = NA, "description" = NA)
+  df_date_amount_desc <- data.frame("Date" = NA, "Amount" = NA, "Description" = NA)
   
   expect_equal(detect_data_columns(df_date_amount_desc),
-               list("date" = T, "amount" = T, "description" = T, "category" = F)
+               list("Date" = T, "Amount" = T, "Description" = T, "Category" = F)
   )
   
   df_desc <- data.frame("description" = NA)
   
   expect_equal(detect_data_columns(df_desc),
-               list("date" = F, "amount" = F, "description" = T, "category" = F)
+               list("Date" = F, "Amount" = F, "Description" = T, "Category" = F)
   )
   
 })
@@ -146,5 +146,5 @@ test_that("Integration: load_and_prepare_data runs with no unexpected errors on
   # The function returns both validated data and a list of 4 columns' presence
   expect_named(loaded_data, c("data", "detected_columns"))
   expect_equal(names(loaded_data$detected_columns),
-               c("date", "amount", "description", "category"))
+               c("Date", "Amount", "Description", "Category"))
 })

@@ -40,23 +40,25 @@ colnames_to_lowercase <- function(df) {
 # Column detection ----
 
 detect_data_columns <- function(df) {
-  date_present <- "date" %in% colnames(df)
-  amount_present <- "amount" %in% colnames(df)
-  description_present <- "description" %in% colnames(df)
-  category_present <- "category" %in% colnames(df)
+  df_colnames <- tolower(colnames(df))
+  
+  date_present <- "date" %in% df_colnames
+  amount_present <- "amount" %in% df_colnames
+  description_present <- "description" %in% df_colnames
+  category_present <- "category" %in% df_colnames
   
   
-  list(date = date_present,
-       amount = amount_present,
-       description = description_present,
-       category = category_present)
+  list(Date = date_present,
+       Amount = amount_present,
+       Description = description_present,
+       Category = category_present)
 }
 
 validate_date_amount_present <- function(detected_columns) {
-  if (detected_columns$date == F) {
+  if (detected_columns$Date == F) {
     stop("Error: 'date' column not found")
   }
-  if (detected_columns$amount == F) {
+  if (detected_columns$Amount == F) {
     stop("Error: 'amount' column not found")
   }
   
@@ -124,11 +126,11 @@ validate_amount_column <- function(df) {
 empty_string_to_na <- function(df, detected_columns) {
   modified_df <- df
   
-  if (detected_columns$description) {
+  if (detected_columns$Description) {
     modified_df$description[modified_df$description == ""] <- NA_character_
   }
   
-  if (detected_columns$category) {
+  if (detected_columns$Category) {
     modified_df$category[modified_df$category == ""] <- NA_character_
   }
   
