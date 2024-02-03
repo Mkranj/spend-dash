@@ -67,6 +67,16 @@ validate_date_amount_present <- function(detected_columns) {
 
 validate_date_column <- function(df) {
   date_col <- pull(df, date)
+  
+  # Reading with data.table gives IDate class object which will break joins
+  # with regular dates, so they need to be converted.
+  if ("IDate" %in% class(date_col)) {
+    date_col <- date_col %>% as_date()
+    modified_df <- df
+    modified_df$date <- date_col
+    return(modified_df)
+  }
+  
   if (is.Date(date_col)) return(df)
   
   # If the date column has been read as POSIXct, that already contains appropriate
