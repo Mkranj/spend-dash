@@ -256,7 +256,7 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
-  categories_barchart_Server("categories_plot", individual_expenses)
+  categories_barchart_Server("categories_plot", individual_expenses, categories_exist)
   
   observeEvent(input$upload_new, {
     showModal(uploading_modal_ui)
