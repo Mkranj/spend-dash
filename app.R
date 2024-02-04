@@ -13,11 +13,15 @@ header <- dashboardHeader(title = "SpendDash")
 
 body <- dashboardBody(
   includeCSS("www/styling.css"),
+  # JS functionality enabled
+  useShinyjs(),
   fluidRow(valueBoxOutput("vb_total_amount", width = 4),
            valueBoxOutput("vb_average_monthly_expense", width = 4),
            valueBoxOutput("vb_three_month_average", width = 4)),
   fluidRow(expenses_over_time_plotUI("expenses_plot") %>% box(width = 12)),
-  fluidRow(categories_barchart_UI("categories_plot") %>% box(width = 12))
+  fluidRow(categories_barchart_UI("categories_plot") %>% box(width = 12)) %>% 
+    # This row needs an ID so it can be disabled if data has no categories
+    htmltools::tagAppendAttributes(id = "categories_bar_box")
 )
 
 ui <- dashboardPage(
@@ -70,6 +74,17 @@ server <- function(input, output, session) {
     # Initial value - read from .csv
     expenses
   )
+  
+  # Value that dictates whether category-relevant content should be shown.
+  categories_exist <- reactiveVal(T)
+  
+  observeEvent(categories_exist(), {
+    if (categories_exist()) {
+      shinyjs::showElement("categories_bar_box")
+    } else {
+      shinyjs::hideElement("categories_bar_box")
+    }
+  })
   
   data_first_date <- reactive({
     expenses_data()$Date %>% min(na.rm = T)
@@ -164,11 +179,13 @@ server <- function(input, output, session) {
   # Categories found in data
   
   existing_categories <- reactive({
-    categories_exist(T)
-    expenses %>% pull(Category) %>% unique() %>% sort()
+    if (categories_exist()) {
+      expenses_data() %>% pull(Category) %>% unique() %>% sort()
+    } else {
+      # Empty vector indicating no categories
+      character(0)
+    }
   })
-  
-  categories_exist <- reactiveVal(F)
   
   output$categories_ui <- renderUI({
     req(existing_categories())
@@ -198,7 +215,14 @@ server <- function(input, output, session) {
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
+    
+    # Update main data source
     expenses_data(new_dataframe)
+    
+    # Update variable indicating whether categories are present in data
+    data_has_categories <- new_available_columns$Category
+    categories_exist(data_has_categories)
+    
   })
   
   
@@ -232,7 +256,7 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
-  categories_barchart_Server("categories_plot", individual_expenses)
+  categories_barchart_Server("categories_plot", individual_expenses, categories_exist)
   
   observeEvent(input$upload_new, {
     showModal(uploading_modal_ui)

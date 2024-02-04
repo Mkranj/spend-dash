@@ -5,11 +5,15 @@ categories_barchart_UI <- function(id) {
     )
 }
 
-categories_barchart_Server <- function(id, individual_expenses) {
+categories_barchart_Server <- function(id, 
+                                       individual_expenses,
+                                       categories_exist = reactive(T)
+                                       ) {
   moduleServer(
     id,
     function(input, output, session) {
       stopifnot(is.reactive(individual_expenses))
+      stopifnot(is.reactive(categories_exist))
       
       no_of_months <- reactive({
         req(individual_expenses())
@@ -48,7 +52,13 @@ categories_barchart_Server <- function(id, individual_expenses) {
           ) %>% config(displayModeBar = F)
       })
       
-      output$categories_bar <- renderPlotly(plot_object())
+      output$categories_bar <- renderPlotly({
+        if (categories_exist()) {
+          plot_object()
+        } else {
+          NULL
+        }
+      })
       
     }
   )

@@ -8,6 +8,8 @@ library(lubridate)
 library(DT)
 library(tidyr)
 library(stringi)
+library(htmltools)
+library(shinyjs)
 
 source("functions/plotting.R")
 source("functions/data_manipulation.R")
