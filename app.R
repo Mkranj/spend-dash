@@ -93,6 +93,19 @@ server <- function(input, output, session) {
   data_last_date <- reactive({
     expenses_data()$Date %>% max(na.rm = T)
   })
+  
+  # Extract how many months are in the selected datespan.
+  # We need to pass this to modules that don't interact with date_range()
+  num_selected_months <- reactive({
+    expenses_data() %>%
+      cover_all_dates_in_period(
+        start = date_range()$start %>% as_date(),
+        end = date_range()$end %>% as_date()
+        ) %>%
+      group_by(year(Date), month(Date)) %>% 
+      summarise(N = n(), .groups = "drop") %>% 
+      nrow()
+  })
 
   # Setup values for the datepicker based on dates found in data
   date_range <- dateSelectServer("date_range", 
@@ -256,7 +269,10 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
-  categories_barchart_Server("categories_plot", individual_expenses, categories_exist)
+  categories_barchart_Server("categories_plot",
+                             individual_expenses, 
+                             number_of_months = num_selected_months,
+                             categories_exist = categories_exist)
   
   observeEvent(input$upload_new, {
     showModal(uploading_modal_ui)
