@@ -203,7 +203,14 @@ server <- function(input, output, session) {
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
+    
+    # Update main data source
     expenses_data(new_dataframe)
+    
+    # Update variable indicating whether categories are present in data
+    data_has_categories <- new_available_columns$Category
+    categories_exist(data_has_categories)
+    
   })
   
   
