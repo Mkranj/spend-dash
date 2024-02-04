@@ -71,6 +71,9 @@ server <- function(input, output, session) {
     expenses
   )
   
+  # Value that dictates whether category-relevant content should be shown.
+  categories_exist <- reactiveVal(T)
+  
   data_first_date <- reactive({
     expenses_data()$Date %>% min(na.rm = T)
   })
@@ -164,11 +167,13 @@ server <- function(input, output, session) {
   # Categories found in data
   
   existing_categories <- reactive({
-    categories_exist(T)
-    expenses %>% pull(Category) %>% unique() %>% sort()
+    if (categories_exist()) {
+      expenses_data() %>% pull(Category) %>% unique() %>% sort()
+    } else {
+      # Empty vector indicating no categories
+      character(0)
+    }
   })
-  
-  categories_exist <- reactiveVal(F)
   
   output$categories_ui <- renderUI({
     req(existing_categories())
