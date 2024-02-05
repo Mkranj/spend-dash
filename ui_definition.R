@@ -27,6 +27,8 @@ ui <- dashboardPage(
   body = body
 )
 
+# Data upload modal dialog ----
+
 # Default fileInput has multiple elements. We need only the selection button.
 fileInput_button <- fileInput("user_sent_data", "Use selected data", accept = c(".csv", ".xlsx"))
 
@@ -47,12 +49,16 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   append(fileInput_text, input_part)$
   allTags()
 
-uploading_modal_ui <- modalDialog(
-  title = "Read data from file",
+instructions <- tagList(
   h1("Analyse your data"),
   p("Choose file from disk."),
   p("Supported filetypes: .xlsx and .csv"),
-  p("The file must contain columns with these names: \"Date\" and \"Amount\". You can see an example of valid data in the picture below."),
+  p("The file must contain columns with these names: \"Date\" and \"Amount\". You can see an example of valid data in the picture below.")
+)
+
+uploading_modal_ui <- modalDialog(
+  title = "Read data from file",
+  instructions,
   easyClose = F,
   size = "l",
   footer = tagList(
