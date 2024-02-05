@@ -50,14 +50,17 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   allTags()
 
 instructions <- tagList(
-  h1("Analyse your data"),
-  p("Choose file from disk."),
-  p("Supported filetypes: .xlsx and .csv"),
-  p("The file must contain columns with these names: \"Date\" and \"Amount\". You can see an example of valid data in the picture below.")
+  p("Upload a file from disk to visualize your data."),
+  p("Supported filetypes: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),
+  span(class = "space-divider"),
+  p("The file ", tags$b("must"), " contain columns named \"Date\" and
+    \"Amount\" to be properly loaded. If a column called \"Category\" also 
+    exists, additional features will be enabled."),
+  p("You can see an example of valid data in the picture below.")
 )
 
 uploading_modal_ui <- modalDialog(
-  title = "Read data from file",
+  title = "Analyse your data",
   instructions,
   easyClose = F,
   size = "l",
