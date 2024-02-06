@@ -175,6 +175,8 @@ server <- function(input, output, session) {
     data_has_categories <- new_available_columns$Category
     categories_exist(data_has_categories)
     
+    # Close the popup
+    removeModal()
   })
   
   
