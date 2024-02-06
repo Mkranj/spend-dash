@@ -56,10 +56,10 @@ detect_data_columns <- function(df) {
 
 validate_date_amount_present <- function(detected_columns) {
   if (detected_columns$Date == F) {
-    stop("Error: 'date' column not found")
+    stop("Error: 'Date' column not found")
   }
   if (detected_columns$Amount == F) {
-    stop("Error: 'amount' column not found")
+    stop("Error: 'Amount' column not found")
   }
   
   invisible(detected_columns)
