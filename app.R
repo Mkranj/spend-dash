@@ -162,8 +162,30 @@ server <- function(input, output, session) {
   # Uploading custom data ----
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
+    cat("GOT FILE LOC")
+    # browser()
     
-    imported_data <- load_and_prepare_data(file_location)
+    upload_success <- F
+    
+    tryCatch({
+        imported_data <- load_and_prepare_data(file_location)
+        upload_success <- T
+      },
+      error = function(e) {
+        error_msg <- e$message
+        
+        if (error_msg == "Error: 'Date' column not found") {
+          return(NULL)
+        }
+
+        if (error_msg == "Error: 'Amount' column not found") {
+          return(NULL)
+        }
+        simpleError(e)
+      }
+    ) 
+    
+    if (!upload_success) return(NULL)
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
