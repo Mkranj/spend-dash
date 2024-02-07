@@ -1,9 +1,12 @@
+# Prepare data obtained from Kaggle to format acceptable for app
+# This does NOT run on app start.
+
 data_filename <- "data_files/expense_data_1.csv"
 
 finance_data <- read.csv(data_filename)
 
 # Remove unneeded columns
-finance_data <- select(finance_data, -c(Subcategory,  Account, Account.1, Note.1, INR))
+finance_data <- select(finance_data, -c(Subcategory,  Account, INR))
 
 # We're pnly going to be focusing on the expenses
 expenses <- filter(finance_data, Income.Expense == "Expense")
@@ -40,6 +43,4 @@ if (!is.null(DEV_EXPAND_DATA_TIMES) &
   )
 }
 
-first_date <- expenses$Date %>% min(na.rm = T)
-last_date <- expenses$Date %>% max(na.rm = T)
-
+write.csv(expenses, file = "data_files/expenses_data_cleaned.csv", row.names = F)

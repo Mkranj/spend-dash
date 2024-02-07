@@ -23,3 +23,6 @@ source("modules/m_categories_barchart.R")
 
 source("env_variables.R")
 
+# Initial data
+expenses <- read.csv(file = "data_files/expenses_data_cleaned.csv")
+expenses$Date <- as_date(expenses$Date)

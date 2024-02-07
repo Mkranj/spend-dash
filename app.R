@@ -1,5 +1,4 @@
 source("scripts/app_setup.R")
-source("scripts/data_prep.R")
 
 source("ui_definition.R")
 
@@ -163,7 +162,37 @@ server <- function(input, output, session) {
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
     
-    imported_data <- load_and_prepare_data(file_location)
+    upload_success <- F
+    
+    tryCatch({
+        imported_data <- load_and_prepare_data(file_location)
+        upload_success <- T
+      },
+      error = function(e) {
+        error_msg <- e$message
+
+        if (error_msg == "Error: 'Date' column not found") {
+          print(error_msg)
+          return(NULL)
+        }
+
+        if (error_msg == "Error: 'Amount' column not found") {
+          print(error_msg)
+          return(NULL)
+        }
+        
+        # Unexpected error - proceed with the error
+        stop(e)
+      }
+    )
+    
+    # Don't proceed if the file didn't upload correctly. Don't close the popup.
+    if (!upload_success) {
+      # Inform the user via warning message in popup
+      shinyjs::showElement(id = "data_format_msg")
+      
+      return(NULL)
+    }
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
@@ -216,6 +245,9 @@ server <- function(input, output, session) {
                              categories_exist = categories_exist)
   
   observeEvent(input$upload_new, {
+    # A new popup will be opened - don't show the data format warning on fresh open
+    shinyjs::hideElement(id = "data_format_msg")
+    
     showModal(uploading_modal_ui)
   })
 }
