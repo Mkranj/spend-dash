@@ -180,10 +180,13 @@ server <- function(input, output, session) {
           print(error_msg)
           return(NULL)
         }
-        print(error_msg)
+        
+        # Unexpected error - proceed with the error
+        stop(e)
       }
     )
     
+    # Don't proceed if the file didn't upload correctly. Don't close the popup.
     if (!upload_success) return(NULL)
     
     new_dataframe <- imported_data$data
