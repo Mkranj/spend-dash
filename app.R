@@ -187,7 +187,12 @@ server <- function(input, output, session) {
     )
     
     # Don't proceed if the file didn't upload correctly. Don't close the popup.
-    if (!upload_success) return(NULL)
+    if (!upload_success) {
+      # Inform the user via warning message in popup
+      shinyjs::showElement(id = "data_format_msg")
+      
+      return(NULL)
+    }
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
@@ -240,6 +245,9 @@ server <- function(input, output, session) {
                              categories_exist = categories_exist)
   
   observeEvent(input$upload_new, {
+    # A new popup will be opened - don't show the data format warning on fresh open
+    shinyjs::hideElement(id = "data_format_msg")
+    
     showModal(uploading_modal_ui)
   })
 }

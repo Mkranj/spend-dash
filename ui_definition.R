@@ -59,9 +59,19 @@ instructions <- tagList(
   p("You can see an example of valid data in the picture below.")
 )
 
+# Message that will be added if user sends wrongly formatted data
+wrong_format_msg <- div(
+  span(class = "space-divider"),
+  p("Warning! The data you uploaded doesn't have the required columns. 
+    Please adjust it so it resembles the picture above."),
+  id = "data_format_msg"
+) %>% hidden()
+
+
 uploading_modal_ui <- modalDialog(
   title = "Analyse your data",
   instructions,
+  wrong_format_msg,
   easyClose = F,
   size = "l",
   footer = tagList(
