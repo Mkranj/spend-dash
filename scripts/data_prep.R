@@ -3,7 +3,7 @@ data_filename <- "data_files/expense_data_1.csv"
 finance_data <- read.csv(data_filename)
 
 # Remove unneeded columns
-finance_data <- select(finance_data, -c(Subcategory,  Account, Account.1, Note.1, INR))
+finance_data <- select(finance_data, -c(Subcategory,  Account, INR))
 
 # We're pnly going to be focusing on the expenses
 expenses <- filter(finance_data, Income.Expense == "Expense")
