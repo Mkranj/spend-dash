@@ -37,3 +37,8 @@
 .input-group-btn.input-group-prepend > .btn{
   content:"Upload file";
 }
+
+/*Warning message in popup*/
+.warn_user {
+  color: red;
+}

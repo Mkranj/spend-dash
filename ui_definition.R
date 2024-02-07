@@ -60,10 +60,13 @@ instructions <- tagList(
 )
 
 # Message that will be added if user sends wrongly formatted data
+# hidden - starts not visible, must be enabled.
+# The div is not initialized until first render, so the hide() fn doesn't work.
 wrong_format_msg <- div(
   span(class = "space-divider"),
   p("Warning! The data you uploaded doesn't have the required columns. 
-    Please adjust it so it resembles the picture above."),
+    Please adjust it so it resembles the picture above.",
+    class = "warn_user"),
   id = "data_format_msg"
 ) %>% hidden()
 
