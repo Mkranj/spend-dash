@@ -1,5 +1,4 @@
 source("scripts/app_setup.R")
-source("scripts/data_prep.R")
 
 source("ui_definition.R")
 
@@ -162,8 +161,6 @@ server <- function(input, output, session) {
   # Uploading custom data ----
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
-    cat("GOT FILE LOC")
-    # browser()
     
     upload_success <- F
     
@@ -173,17 +170,19 @@ server <- function(input, output, session) {
       },
       error = function(e) {
         error_msg <- e$message
-        
+
         if (error_msg == "Error: 'Date' column not found") {
+          print(error_msg)
           return(NULL)
         }
 
         if (error_msg == "Error: 'Amount' column not found") {
+          print(error_msg)
           return(NULL)
         }
-        simpleError(e)
+        print(error_msg)
       }
-    ) 
+    )
     
     if (!upload_success) return(NULL)
     
