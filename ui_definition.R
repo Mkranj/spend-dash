@@ -56,7 +56,8 @@ instructions <- tagList(
   p("The file ", tags$b("must"), " contain columns named \"Date\" and
     \"Amount\" to be properly loaded. If a column called \"Category\" also 
     exists, additional features will be enabled."),
-  p("You can see an example of valid data in the picture below.")
+  p("You can see an example of valid data in the picture below."),
+  img(src = "expenses_ex.png")
 )
 
 # Message that will be added if user sends wrongly formatted data
@@ -66,7 +67,7 @@ wrong_format_msg <- div(
   span(class = "space-divider"),
   p("Warning! The data you uploaded doesn't have the required columns. 
     Please adjust it so it resembles the picture above.",
-    class = "warn_user"),
+    class = "warn-user"),
   id = "data_format_msg"
 ) %>% hidden()
 
