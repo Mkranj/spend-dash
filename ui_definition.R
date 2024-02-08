@@ -56,7 +56,8 @@ instructions <- tagList(
   p("The file ", tags$b("must"), " contain columns named \"Date\" and
     \"Amount\" to be properly loaded. If a column called \"Category\" also 
     exists, additional features will be enabled."),
-  p("You can see an example of valid data in the picture below.")
+  p("You can see an example of valid data in the picture below."),
+  img(src = "expenses_ex.png")
 )
 
 # Message that will be added if user sends wrongly formatted data
