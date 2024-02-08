@@ -38,6 +38,11 @@
   content:"Upload file";
 }
 
+.space-divider {
+  margin-top: 10px;
+  display: block;
+}
+
 /*Warning message in popup*/
 .warn_user {
   color: red;
