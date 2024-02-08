@@ -67,7 +67,7 @@ wrong_format_msg <- div(
   span(class = "space-divider"),
   p("Warning! The data you uploaded doesn't have the required columns. 
     Please adjust it so it resembles the picture above.",
-    class = "warn_user"),
+    class = "warn-user"),
   id = "data_format_msg"
 ) %>% hidden()
 
