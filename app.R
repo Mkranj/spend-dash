@@ -163,6 +163,7 @@ server <- function(input, output, session) {
     file_location <- input$user_sent_data$datapath
     
     upload_success <- F
+    error_type <- NULL
     
     tryCatch({
         imported_data <- load_and_prepare_data(file_location)
@@ -173,11 +174,20 @@ server <- function(input, output, session) {
 
         if (error_msg == "Error: 'Date' column not found") {
           print(error_msg)
+          error_type <<- "missing_column"
           return(NULL)
         }
 
         if (error_msg == "Error: 'Amount' column not found") {
           print(error_msg)
+          error_type <<- "missing_column"
+          return(NULL)
+        }
+        
+        # Date is not in any recognised format, or is datetime:
+        if (stri_detect_fixed(error_msg, "failed to parse")) {
+          print(error_msg)
+          error_type <<- "failed_date_parsing"
           return(NULL)
         }
         
@@ -188,8 +198,16 @@ server <- function(input, output, session) {
     
     # Don't proceed if the file didn't upload correctly. Don't close the popup.
     if (!upload_success) {
-      # Inform the user via warning message in popup
-      shinyjs::showElement(id = "data_format_msg")
+      # Inform the user via warning message in popup,
+      # different message depending on error
+      shinyjs::hideElement(id = "data_format_msg")
+      shinyjs::hideElement(id = "error_parsing_msg")
+      
+      if (error_type == "missing_column") {
+        shinyjs::showElement(id = "data_format_msg")
+      } else if (error_type == "failed_date_parsing") {
+        shinyjs::showElement(id = "error_parsing_msg")
+      }
       
       return(NULL)
     }
@@ -245,8 +263,9 @@ server <- function(input, output, session) {
                              categories_exist = categories_exist)
   
   observeEvent(input$upload_new, {
-    # A new popup will be opened - don't show the data format warning on fresh open
+    # A new popup will be opened - don't show any warnings on fresh open
     shinyjs::hideElement(id = "data_format_msg")
+    shinyjs::hideElement(id = "error_parsing_msg")
     
     showModal(uploading_modal_ui)
   })

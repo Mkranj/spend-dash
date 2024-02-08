@@ -92,10 +92,20 @@ validate_date_column <- function(df) {
   }
   
   date_formats <- c("%Y-%m-%d", "%Y.%m.%d", "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y.")
+  
   tryCatch(date_col <- as_date(date_col, format = date_formats),
            error = function(e) {
              error_message = paste0(
-               "Error: couldn't create date column of valid Date type:\n", e$message
+               "Error: couldn't create date column of valid Date type:", e$message
+             )
+             stop(error_message)
+           },
+           # Failing to parse anything returns a warning, not an error.
+           
+           # potential issue: data with only some NA's present will still error out
+           warning = function(w){
+             error_message = paste0(
+               "Warning to error:", w$message
              )
              stop(error_message)
            })
