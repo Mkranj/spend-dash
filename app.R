@@ -200,11 +200,13 @@ server <- function(input, output, session) {
     if (!upload_success) {
       # Inform the user via warning message in popup,
       # different message depending on error
+      shinyjs::hideElement(id = "data_format_msg")
+      shinyjs::hideElement(id = "error_parsing_msg")
       
       if (error_type == "missing_column") {
         shinyjs::showElement(id = "data_format_msg")
       } else if (error_type == "failed_date_parsing") {
-        print("PARSING")
+        shinyjs::showElement(id = "error_parsing_msg")
       }
       
       return(NULL)
@@ -261,8 +263,9 @@ server <- function(input, output, session) {
                              categories_exist = categories_exist)
   
   observeEvent(input$upload_new, {
-    # A new popup will be opened - don't show the data format warning on fresh open
+    # A new popup will be opened - don't show any warnings on fresh open
     shinyjs::hideElement(id = "data_format_msg")
+    shinyjs::hideElement(id = "error_parsing_msg")
     
     showModal(uploading_modal_ui)
   })

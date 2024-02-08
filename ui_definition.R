@@ -71,11 +71,25 @@ wrong_format_msg <- div(
   id = "data_format_msg"
 ) %>% hidden()
 
+failed_parsing_msg <- div(
+  span(class = "space-divider"),
+  p("Warning! The 'Date' column in the data cannot be read as proper dates. 
+    Please ensure it's written in a common format like '12.12.2023' 
+    and doesn't include hours, minutes, seconds.",
+    class = "warn-user"),
+  id = "error_parsing_msg"
+) %>% hidden()
+
+potential_errors <- tagList(
+  wrong_format_msg,
+  failed_parsing_msg
+)
+
 
 uploading_modal_ui <- modalDialog(
   title = "Analyse your data",
   instructions,
-  wrong_format_msg,
+  potential_errors,
   easyClose = F,
   size = "l",
   footer = tagList(
