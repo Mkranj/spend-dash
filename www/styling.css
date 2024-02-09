@@ -1,3 +1,9 @@
+/*Upload button*/
+.sidebar .shiny-bound-input.action-button.upload-btn {
+  width: 87%;
+  margin-top: 10px;
+}
+
 /*Calendar buttons*/
 .datepicker {
   display: flex;
@@ -13,8 +19,8 @@
 }
 
 #categories_filtered .checkbox-inline {
-  margin-right:10px;
-  margin-left:0px;
+  margin-right: 10px;
+  margin-left: 0px;
 }
 
 /*Active view button - monthly or daily*/
@@ -30,12 +36,7 @@
 
 /*FileInput button*/
 .input-group-btn.input-group-prepend{
-  display:inline;
-  content:"Upload file";
-}
-
-.input-group-btn.input-group-prepend > .btn{
-  content:"Upload file";
+  display: inline;
 }
 
 .space-divider {
