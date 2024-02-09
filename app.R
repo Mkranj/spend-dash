@@ -159,6 +159,9 @@ server <- function(input, output, session) {
   })
   
   # Uploading custom data ----
+  # Message to be displayed if an error is caught. NULL to hide.
+  upload_error_msg <- reactiveVal(NULL)
+  
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
     
@@ -173,13 +176,13 @@ server <- function(input, output, session) {
         error_msg <- e$message
 
         if (error_msg == "Error: 'Date' column not found") {
-          print(error_msg)
+          upload_error_msg(error_msg)
           error_type <<- "missing_column"
           return(NULL)
         }
 
         if (error_msg == "Error: 'Amount' column not found") {
-          print(error_msg)
+          upload_error_msg(error_msg)
           error_type <<- "missing_column"
           return(NULL)
         }
@@ -211,6 +214,9 @@ server <- function(input, output, session) {
       
       return(NULL)
     }
+    
+    # Cleanup possible leftover error messages
+    upload_error_msg(NULL)
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
@@ -257,6 +263,9 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
+  upload_popup_error_Server("data_upload", 
+                            error_text = upload_error_msg)
+  
   categories_barchart_Server("categories_plot",
                              individual_expenses, 
                              number_of_months = num_selected_months,
@@ -264,8 +273,7 @@ server <- function(input, output, session) {
   
   observeEvent(input$upload_new, {
     # A new popup will be opened - don't show any warnings on fresh open
-    shinyjs::hideElement(id = "data_format_msg")
-    shinyjs::hideElement(id = "error_parsing_msg")
+    upload_error_msg(NULL)
     
     showModal(uploading_modal_ui)
   })

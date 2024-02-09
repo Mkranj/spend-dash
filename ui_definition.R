@@ -89,7 +89,7 @@ potential_errors <- tagList(
 uploading_modal_ui <- modalDialog(
   title = "Analyse your data",
   instructions,
-  potential_errors,
+  upload_popup_error_UI("data_upload"),
   easyClose = F,
   size = "l",
   footer = tagList(
