@@ -159,11 +159,13 @@ server <- function(input, output, session) {
   })
   
   # Uploading custom data ----
+  # Message to be displayed if an error is caught. NULL to hide.
+  upload_error_msg <- reactiveVal(NULL)
+  
   observeEvent(input$user_sent_data, {
     file_location <- input$user_sent_data$datapath
     
     upload_success <- F
-    error_type <- NULL
     
     tryCatch({
         imported_data <- load_and_prepare_data(file_location)
@@ -171,46 +173,46 @@ server <- function(input, output, session) {
       },
       error = function(e) {
         error_msg <- e$message
-
+        
+        # User-friendly reporting of common data format issues
         if (error_msg == "Error: 'Date' column not found") {
-          print(error_msg)
-          error_type <<- "missing_column"
+          user_msg <- "Warning! The data you uploaded doesn't have the required columns. 
+            Please adjust it so it resembles the picture above."
+          
+          upload_error_msg(user_msg)
           return(NULL)
         }
 
         if (error_msg == "Error: 'Amount' column not found") {
-          print(error_msg)
-          error_type <<- "missing_column"
+          user_msg <- "Warning! The data you uploaded doesn't have the required columns. 
+            Please adjust it so it resembles the picture above."
+          
+          upload_error_msg(user_msg)
           return(NULL)
         }
         
         # Date is not in any recognised format, or is datetime:
         if (stri_detect_fixed(error_msg, "failed to parse")) {
-          print(error_msg)
-          error_type <<- "failed_date_parsing"
+          user_msg <- "Warning! The 'Date' column in the data cannot be read as proper dates. 
+            Please ensure it's written in a common format like '12.12.2023' 
+            and doesn't include hours, minutes, seconds."
+          
+          upload_error_msg(user_msg)
           return(NULL)
         }
         
-        # Unexpected error - proceed with the error
-        stop(e)
+        # Unexpected error
+        upload_error_msg(error_msg)
       }
     )
     
     # Don't proceed if the file didn't upload correctly. Don't close the popup.
     if (!upload_success) {
-      # Inform the user via warning message in popup,
-      # different message depending on error
-      shinyjs::hideElement(id = "data_format_msg")
-      shinyjs::hideElement(id = "error_parsing_msg")
-      
-      if (error_type == "missing_column") {
-        shinyjs::showElement(id = "data_format_msg")
-      } else if (error_type == "failed_date_parsing") {
-        shinyjs::showElement(id = "error_parsing_msg")
-      }
-      
       return(NULL)
     }
+    
+    # Cleanup possible leftover error messages
+    upload_error_msg(NULL)
     
     new_dataframe <- imported_data$data
     new_available_columns <- imported_data$detected_columns
@@ -257,6 +259,9 @@ server <- function(input, output, session) {
     } else return(NULL)
   })
   
+  upload_popup_error_Server("data_upload", 
+                            error_text = upload_error_msg)
+  
   categories_barchart_Server("categories_plot",
                              individual_expenses, 
                              number_of_months = num_selected_months,
@@ -264,11 +269,18 @@ server <- function(input, output, session) {
   
   observeEvent(input$upload_new, {
     # A new popup will be opened - don't show any warnings on fresh open
-    shinyjs::hideElement(id = "data_format_msg")
-    shinyjs::hideElement(id = "error_parsing_msg")
+    upload_error_msg(NULL)
     
     showModal(uploading_modal_ui)
   })
+  
+  observeEvent(input$cancel_upload, {
+    # Dismiss any warnings
+    upload_error_msg(NULL)
+    
+    removeModal()
+  })
+  
 }
 
 shinyApp(ui, server)
