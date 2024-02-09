@@ -51,6 +51,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 type = "scatter",
                 mode = "lines",
                 name = NULL,
+                color = I("#3c8dbc"),
                 hovertemplate = "%{x|%d.%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
                 ) %>%
           layout(
@@ -81,6 +82,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 type = "scatter",
                 mode = "lines",
                 name = NULL,
+                color = I("#3c8dbc"),
                 hovertemplate = "%{x|%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
                 ) %>%
           layout(

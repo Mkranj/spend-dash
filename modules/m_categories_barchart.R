@@ -34,6 +34,7 @@ categories_barchart_Server <- function(id,
         req(plot_data())
         
         plot_ly(plot_data(),
+                color = I("#3c8dbc"),
                 hovertemplate = "%{y:.2f}<extra></extra>") %>% 
           add_bars(x = ~Category, y = ~Monthly_amount) %>%
           layout(
