@@ -37,11 +37,6 @@
 /*FileInput button*/
 .input-group-btn.input-group-prepend{
   display: inline;
-  content: "Upload file";
-}
-
-.input-group-btn.input-group-prepend > .btn{
-  content: "Upload file";
 }
 
 .space-divider {
