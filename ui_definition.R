@@ -69,6 +69,6 @@ uploading_modal_ui <- modalDialog(
   size = "l",
   footer = tagList(
     fileInput_button,
-    modalButton("Cancel")
+    actionButton("cancel_upload", "Cancel")
   )
 )

@@ -273,6 +273,14 @@ server <- function(input, output, session) {
     
     showModal(uploading_modal_ui)
   })
+  
+  observeEvent(input$cancel_upload, {
+    # Dismiss any warnings
+    upload_error_msg(NULL)
+    
+    removeModal()
+  })
+  
 }
 
 shinyApp(ui, server)
