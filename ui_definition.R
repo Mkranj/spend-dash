@@ -60,35 +60,10 @@ instructions <- tagList(
   img(src = "expenses_ex.png")
 )
 
-# Message that will be added if user sends wrongly formatted data
-# hidden - starts not visible, must be enabled.
-# The div is not initialized until first render, so the hide() fn doesn't work.
-wrong_format_msg <- div(
-  span(class = "space-divider"),
-  p("Warning! The data you uploaded doesn't have the required columns. 
-    Please adjust it so it resembles the picture above.",
-    class = "warn-user"),
-  id = "data_format_msg"
-) %>% hidden()
-
-failed_parsing_msg <- div(
-  span(class = "space-divider"),
-  p("Warning! The 'Date' column in the data cannot be read as proper dates. 
-    Please ensure it's written in a common format like '12.12.2023' 
-    and doesn't include hours, minutes, seconds.",
-    class = "warn-user"),
-  id = "error_parsing_msg"
-) %>% hidden()
-
-potential_errors <- tagList(
-  wrong_format_msg,
-  failed_parsing_msg
-)
-
-
 uploading_modal_ui <- modalDialog(
   title = "Analyse your data",
   instructions,
+  # Dynamic part of popup that displays errors only if any occur, otherwise empty
   upload_popup_error_UI("data_upload"),
   easyClose = F,
   size = "l",

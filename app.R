@@ -208,17 +208,6 @@ server <- function(input, output, session) {
     
     # Don't proceed if the file didn't upload correctly. Don't close the popup.
     if (!upload_success) {
-      # Inform the user via warning message in popup,
-      # different message depending on error
-      # shinyjs::hideElement(id = "data_format_msg")
-      # shinyjs::hideElement(id = "error_parsing_msg")
-      
-      # if (error_type == "missing_column") {
-      #   shinyjs::showElement(id = "data_format_msg")
-      # } else if (error_type == "failed_date_parsing") {
-      #   shinyjs::showElement(id = "error_parsing_msg")
-      # }
-      
       return(NULL)
     }
     
