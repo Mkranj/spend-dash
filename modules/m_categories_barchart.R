@@ -26,14 +26,16 @@ categories_barchart_Server <- function(id,
           # Added empty dates resulted in NA categories
           filter(!is.na(Category)) %>%
           summarise(Amount = sum(Amount) %>% round(),
-                    Monthly_amount = (Amount / number_of_months()) %>% round(),
+                    Monthly_amount = (Amount / number_of_months()),
                     No_expenses = n(), .groups = "drop")
       })
       
       plot_object <- reactive({
         req(plot_data())
         
-        plot_ly(plot_data()) %>% add_bars(x = ~Category, y = ~Monthly_amount) %>%
+        plot_ly(plot_data(),
+                hovertemplate = "%{y:.2f}<extra></extra>") %>% 
+          add_bars(x = ~Category, y = ~Monthly_amount) %>%
           layout(
             xaxis = list(
               categoryorder = "total descending",
