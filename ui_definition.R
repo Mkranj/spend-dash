@@ -1,7 +1,7 @@
 # UI definitions
 
 sidebar <- dashboardSidebar(
-  actionButton("upload_new", "Read data from file", width = "90%"),
+  actionButton("upload_new", "Read data from file", class = "upload-btn"),
   dateSelectUI("date_range"),
   uiOutput("categories_ui")
 )
