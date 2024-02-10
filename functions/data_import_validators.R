@@ -91,9 +91,13 @@ validate_date_column <- function(df) {
     return(modified_df)
   }
   
-  date_formats <- c("%Y-%m-%d", "%Y.%m.%d", "%d-%m-%Y", "%d.%m.%Y", "%d.%m.%Y.")
+  # Possible day, month, year orders for parse_date_time. It automatically tries
+  # common variations, including different separators
+  date_formats <- c("ymd", "dmy", "mdy", "ydm")
   
-  tryCatch(date_col <- as_date(date_col, format = date_formats),
+  tryCatch(date_col <- lubridate::parse_date_time(date_col, 
+                                                  orders = c("ymd", "dmy", "mdy", "ydm")) %>%
+             as_date(),
            error = function(e) {
              error_message = paste0(
                "Error: couldn't create date column of valid Date type:", e$message
