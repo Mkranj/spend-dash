@@ -20,7 +20,7 @@ Valid data should look similar to this:
 ![Data separated into Date, Amount, Category columns.](https://github.com/Mkranj/spend-dash/blob/master/www/expenses_ex.png?raw=true)
 
 The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled.  
-Note that the Date column should contain dates, not datetimes (i.e. "30.08.2023." and not "30.08.2023. 11:55:30").
+Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023.*" and not "*30.08.2023. 11:55:30*").
 
 ## Privacy:  
-Any data you upload is viewable only by you and is deleted on the end of the session.  
+Any data you upload can be viewed only by you and is deleted on the end of the session.  
