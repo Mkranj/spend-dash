@@ -51,13 +51,15 @@ dateSelectServer <- function(id, minDate, maxDate) {
       output$picker_start <- renderUI({
         airDatepickerInput(ns("startingDate"), label = "Start date:",
                            minDate = minDate(), maxDate = maxDate(),
-                           value = minDate(), autoClose = T, addon = "none")
+                           value = minDate(), autoClose = T, addon = "none",
+                           dateFormat = "dd.MM.yyyy.")
       })
       
       output$picker_end <- renderUI({
         airDatepickerInput(ns("endDate"), label = "End date:",
                            minDate = minDate(), maxDate = maxDate(),
-                           value = maxDate(), autoClose = T, addon = "none")
+                           value = maxDate(), autoClose = T, addon = "none",
+                           dateFormat = "dd.MM.yyyy.")
       })
       
       # Ensure start and end don't overlap
