@@ -96,7 +96,7 @@ validate_date_column <- function(df) {
   date_formats <- c("ymd", "dmy", "mdy", "ydm")
   
   tryCatch(date_col <- lubridate::parse_date_time(date_col, 
-                                                  orders = c("ymd", "dmy", "mdy", "ydm")) %>%
+                                                  orders = date_formats) %>%
              as_date(),
            error = function(e) {
              error_message = paste0(
