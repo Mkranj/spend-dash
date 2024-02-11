@@ -19,7 +19,7 @@ For using your own data, you can either construct the data yourself (you can use
 Valid data should look similar to this:  
 ![Data separated into Date, Amount, Category columns.](https://github.com/Mkranj/spend-dash/blob/master/www/expenses_ex.png?raw=true)
 
-The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled.  
+The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled. The dashboard will accommodate **any category found in the data**, they are not restricted to those shown for sample data.  
 Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023.*" and not "*30.08.2023. 11:55:30*").
 
 ## Privacy:  
