@@ -56,7 +56,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 ) %>%
           layout(
             xaxis = list(
-              tickformat = "%d.%m.%Y",
+              tickformat = "%d.%m.%Y.",
               title = list(text = NULL)
             ),
             yaxis = list(
