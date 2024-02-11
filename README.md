@@ -15,6 +15,7 @@ Made in R language (4.3.2) with the Shiny framework. Tested on Google Chrome v12
 
 The data used for the initial layout is taken from [this Kaggle dataset](https://www.kaggle.com/datasets/tharunprabu/my-expenses-data).  
 For using your own data, you can either construct the data yourself (you can use [this example Excel workbook](https://github.com/Mkranj/spend-dash/blob/master/example_spending.xlsx) as a starting point) or adapt data you acquired from other sources. E.g. if you can download your financial data from your bank's services, just make sure the column names are the same as described below and you're good to go!  
+Supported filetypes: **.xlsx** and **.csv**.  
 
 Valid data should look similar to this:  
 ![Data separated into Date, Amount, Category columns.](https://github.com/Mkranj/spend-dash/blob/master/www/expenses_ex.png?raw=true)
