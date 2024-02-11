@@ -18,7 +18,6 @@ source("functions/data_import_validators.R")
 
 source("modules/m_dateSelect.R")
 source("modules/m_expenses_over_time_plot.R")
-source("modules/m_daily_popup.R")
 source("modules/m_categories_barchart.R")
 source("modules/m_upload_error_message.R")
 
