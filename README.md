@@ -7,20 +7,21 @@ Live version of the app is [***here***](https://mkranj.shinyapps.io/SpendDash/).
 
 Found SpendDash useful? How about [**buying me a coffee**](https://www.buymeacoffee.com/mkranj61) and supporting development? After all, coffee makes the world go round :star_struck:
 
-Made in R language (4.3.2) with the Shiny framework. Tested on Google Chrome v121.
+Written in R (4.3.2) with the Shiny framework. Tested on Google Chrome v121.
 
 ## Instructions:  
 - [Open the app](https://mkranj.shinyapps.io/SpendDash/)
 - The initial view uses sample data. Load your own via the **Read data from file** button
 
 The data used for the initial layout is taken from [this Kaggle dataset](https://www.kaggle.com/datasets/tharunprabu/my-expenses-data).  
-For using your own data, you can either construct the data yourself (you can use [this example Excel workbook](https://github.com/Mkranj/spend-dash/blob/master/example_spending.xlsx) as a starting point) or adapt data you acquired from other sources. E.g. if you can download your financial data from your bank's services, just make sure the column names are the same as described below and you're good to go!  
+For using your own data, you can either construct the data yourself (you can use [this example Excel workbook](https://github.com/Mkranj/spend-dash/blob/master/example_spending.xlsx) as a starting point) or adapt data you acquired from other sources. E.g. if you can download your financial data from your bank's services or a finance tracking app, just make sure the column names are the same as described below and you're good to go!  
+Supported filetypes: **.xlsx** and **.csv**.  
 
 Valid data should look similar to this:  
 ![Data separated into Date, Amount, Category columns.](https://github.com/Mkranj/spend-dash/blob/master/www/expenses_ex.png?raw=true)
 
-The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled.  
+The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled. The dashboard will accommodate **any category found in the data**, they are not restricted to those shown for sample data.  
 Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023.*" and not "*30.08.2023. 11:55:30*").
 
 ## Privacy:  
-Any data you upload can be viewed only by you and is deleted on the end of the session.  
+Any data you upload can be viewed only by you and is deleted at the end of the session.  
