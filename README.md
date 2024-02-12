@@ -7,7 +7,7 @@ Live version of the app is [***here***](https://mkranj.shinyapps.io/SpendDash/).
 
 Found SpendDash useful? How about [**buying me a coffee**](https://www.buymeacoffee.com/mkranj61) and supporting development? After all, coffee makes the world go round :star_struck:
 
-Made with R (4.3.2) in the Shiny framework. Tested on Google Chrome v121.
+Written in R (4.3.2) with the Shiny framework. Tested on Google Chrome v121.
 
 ## Instructions:  
 - [Open the app](https://mkranj.shinyapps.io/SpendDash/)
