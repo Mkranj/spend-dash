@@ -25,3 +25,19 @@ Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023
 
 ## Privacy:  
 Any data you upload can be viewed only by you and is deleted at the end of the session.  
+
+## Running the app yourself:  
+
+- Download this repository
+- Install the **renv** package if you haven't already
+- Open the project folder and run `renv::restore()` to install all dependencies for this project
+- Run `app.R`  
+
+Alternatively, if you prefer using **Docker**,  
+
+- Download this repository 
+- Build an image using the provided `dockerfile`
+- Create a container from that image, exposing the inside port 8180 to a port of your choosing
+
+Example:  
+`docker run --publish 8180:1234 mkranj/spenddash`
