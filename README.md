@@ -26,7 +26,7 @@ Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023
 ## Privacy:  
 Any data you upload can be viewed only by you and is deleted at the end of the session.  
 
-## Running the app yourself:  
+## Running the app locally:  
 
 - Download this repository
 - Install the **renv** package if you haven't already
