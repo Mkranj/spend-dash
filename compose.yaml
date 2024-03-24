@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+      # Removed ports mapping for app service
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # Certificates on the server
+      - ./certs:/etc/nginx/certs
+    ports:
+      - "443:443"
+    depends_on:
+      - app
