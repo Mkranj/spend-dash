@@ -1,6 +1,7 @@
 # SpendDash v1.0  
 Keep track of your spending habits over time.  
-Live version of the app is [***here***](https://mkranj.shinyapps.io/SpendDash/).
+Access the live version of the app [***here***](https://spenddash.live/).  
+A backup is hosted [***here***](https://mkranj.shinyapps.io/SpendDash/).
 
 ## About:
 ***SpendDash*** is an online dashboard designed to show how your expenses change over time, on a monthly or daily basis. At a glance, you can see whether your latest expenses are on the rise or on the decline when compared to your usual monthly average. Furthermore, if your expenses are assigned categories, you can compare the monthly averages for each category over a period, or look up the expenses for only certain categories.  
