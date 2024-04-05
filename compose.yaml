@@ -3,12 +3,15 @@ version: '3.7'
 services:
   app:
     build: .
+    restart: always
     volumes:
       - .:/app
       # Removed ports mapping for app service
 
   nginx:
     image: nginx:alpine
+    restart: always
+    attach: false
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       # Certificates on the server
