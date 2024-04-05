@@ -11,6 +11,7 @@ services:
   nginx:
     image: nginx:alpine
     restart: always
+    attach: false
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       # Certificates on the server
