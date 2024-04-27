@@ -11,10 +11,14 @@ header <- dashboardHeader(title = "SpendDash")
 # Adding an informative icon to the navbar that acts like a button for popups
 header <- tagQuery(header)$
   find(".navbar")$
-  append(actionButton("help_btn", 
-                      label = "",
-                      icon = icon("question"),
-                      class = "help-btn"))$
+  append(div(
+    class = "help-container",
+    actionButton("help_btn", 
+                label = "",
+                icon = icon("question"),
+                class = "help-btn")
+                )
+    )$
   find(".help_btn")$
   removeClass("btn-default")$
   removeClass("action-button")$

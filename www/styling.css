@@ -53,11 +53,23 @@
 }
 
 /*Information button*/
+.help-container {
+  /*content should be top right, vertically centered*/
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-height: 50px;
+}
+
 .help-btn {
+  display: flex;
+  height: fit-content;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-right: 0.5em;
   background-color: #ecf0f5;
   border-radius: 30px;
-  position: absolute;
-  top: 7px;
-  right: 10px;
-  font-size:16px;
+  font-size: 16px;
 }
