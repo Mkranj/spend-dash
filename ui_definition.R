@@ -30,10 +30,18 @@ header <- tagQuery(header)$
 help_content <- tagList(
   h2(paste0("SpendDash ", APP_VERSION)),
   tags$hr(),
-  p("Support SpendDash!"),
+  tags$a("Support SpendDash!", href = "https://www.buymeacoffee.com/mkranj61"),
   div(class = "space-divider"),
-  p("For more information, visit the README."),
-  p("You can download an Excel sheet for tracking expenses here.")
+  p("For more information about the application, visit the ",
+    tags$a("README",
+           href = "https://github.com/Mkranj/spend-dash",
+           .noWS = "after"),
+    "."),
+  p("You can download an Excel sheet for tracking expenses ",
+    tags$a("here",
+           href = "https://github.com/Mkranj/spend-dash/raw/master/example_spending.xlsx",
+           .noWS = "after"),
+    ".")
 )
 
 help_modal_ui <- modalDialog(
