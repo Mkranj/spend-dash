@@ -1,4 +1,4 @@
-# SpendDash v1.0  
+# SpendDash v1.1  
 Keep track of your spending habits over time.  
 Access the live version of the app [***here***](https://spenddash.live/).  
 A backup is hosted [***here***](https://mkranj.shinyapps.io/SpendDash/).
