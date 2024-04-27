@@ -22,5 +22,5 @@ source("modules/m_upload_error_message.R")
 source("env_variables.R")
 
 # Initial data
-expenses <- read.csv(file = "data_files/expenses_data_cleaned.csv")
+expenses <- read.csv2(file = "data_files/sample_expenses.csv")
 expenses$Date <- as_date(expenses$Date)
