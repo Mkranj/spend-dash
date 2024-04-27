@@ -14,7 +14,7 @@ Written in R (4.3.2) with the Shiny framework. Tested on Google Chrome v121.
 - [Open the app](https://mkranj.shinyapps.io/SpendDash/)
 - The initial view uses sample data. Load your own via the **Read data from file** button
 
-The data used for the initial layout is taken from [this Kaggle dataset](https://www.kaggle.com/datasets/tharunprabu/my-expenses-data).  
+The data used for the initial layout is artificially generated.  
 For using your own data, you can either construct the data yourself (you can use [this example Excel workbook](https://github.com/Mkranj/spend-dash/blob/master/example_spending.xlsx) as a starting point) or adapt data you acquired from other sources. E.g. if you can download your financial data from your bank's services or a finance tracking app, just make sure the column names are the same as described below and you're good to go!  
 Supported filetypes: **.xlsx** and **.csv**.  
 
