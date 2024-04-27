@@ -51,3 +51,12 @@
 .warn-user {
   color: red;
 }
+
+/*Information button*/
+.help-btn {
+  border-radius: 30px;
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  font-size:16px;
+}
