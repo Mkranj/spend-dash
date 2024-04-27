@@ -54,6 +54,7 @@
 
 /*Information button*/
 .help-btn {
+  background-color: #ecf0f5;
   border-radius: 30px;
   position: absolute;
   top: 7px;
