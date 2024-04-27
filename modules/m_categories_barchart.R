@@ -40,11 +40,13 @@ categories_barchart_Server <- function(id,
           layout(
             xaxis = list(
               categoryorder = "total descending",
-              title = list(text = "Monthly Average")
+              title = list(text = "Monthly Average"),
+              fixedrange = TRUE
             ),
             yaxis = list(
               title = "Expenses",
-              zeroline = F
+              zeroline = F,
+              fixedrange = TRUE
             )
           ) %>% config(displayModeBar = F)
       })
