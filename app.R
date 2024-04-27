@@ -1,3 +1,5 @@
+# SpendDash ---
+  
 source("scripts/app_setup.R")
 
 source("ui_definition.R")
@@ -279,6 +281,11 @@ server <- function(input, output, session) {
     upload_error_msg(NULL)
     
     removeModal()
+  })
+  
+  # Show a popup upon clicking on help icon
+  observeEvent(input$help_btn, {
+    showModal(help_modal_ui)
   })
   
 }

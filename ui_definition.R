@@ -6,6 +6,8 @@ sidebar <- dashboardSidebar(
   uiOutput("categories_ui")
 )
 
+# Header with help ----
+
 header <- dashboardHeader(title = "SpendDash")
 
 # Adding an informative icon to the navbar that acts like a button for popups
@@ -23,6 +25,25 @@ header <- tagQuery(header)$
   removeClass("btn-default")$
   removeClass("action-button")$
   allTags()
+
+# Help popup when clicking on the icon
+help_content <- tagList(
+  h2(paste0("SpendDash ", APP_VERSION)),
+  span(class = "space-divider"),
+  p("Support SpendDash!"),
+  span(class = "space-divider"),
+  p("For more information, visit the README."),
+  p("You can download an Excel sheet for tracking expenses here.")
+)
+
+help_modal_ui <- modalDialog(
+  help_content,
+  easyClose = T,
+  size = "l",
+  footer = NULL
+)
+
+# Page body ----
 
 body <- dashboardBody(
   includeCSS("www/styling.css"),
