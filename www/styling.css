@@ -43,11 +43,33 @@
 }
 
 .space-divider {
-  margin-top: 10px;
+  height: 10px;
   display: block;
 }
 
 /*Warning message in popup*/
 .warn-user {
   color: red;
+}
+
+/*Information button*/
+.help-container {
+  /*content should be top right, vertically centered*/
+  display: flex;
+  justify-content: flex-end;
+  align-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-height: 50px;
+}
+
+.help-btn {
+  display: flex;
+  height: fit-content;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  margin-right: 0.5em;
+  background-color: #ecf0f5;
+  border-radius: 30px;
+  font-size: 16px;
 }
