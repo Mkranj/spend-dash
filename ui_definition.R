@@ -29,9 +29,9 @@ header <- tagQuery(header)$
 # Help popup when clicking on the icon
 help_content <- tagList(
   h2(paste0("SpendDash ", APP_VERSION)),
-  span(class = "space-divider"),
+  tags$hr(),
   p("Support SpendDash!"),
-  span(class = "space-divider"),
+  div(class = "space-divider"),
   p("For more information, visit the README."),
   p("You can download an Excel sheet for tracking expenses here.")
 )
@@ -39,7 +39,7 @@ help_content <- tagList(
 help_modal_ui <- modalDialog(
   help_content,
   easyClose = T,
-  size = "l",
+  size = "m",
   footer = NULL
 )
 
