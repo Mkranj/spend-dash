@@ -6,6 +6,9 @@
 .Rprofile
 renv/**
 
+# Secrets
+bash_scripts/envir.sh
+
 # Experimentation scripts
 experiment*
 db*
