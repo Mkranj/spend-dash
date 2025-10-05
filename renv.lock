@@ -434,6 +434,23 @@
       ],
       "Hash": "b18a9cf3c003977b0cc49d5e76ebe48d"
     },
+    "distributional": {
+      "Package": "distributional",
+      "Version": "0.5.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "generics",
+        "lifecycle",
+        "numDeriv",
+        "pillar",
+        "rlang",
+        "stats",
+        "utils",
+        "vctrs"
+      ],
+      "Hash": "76e94de462aa18ea966a38956ecf4497"
+    },
     "dplyr": {
       "Package": "dplyr",
       "Version": "1.1.4",
@@ -498,6 +515,53 @@
       ],
       "Hash": "daf4a1246be12c1fa8c7705a0935c1a0"
     },
+    "fable": {
+      "Package": "fable",
+      "Version": "0.4.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "Rcpp",
+        "distributional",
+        "dplyr",
+        "fabletools",
+        "rlang",
+        "stats",
+        "tibble",
+        "tidyr",
+        "tsibble",
+        "utils"
+      ],
+      "Hash": "1515a618a47d110a2b97bf4d9e4b520f"
+    },
+    "fabletools": {
+      "Package": "fabletools",
+      "Version": "0.5.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "R6",
+        "distributional",
+        "dplyr",
+        "generics",
+        "ggdist",
+        "ggplot2",
+        "lifecycle",
+        "progressr",
+        "rlang",
+        "scales",
+        "stats",
+        "tibble",
+        "tidyr",
+        "tidyselect",
+        "tsibble",
+        "utils",
+        "vctrs"
+      ],
+      "Hash": "57a282512259a2be0aed2f8a4875a52f"
+    },
     "fansi": {
       "Package": "fansi",
       "Version": "1.0.5",
@@ -523,6 +587,31 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "f7736a18de97dea803bde0a2daaafb27"
+    },
+    "feasts": {
+      "Package": "feasts",
+      "Version": "0.4.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "dplyr",
+        "fabletools",
+        "ggplot2",
+        "grid",
+        "gtable",
+        "lifecycle",
+        "lubridate",
+        "rlang",
+        "scales",
+        "slider",
+        "tibble",
+        "tidyr",
+        "tsibble",
+        "utils",
+        "vctrs"
+      ],
+      "Hash": "3249ec0134cf1a9d828513079e63e5d4"
     },
     "fontawesome": {
       "Package": "fontawesome",
@@ -595,6 +684,30 @@
         "methods"
       ],
       "Hash": "15e9634c0fcd294799e9b2e929ed1b86"
+    },
+    "ggdist": {
+      "Package": "ggdist",
+      "Version": "3.3.3",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "Rcpp",
+        "cli",
+        "distributional",
+        "ggplot2",
+        "glue",
+        "grid",
+        "gtable",
+        "numDeriv",
+        "quadprog",
+        "rlang",
+        "scales",
+        "tibble",
+        "vctrs",
+        "withr"
+      ],
+      "Hash": "997ab23a7565f43091b12825e9892704"
     },
     "ggplot2": {
       "Package": "ggplot2",
@@ -1030,6 +1143,16 @@
       ],
       "Hash": "8d1938040a05566f4f7a14af4feadd6b"
     },
+    "numDeriv": {
+      "Package": "numDeriv",
+      "Version": "2016.8-1.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "df58958f293b166e4ab885ebcad90e02"
+    },
     "openssl": {
       "Package": "openssl",
       "Version": "2.1.1",
@@ -1039,18 +1162,6 @@
         "askpass"
       ],
       "Hash": "2a0dc8c6adfb6f032e4d4af82d258ab5"
-    },
-    "packrat": {
-      "Package": "packrat",
-      "Version": "0.9.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "tools",
-        "utils"
-      ],
-      "Hash": "55ddd2d4a1959535f18393478b0c14a6"
     },
     "pillar": {
       "Package": "pillar",
@@ -1191,6 +1302,18 @@
       ],
       "Hash": "f4625e061cb2865f111b47ff163a5ca6"
     },
+    "progressr": {
+      "Package": "progressr",
+      "Version": "0.16.0",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "digest",
+        "utils"
+      ],
+      "Hash": "a1c4def81b4a098b2e288558f719cbad"
+    },
     "promises": {
       "Package": "promises",
       "Version": "1.2.1",
@@ -1232,6 +1355,16 @@
         "vctrs"
       ],
       "Hash": "1cba04a4e9414bdefc9dcaa99649a8dc"
+    },
+    "quadprog": {
+      "Package": "quadprog",
+      "Version": "1.5-8",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "5f919ae5e7f83a6f91dcf2288943370d"
     },
     "ragg": {
       "Package": "ragg",
@@ -1386,28 +1519,6 @@
       ],
       "Hash": "4c8415e0ec1e29f3f4f6fc108bef0144"
     },
-    "rsconnect": {
-      "Package": "rsconnect",
-      "Version": "1.2.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "cli",
-        "curl",
-        "digest",
-        "jsonlite",
-        "lifecycle",
-        "openssl",
-        "packrat",
-        "renv",
-        "rlang",
-        "rstudioapi",
-        "tools",
-        "yaml"
-      ],
-      "Hash": "94bb3a2125b01b13dd2e4a784c2a9639"
-    },
     "rstudioapi": {
       "Package": "rstudioapi",
       "Version": "0.15.0",
@@ -1560,6 +1671,20 @@
         "shiny"
       ],
       "Hash": "802e4786b353a4bb27116957558548d5"
+    },
+    "slider": {
+      "Package": "slider",
+      "Version": "0.3.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "cli",
+        "rlang",
+        "vctrs",
+        "warp"
+      ],
+      "Hash": "5dbae6fb8e910b174bc3428164f4e8f8"
     },
     "sourcetools": {
       "Package": "sourcetools",
@@ -1779,6 +1904,27 @@
       ],
       "Hash": "5ac22900ae0f386e54f1c307eca7d843"
     },
+    "tsibble": {
+      "Package": "tsibble",
+      "Version": "1.1.6",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R",
+        "anytime",
+        "dplyr",
+        "ellipsis",
+        "generics",
+        "lifecycle",
+        "lubridate",
+        "methods",
+        "rlang",
+        "tibble",
+        "tidyselect",
+        "vctrs"
+      ],
+      "Hash": "10a8318a2264880cf5e83b32241306d2"
+    },
     "tzdb": {
       "Package": "tzdb",
       "Version": "0.4.0",
@@ -1877,6 +2023,16 @@
         "tibble"
       ],
       "Hash": "c7d3fd6d29ab077cbac8f0e2751449e6"
+    },
+    "warp": {
+      "Package": "warp",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "fea474d578b1cbcb696ae6ac8bdcc439"
     },
     "withr": {
       "Package": "withr",
