@@ -44,6 +44,38 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         current_view("Month")
       })
       
+      
+      # Seasonal decomposition - only used if enough data is present - 90 days
+      # TRUE/FALSE
+      enough_data_stl <- reactive(nrow(expenses_by_day()) >= 90)
+      
+      stl_daily <- reactive({
+        req(enough_data_stl)
+        decomp <- model(
+          as_tsibble(expenses_by_day(), index = "Date"),
+          feasts::STL(TotalAmount ~ trend(window = 89) +
+                                    season())
+                      )      
+        
+        decomp
+      })
+      
+      stl_monthly <- reactive({
+        req(enough_data_stl)
+        
+        # The interval needs to be recognised as start of specific month,
+        # not individual days with gaps between the 1st of each month
+        data <- expenses_by_month() %>% mutate(Date = yearmonth(Date))
+        
+        decomp <- model(
+          as_tsibble(data, index = "Date"),
+          feasts::STL(TotalAmount ~ trend(window = 3) +
+                        season())
+        )     
+        
+        decomp
+      })
+      
       daily_plot <- reactive({
         plot_data <- expenses_by_day()
         
