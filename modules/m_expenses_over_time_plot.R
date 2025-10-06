@@ -109,6 +109,20 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           plot_object <- plot_object %>% style(mode = "markers")
         }
         
+        # Add trend line if needed
+        # TODO - user can choose to display trend
+        if (enough_data_stl()) {
+          stl <- stl_daily() %>% components() %>% select(trend)
+          
+          plot_object <- plot_object %>% 
+            add_lines(y = stl$trend,
+                      color = I("#EB7259"), 
+                      showlegend = F,
+                      hovertemplate = NA,
+                      line = list(dash = "dot")
+            )
+        }
+        
         plot_object
       })
       
