@@ -2,7 +2,7 @@
 }
 
 /*Upload button*/
-.sidebar .shiny-bound-input.action-button.upload-btn {
+.sidebar .action-button.upload-btn.shiny-bound-input {
   width: 87%;
   margin-top: 10px;
 }
@@ -21,9 +21,21 @@
   color: green;
 }
 
-#categories_filtered .checkbox-inline {
+#categories_filtered .checkbox-inline 
+ {
   margin-right: 10px;
   margin-left: 0px;
+}
+
+
+#categories_filtered .checkbox-inline input
+ {
+  position: relative;
+}
+
+/* Text in line with checkbox */
+.checkbox .shiny-input-checkbox.shiny-bound-input {
+  position: relative;
 }
 
 /*Active view button - monthly or daily*/
@@ -35,6 +47,12 @@
 .active-btnview:hover, .active-btnview:active, .active-btnview:focus {
   border: darkblue 2px solid;
   border-radius: 7px;
+}
+
+/*Checkmark for displaying trend lines*/
+.checkmark-trend {
+  display: inline-block;
+  margin-left: 15px;
 }
 
 /*FileInput button*/

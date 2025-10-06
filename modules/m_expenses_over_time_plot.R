@@ -32,8 +32,17 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
+        trendline_btn <- checkboxInput("show_trend", 
+                                       label = "Show trend",
+                                       value = T) %>% 
+          tagAppendAttributes(
+           class = "checkmark-trend"
+          )
+        
         tagList(days_btn,
-                months_btn)
+                months_btn,
+                trendline_btn
+        )
       })
       
       observeEvent(input$lower_lvl, {
