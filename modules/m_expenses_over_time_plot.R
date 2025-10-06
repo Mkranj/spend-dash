@@ -49,12 +49,16 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # TRUE/FALSE
       enough_data_stl <- reactive(nrow(expenses_by_day()) >= 90)
       
+      # The main point is determining the trend - seasonality is only used
+      # to calculate the trend better, so even if the dataspan is too short
+      # (<2 periods) to calculate seasonality, we can still get the trend
+      
       stl_daily <- reactive({
         req(enough_data_stl)
         decomp <- model(
           as_tsibble(expenses_by_day(), index = "Date"),
           feasts::STL(TotalAmount ~ trend(window = 89) +
-                                    season())
+                                    season(period = "1 year"))
                       )      
         
         decomp
@@ -70,7 +74,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         decomp <- model(
           as_tsibble(data, index = "Date"),
           feasts::STL(TotalAmount ~ trend(window = 3) +
-                        season())
+                        season(period = "1 year"))
         )     
         
         decomp
@@ -140,6 +144,20 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         # to display points instead.
         if (nrow(plot_data) == 1) {
           plot_object <- plot_object %>% style(mode = "markers")
+        }
+        
+        # Add trend line if needed
+        # TODO - user can choose to display trend
+        if (enough_data_stl()) {
+          stl <- stl_monthly() %>% components() %>% select(trend)
+          
+          plot_object <- plot_object %>% 
+            add_lines(y = stl$trend,
+                      color = I("#EB7259"), 
+                      showlegend = F,
+                      hovertemplate = NA,
+                      line = list(dash = "dot")
+                      )
         }
         
         plot_object
