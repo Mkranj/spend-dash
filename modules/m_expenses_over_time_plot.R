@@ -32,7 +32,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
-        if (enough_data_stl()) {
+        if (enough_data_ma()) {
           trendline_btn <- checkboxInput(ns("trend_check"), 
                                          label = "Show trend",
                                          # Keep it consistent across showing/hiding
@@ -62,32 +62,19 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       })
       
       
-      # Seasonal decomposition - only used if enough data is present - 90 days
+      # Calculating three-month trends - only used if enough data is present - 90 days
       # TRUE/FALSE
-      enough_data_stl <- reactive(nrow(expenses_by_day()) >= 90)
+      enough_data_ma <- reactive(nrow(expenses_by_day()) >= 90)
       
       show_trend <- reactiveVal(T)
       
       observeEvent(input$trend_check, {
         show_trend(input$trend_check)
       })
-      
-      # The main point is determining the trend - even if some expenses are
-      # seasonally higher e.g. at winter holidays, we want the trend to
-      # reflect that in the chart and not be suppressed by the invisible
-      # seasonality effect
-      stl_daily <- reactive({
-        req(enough_data_stl())
-        decomp <- model(
-          as_tsibble(expenses_by_day(), index = "Date"),
-          feasts::STL(TotalAmount ~ trend(window = 89) + season(NULL))
-                      )      
-        
-        decomp
-      })
+    
       
       monthly_ma <- reactive({
-        req(enough_data_stl())
+        req(enough_data_ma())
         
         # TODO: trend line ONLY for monthly view
         
@@ -143,19 +130,6 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           plot_object <- plot_object %>% style(mode = "markers")
         }
         
-        # Add trend line if needed
-        if (enough_data_stl() && show_trend()) {
-          stl <- stl_daily() %>% components() %>% select(trend)
-          
-          plot_object <- plot_object %>% 
-            add_lines(y = stl$trend,
-                      color = I("#EB7259"), 
-                      showlegend = F,
-                      hovertemplate = NA,
-                      line = list(dash = "dot")
-            )
-        }
-        
         plot_object
       })
       
@@ -194,7 +168,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         # Add trend line if needed
-        if (enough_data_stl() && show_trend()) {
+        if (enough_data_ma() && show_trend()) {
           mov_av <- monthly_ma()
           
           plot_object <- plot_object %>% 
