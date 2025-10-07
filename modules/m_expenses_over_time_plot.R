@@ -2,8 +2,7 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(uiOutput(ns("view_buttons"))
-        )
+    div(uiOutput(ns("view_buttons")))
   )
 }
 
@@ -32,7 +31,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
-        if (enough_data_ma()) {
+        if (current_view() == "Month" && enough_data_ma()) {
           trendline_btn <- checkboxInput(ns("trend_check"), 
                                          label = "Show trend",
                                          # Keep it consistent across showing/hiding
@@ -75,8 +74,6 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       
       monthly_ma <- reactive({
         req(enough_data_ma())
-        
-        # TODO: trend line ONLY for monthly view
         
         data <- expenses_by_month()$TotalAmount
         
