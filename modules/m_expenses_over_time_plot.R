@@ -77,28 +77,41 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # reflect that in the chart and not be suppressed by the invisible
       # seasonality effect
       stl_daily <- reactive({
-        req(enough_data_stl)
+        req(enough_data_stl())
         decomp <- model(
           as_tsibble(expenses_by_day(), index = "Date"),
-          feasts::STL(TotalAmount ~ trend(window = 89))
+          feasts::STL(TotalAmount ~ trend(window = 89) + season(NULL))
                       )      
         
         decomp
       })
       
-      stl_monthly <- reactive({
-        req(enough_data_stl)
+      monthly_ma <- reactive({
+        req(enough_data_stl())
         
-        # The interval needs to be recognised as start of specific month,
-        # not individual days with gaps between the 1st of each month
-        data <- expenses_by_month() %>% mutate(Date = yearmonth(Date))
+        # TODO: trend line ONLY for monthly view
         
-        decomp <- model(
-          as_tsibble(data, index = "Date"),
-          feasts::STL(TotalAmount ~ trend(window = 3))
-        )     
+        data <- expenses_by_month()$TotalAmount
         
-        decomp
+        moving_averages <- forecast::ma(data, 3)
+        # For 3rd order MA, the first and last observation don't have 3-point
+        # estimates
+        
+        # We shall calculate these trend points as weighted estimates with the
+        # earliest / latest observation having more weight
+        no_obs <- length(data)
+        
+        first_tp <- mean(c(rep(data[1], 2),
+                           data[2]
+                           ))
+        last_tp <- mean(c(data[no_obs-1],
+                          rep(data[no_obs], 2)
+                          ))
+        
+        moving_averages[1] <- first_tp
+        moving_averages[no_obs] <- last_tp
+        
+        moving_averages
       })
       
       daily_plot <- reactive({
@@ -182,10 +195,10 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         
         # Add trend line if needed
         if (enough_data_stl() && show_trend()) {
-          stl <- stl_monthly() %>% components() %>% select(trend)
+          mov_av <- monthly_ma()
           
           plot_object <- plot_object %>% 
-            add_lines(y = stl$trend,
+            add_lines(y = mov_av,
                       color = I("#EB7259"), 
                       showlegend = F,
                       hovertemplate = NA,
