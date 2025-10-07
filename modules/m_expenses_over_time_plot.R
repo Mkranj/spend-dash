@@ -32,12 +32,18 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
-        trendline_btn <- checkboxInput("show_trend", 
-                                       label = "Show trend",
-                                       value = T) %>% 
-          tagAppendAttributes(
-           class = "checkmark-trend"
-          )
+        if (enough_data_stl()) {
+          trendline_btn <- checkboxInput("show_trend", 
+                                         label = "Show trend",
+                                         value = T) %>% 
+            tagAppendAttributes(
+              class = "checkmark-trend"
+            )
+          
+        } else {
+          trendline_btn <- NULL
+        }
+        
         
         tagList(days_btn,
                 months_btn,
@@ -58,10 +64,11 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # TRUE/FALSE
       enough_data_stl <- reactive(nrow(expenses_by_day()) >= 90)
       
-      # The main point is determining the trend - seasonality is only used
-      # to calculate the trend better, so even if the dataspan is too short
-      # (<2 periods) to calculate seasonality, we can still get the trend
-      
+      # The main point is determining the trend - even if some expenses are
+      # seasonally higher e.g. at winter holidays, we want the trend to
+      # reflect that in the chart and not be suppressed by the invisible
+      # seasonality effect
+      # TODO remove season effect
       stl_daily <- reactive({
         req(enough_data_stl)
         decomp <- model(
