@@ -173,3 +173,25 @@ load_and_prepare_data <- function(filename){
   list(data = validated_df,
        detected_columns = detected_columns)
 }
+
+
+# Import Revolut files into desired output
+load_and_prepare_revolut <- function(filename){
+  original_df <- read_data_file(filename)
+  
+  validated_df <- original_df %>%
+    # we only model payments, not topping up the account or sending money
+    filter(Type == "CARD_PAYMENT") %>%
+    # Select only needed columns and coerce their names to those used inside app
+    select("Date" = "Started Date",
+           "Amount" = "Amount") %>%
+    mutate(Date = as_date(Date),
+           # The expenses are recorded as negative transactions.
+           # We need to flip them so they represent amounts of expenses.
+           Amount = -Amount)
+  
+  detected_columns <- detect_data_columns(validated_df)
+  
+  list(data = validated_df,
+       detected_columns = detected_columns)
+}

@@ -240,9 +240,8 @@ server <- function(input, output, session) {
     file_location <- input$user_sent_revolut$datapath
     
     upload_success <- F
-    
     tryCatch({
-      imported_data <- load_and_prepare_data(file_location)
+      imported_data <- load_and_prepare_revolut(file_location)
       upload_success <- T
     },
     error = function(e) {
