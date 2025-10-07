@@ -68,13 +68,11 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # seasonally higher e.g. at winter holidays, we want the trend to
       # reflect that in the chart and not be suppressed by the invisible
       # seasonality effect
-      # TODO remove season effect
       stl_daily <- reactive({
         req(enough_data_stl)
         decomp <- model(
           as_tsibble(expenses_by_day(), index = "Date"),
-          feasts::STL(TotalAmount ~ trend(window = 89) +
-                                    season(period = "1 year"))
+          feasts::STL(TotalAmount ~ trend(window = 89))
                       )      
         
         decomp
@@ -89,8 +87,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         
         decomp <- model(
           as_tsibble(data, index = "Date"),
-          feasts::STL(TotalAmount ~ trend(window = 3) +
-                        season(period = "1 year"))
+          feasts::STL(TotalAmount ~ trend(window = 3))
         )     
         
         decomp
