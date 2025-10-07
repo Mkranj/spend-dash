@@ -61,9 +61,9 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       })
       
       
-      # Calculating three-month trends - only used if enough data is present - 90 days
+      # Calculating three-month trends - only used if enough data is present - 3 months
       # TRUE/FALSE
-      enough_data_ma <- reactive(nrow(expenses_by_day()) >= 90)
+      enough_data_ma <- reactive(nrow(expenses_by_month()) >= 3)
       
       show_trend <- reactiveVal(T)
       
