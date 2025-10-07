@@ -77,23 +77,14 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         
         data <- expenses_by_month()$TotalAmount
         
-        moving_averages <- forecast::ma(data, 3)
-        # For 3rd order MA, the first and last observation don't have 3-point
-        # estimates
+        # rollapply to calculate means will also calculate border values,
+        # e.g. first and last 3 dates for a 7-month window
         
-        # We shall calculate these trend points as weighted estimates with the
-        # earliest / latest observation having more weight
-        no_obs <- length(data)
-        
-        first_tp <- mean(c(rep(data[1], 2),
-                           data[2]
-                           ))
-        last_tp <- mean(c(data[no_obs-1],
-                          rep(data[no_obs], 2)
-                          ))
-        
-        moving_averages[1] <- first_tp
-        moving_averages[no_obs] <- last_tp
+        moving_averages <- zoo::rollapply(data,
+                                          width = 3,
+                                          FUN = mean,
+                                          align = "center",
+                                          partial = TRUE)
         
         moving_averages
       })
