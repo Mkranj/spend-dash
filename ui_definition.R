@@ -102,6 +102,7 @@ revolut_button <- fileInput("user_sent_revolut", "Use selected data", accept = c
 
 revolut_button <- htmltools::tagQuery(revolut_button)$
   find(".input-group-btn.input-group-prepend")$
+  # Style this button specifically
   addClass("revolut_button")$
   selectedTags()
 
@@ -123,8 +124,10 @@ revolut_button <- htmltools::tagQuery(revolut_button)$
 instr_revolut <- tagList(
   span(
     revolut_button,
-    span("Import expenses from Revolut!"),
-    p("In Revolut, go to Expenses > Download Expenses > CSV. Then import the downloaded file here.")
+    span("Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
+    p("In Revolut, go to", tags$em("Expenses > Download Expenses > CSV", .noWS = "after"), ".
+      Then import the downloaded file by clicking on the logo above.",
+      class = "revolut_info")
   )
 )
 
