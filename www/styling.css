@@ -56,8 +56,17 @@
 }
 
 /*FileInput button*/
-.input-group-btn.input-group-prepend{
+.input-group-btn.input-group-prepend {
   display: inline;
+}
+
+/*Revolut button*/
+.revolut_button {
+  margin-right: 1rem;
+}
+
+.revolut_info {
+  margin-top: 1rem;
 }
 
 .space-divider {
