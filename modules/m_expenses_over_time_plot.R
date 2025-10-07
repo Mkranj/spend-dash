@@ -33,9 +33,11 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         if (enough_data_stl()) {
-          trendline_btn <- checkboxInput("show_trend", 
+          trendline_btn <- checkboxInput(ns("trend_check"), 
                                          label = "Show trend",
-                                         value = T) %>% 
+                                         # Keep it consistent across showing/hiding
+                                         value = isolate(show_trend())
+                                         ) %>% 
             tagAppendAttributes(
               class = "checkmark-trend"
             )
@@ -63,6 +65,12 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # Seasonal decomposition - only used if enough data is present - 90 days
       # TRUE/FALSE
       enough_data_stl <- reactive(nrow(expenses_by_day()) >= 90)
+      
+      show_trend <- reactiveVal(T)
+      
+      observeEvent(input$trend_check, {
+        show_trend(input$trend_check)
+      })
       
       # The main point is determining the trend - even if some expenses are
       # seasonally higher e.g. at winter holidays, we want the trend to
@@ -123,8 +131,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         # Add trend line if needed
-        # TODO - user can choose to display trend
-        if (enough_data_stl()) {
+        if (enough_data_stl() && show_trend()) {
           stl <- stl_daily() %>% components() %>% select(trend)
           
           plot_object <- plot_object %>% 
@@ -174,8 +181,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         # Add trend line if needed
-        # TODO - user can choose to display trend
-        if (enough_data_stl()) {
+        if (enough_data_stl() && show_trend()) {
           stl <- stl_monthly() %>% components() %>% select(trend)
           
           plot_object <- plot_object %>% 
