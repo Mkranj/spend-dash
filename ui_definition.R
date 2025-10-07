@@ -97,10 +97,44 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   append(fileInput_text, input_part)$
   allTags()
 
+### Importing from Revolut section
+revolut_button <- fileInput("user_sent_revolut", "Use selected data", accept = c(".csv"))
+
+revolut_button <- htmltools::tagQuery(revolut_button)$
+  find(".input-group-btn.input-group-prepend")$
+  addClass("revolut_button")$
+  selectedTags()
+
+# We need to replace the text in the span, so we'll extract the unchanging part,
+# empty the original (text + extracted part) and the fill it back with the extracted part
+revolut_button_content <- tags$img(src = "revolut_logo.png", height = "50px", width = "50px")
+
+input_part <- htmltools::tagQuery(revolut_button)$find("input")$
+  selectedTags()
+
+revolut_button <- htmltools::tagQuery(revolut_button)$
+  find("span")$
+  empty()$ # getting rid of the text and input_part
+  append(revolut_button_content, input_part)$
+  allTags()
+
+
+
+instr_revolut <- tagList(
+  span(
+    revolut_button,
+    span("Import expenses from Revolut!"),
+    p("In Revolut, go to Expenses > Download Expenses > CSV. Then import the downloaded file here.")
+  )
+)
+
 instructions <- tagList(
   p("Upload a file from disk to visualize your data."),
   p("Supported filetypes: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),
   span(class = "space-divider"),
+  instr_revolut,
+  tags$hr(),
+  h2("Custom file"),
   p("The file ", tags$b("must"), " contain columns named \"Date\" and
     \"Amount\" to be properly loaded. If a column called \"Category\" also 
     exists, additional features will be enabled."),
