@@ -41,14 +41,23 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
               class = "checkmark-trend"
             )
           
+          trendline_period <- selectInput(ns("trend_period"),
+                                          choices = c("3 months", "5 months", "7 months"),
+                                          selected = "7 months",
+                                          label = "",
+                                          selectize = F) %>% 
+            tagAppendAttributes(class = "trend-select")
+          
         } else {
           trendline_btn <- NULL
+          trendline_period <- NULL
         }
         
         
         tagList(days_btn,
                 months_btn,
-                trendline_btn
+                trendline_btn,
+                trendline_period
         )
       })
       
