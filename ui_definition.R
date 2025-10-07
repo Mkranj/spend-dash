@@ -135,6 +135,7 @@ instructions <- tagList(
   p("Upload a file from disk to visualize your data."),
   p("Supported filetypes: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),
   span(class = "space-divider"),
+  h2("Revolut"),
   instr_revolut,
   tags$hr(),
   h2("Custom file"),
