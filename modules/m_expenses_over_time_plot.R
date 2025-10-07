@@ -2,8 +2,7 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(uiOutput(ns("view_buttons"))
-        )
+    div(uiOutput(ns("view_buttons")))
   )
 }
 
@@ -32,8 +31,25 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
+        if (current_view() == "Month" && enough_data_ma()) {
+          trendline_btn <- checkboxInput(ns("trend_check"), 
+                                         label = "Show trend",
+                                         # Keep it consistent across showing/hiding
+                                         value = isolate(show_trend())
+                                         ) %>% 
+            tagAppendAttributes(
+              class = "checkmark-trend"
+            )
+          
+        } else {
+          trendline_btn <- NULL
+        }
+        
+        
         tagList(days_btn,
-                months_btn)
+                months_btn,
+                trendline_btn
+        )
       })
       
       observeEvent(input$lower_lvl, {
@@ -42,6 +58,44 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       
       observeEvent(input$higher_lvl, {
         current_view("Month")
+      })
+      
+      
+      # Calculating three-month trends - only used if enough data is present - 90 days
+      # TRUE/FALSE
+      enough_data_ma <- reactive(nrow(expenses_by_day()) >= 90)
+      
+      show_trend <- reactiveVal(T)
+      
+      observeEvent(input$trend_check, {
+        show_trend(input$trend_check)
+      })
+    
+      
+      monthly_ma <- reactive({
+        req(enough_data_ma())
+        
+        data <- expenses_by_month()$TotalAmount
+        
+        moving_averages <- forecast::ma(data, 3)
+        # For 3rd order MA, the first and last observation don't have 3-point
+        # estimates
+        
+        # We shall calculate these trend points as weighted estimates with the
+        # earliest / latest observation having more weight
+        no_obs <- length(data)
+        
+        first_tp <- mean(c(rep(data[1], 2),
+                           data[2]
+                           ))
+        last_tp <- mean(c(data[no_obs-1],
+                          rep(data[no_obs], 2)
+                          ))
+        
+        moving_averages[1] <- first_tp
+        moving_averages[no_obs] <- last_tp
+        
+        moving_averages
       })
       
       daily_plot <- reactive({
@@ -108,6 +162,19 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         # to display points instead.
         if (nrow(plot_data) == 1) {
           plot_object <- plot_object %>% style(mode = "markers")
+        }
+        
+        # Add trend line if needed
+        if (enough_data_ma() && show_trend()) {
+          mov_av <- monthly_ma()
+          
+          plot_object <- plot_object %>% 
+            add_lines(y = mov_av,
+                      color = I("#EB7259"), 
+                      showlegend = F,
+                      hovertemplate = NA,
+                      line = list(dash = "dot")
+                      )
         }
         
         plot_object

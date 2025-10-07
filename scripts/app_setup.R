@@ -8,6 +8,7 @@ library(tidyr)
 library(stringi)
 library(htmltools)
 library(shinyjs)
+library(forecast)
 
 source("functions/plotting.R")
 source("functions/data_manipulation.R")
