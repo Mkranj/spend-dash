@@ -92,11 +92,15 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         
         data <- expenses_by_month()$TotalAmount
         
+        # User chooses how much to smooth the lines
+        req(input$trend_period)
+        period <- as.numeric(input$trend_period)
+        
         # rollapply to calculate means will also calculate border values,
         # e.g. first and last 3 dates for a 7-month window
         
         moving_averages <- zoo::rollapply(data,
-                                          width = 3,
+                                          width = period,
                                           FUN = mean,
                                           align = "center",
                                           partial = TRUE)
