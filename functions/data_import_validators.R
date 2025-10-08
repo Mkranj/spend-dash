@@ -181,7 +181,7 @@ load_and_prepare_revolut <- function(filename){
   
   validated_df <- original_df %>%
     # we only model payments, not topping up the account or sending money
-    filter(Type == "CARD_PAYMENT") %>%
+    filter(Type %in% c("CARD_PAYMENT", "Card Payment")) %>% 
     # Select only needed columns and coerce their names to those used inside app
     select("Date" = "Started Date",
            "Amount" = "Amount") %>%

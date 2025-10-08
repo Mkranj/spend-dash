@@ -98,7 +98,7 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   allTags()
 
 ### Importing from Revolut section
-revolut_button <- fileInput("user_sent_revolut", "Use selected data", accept = c(".csv"))
+revolut_button <- fileInput("user_sent_revolut", "Use selected data", accept = c(".xlsx"))
 
 revolut_button <- htmltools::tagQuery(revolut_button)$
   find(".input-group-btn.input-group-prepend")$
