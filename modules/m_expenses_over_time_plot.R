@@ -51,16 +51,9 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # TRUE/FALSE
       enough_data_ma <- reactive(nrow(expenses_by_month()) >= 3)
       
-      show_trend <- reactiveVal(T)
       
-      observeEvent(input$trend_check, {
-        show <- input$trend_check
-        
-        show_trend(input$trend_check)
-      })
-      
-      observeEvent(show_trend(),{
-        if (show_trend()) {
+      observeEvent(input$trend_check,{
+        if (input$trend_check) {
           shinyjs::enable("trend_period")
         } else {
           shinyjs::disable("trend_period")
@@ -166,7 +159,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         # Add trend line if needed
-        if (enough_data_ma() && show_trend()) {
+        if (enough_data_ma() && input$trend_check) {
           mov_av <- monthly_ma()
           
           plot_object <- plot_object %>% 
