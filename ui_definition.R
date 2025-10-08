@@ -129,7 +129,7 @@ instr_revolut <- tagList(
       ", select the period you want to visualize and download the generated file.
       Then import that file by clicking on the logo above.",
       tags$br(),
-      "Only card transactions will be visualized in SpendDash.",
+      "Only card payments will be visualized in SpendDash.",
       class = "revolut_info")
   )
 )

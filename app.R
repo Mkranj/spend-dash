@@ -205,6 +205,14 @@ server <- function(input, output, session) {
           return(NULL)
         }
         
+        # Revolut: no card transactions in data
+        if (error_msg == "No data in file.") {
+          user_msg <- "The uploaded file has no card payment data to display."
+          
+          upload_error_msg(user_msg)
+          return(NULL)
+        }
+        
         # Unexpected error
         upload_error_msg(error_msg)
       }

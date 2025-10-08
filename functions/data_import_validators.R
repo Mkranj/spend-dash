@@ -193,6 +193,9 @@ load_and_prepare_revolut <- function(filename){
            # We need to flip them so they represent amounts of expenses.
            Amount = -Amount)
   
+  # If user data has no transactions, stop the process
+  if (nrow(validated_df) == 0) stop("No data in file.")
+  
   detected_columns <- detect_data_columns(validated_df)
   
   list(data = validated_df,
@@ -209,7 +212,8 @@ load_user_data <- function(filename) {
     load_success <- T
   },
   error = function(e) {
-    # PASS - TRY ANOTHER FORMAT
+    if (e$message == "No data in file.") stop(e)
+    # other errors - try other formats
     }
   )
   
