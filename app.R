@@ -1,7 +1,7 @@
 # SpendDash ---
   
 source("scripts/app_setup.R")
-
+source("functions/ui_functions.R")
 source("ui_definition.R")
 
 server <- function(input, output, session) {

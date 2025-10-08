@@ -2,7 +2,9 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(uiOutput(ns("view_buttons")))
+    div(uiOutput(ns("view_buttons")),
+        make_trendline_btn(ns("trend_check")),
+        make_trendline_period_drop(ns("trend_period")))
   )
 }
 
@@ -31,39 +33,8 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
-        if (current_view() == "Month" && enough_data_ma()) {
-          trendline_btn <- checkboxInput(ns("trend_check"), 
-                                         label = "Show trend",
-                                         # Keep it consistent across showing/hiding
-                                         value = isolate(show_trend())
-                                         ) %>% 
-            tagAppendAttributes(
-              class = "checkmark-trend"
-            )
-          
-          # The intervals allowed depend on data size
-          ma_months <- c(3, 5, 7)
-          
-          choice_names <- paste0(ma_months, " months")
-          offered_choices <- ma_months %>% setNames(choice_names) 
-          
-          trendline_period <- selectInput(ns("trend_period"),
-                                          choices = offered_choices,
-                                          selected = 7,
-                                          label = "",
-                                          selectize = F) %>% 
-            tagAppendAttributes(class = "trend-select")
-          
-        } else {
-          trendline_btn <- NULL
-          trendline_period <- NULL
-        }
-        
-        
         tagList(days_btn,
-                months_btn,
-                trendline_btn,
-                trendline_period
+                months_btn
         )
       })
       
@@ -83,7 +54,17 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       show_trend <- reactiveVal(T)
       
       observeEvent(input$trend_check, {
+        show <- input$trend_check
+        
         show_trend(input$trend_check)
+      })
+      
+      observeEvent(show_trend(),{
+        if (show_trend()) {
+          shinyjs::enable("trend_period")
+        } else {
+          shinyjs::disable("trend_period")
+        }
       })
     
       
