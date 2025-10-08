@@ -53,21 +53,12 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       
       
       observeEvent(input$trend_check,{
-        if (input$trend_check) {
-          shinyjs::enable("trend_period")
-        } else {
-          shinyjs::disable("trend_period")
-        }
+        shinyjs::toggleState("trend_period", condition = input$trend_check)
       })
       
       observeEvent(enough_data_ma(),{
-        if (!enough_data_ma()) {
-          shinyjs::hide("trend_check")
-          shinyjs::hide("trend_period")
-        } else {
-          shinyjs::show("trend_check")
-          shinyjs::show("trend_period")
-        }
+        shinyjs::toggleElement("trend_check", condition = enough_data_ma())
+        shinyjs::toggleElement("trend_period", condition = enough_data_ma())
       })
     
       
