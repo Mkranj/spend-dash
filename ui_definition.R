@@ -98,7 +98,7 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   allTags()
 
 ### Importing from Revolut section
-revolut_button <- fileInput("user_sent_revolut", "Use selected data", accept = c(".csv"))
+revolut_button <- fileInput("user_sent_revolut", "NO_TEXT", accept = c(".xlsx"))
 
 revolut_button <- htmltools::tagQuery(revolut_button)$
   find(".input-group-btn.input-group-prepend")$
@@ -125,8 +125,11 @@ instr_revolut <- tagList(
   span(
     revolut_button,
     span("Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
-    p("In Revolut, go to", tags$em("Expenses > Download Expenses > CSV", .noWS = "after"), ".
-      Then import the downloaded file by clicking on the logo above.",
+    p("In Revolut, go to your account,", tags$em("More > Statement > Excel", .noWS = "after"),
+      ", select the period you want to visualize and download the generated file.
+      Then import that file by clicking on the logo above.",
+      tags$br(),
+      "Only card transactions will be visualized in SpendDash.",
       class = "revolut_info")
   )
 )
