@@ -66,6 +66,16 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           shinyjs::disable("trend_period")
         }
       })
+      
+      observeEvent(enough_data_ma(),{
+        if (!enough_data_ma()) {
+          shinyjs::hide("trend_check")
+          shinyjs::hide("trend_period")
+        } else {
+          shinyjs::show("trend_check")
+          shinyjs::show("trend_period")
+        }
+      })
     
       
       monthly_ma <- reactive({
