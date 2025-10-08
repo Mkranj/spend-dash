@@ -55,6 +55,17 @@
   margin-left: 15px;
 }
 
+/*Select trend duration*/
+.trend-select {
+  display: inline-block;
+  margin-left: 1rem;
+}
+
+/*Ensure arrow doesn't overlap text*/
+.trend-select .item {
+  padding-right: 3rem;
+}
+
 /*FileInput button*/
 .input-group-btn.input-group-prepend {
   display: inline;

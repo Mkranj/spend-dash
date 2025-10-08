@@ -2,7 +2,9 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(uiOutput(ns("view_buttons")))
+    div(uiOutput(ns("view_buttons"), inline = T),
+        make_trendline_btn(ns("trend_check")),
+        make_trendline_period_drop(ns("trend_period")))
   )
 }
 
@@ -31,24 +33,8 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
           )
         }
         
-        if (current_view() == "Month" && enough_data_ma()) {
-          trendline_btn <- checkboxInput(ns("trend_check"), 
-                                         label = "Show trend",
-                                         # Keep it consistent across showing/hiding
-                                         value = isolate(show_trend())
-                                         ) %>% 
-            tagAppendAttributes(
-              class = "checkmark-trend"
-            )
-          
-        } else {
-          trendline_btn <- NULL
-        }
-        
-        
         tagList(days_btn,
-                months_btn,
-                trendline_btn
+                months_btn
         )
       })
       
@@ -65,10 +51,14 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
       # TRUE/FALSE
       enough_data_ma <- reactive(nrow(expenses_by_month()) >= 3)
       
-      show_trend <- reactiveVal(T)
       
-      observeEvent(input$trend_check, {
-        show_trend(input$trend_check)
+      observeEvent(input$trend_check,{
+        shinyjs::toggleState("trend_period", condition = input$trend_check)
+      })
+      
+      observeEvent(enough_data_ma(),{
+        shinyjs::toggleElement("trend_check", condition = enough_data_ma())
+        shinyjs::toggleElement("trend_period", condition = enough_data_ma())
       })
     
       
@@ -77,23 +67,18 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         
         data <- expenses_by_month()$TotalAmount
         
-        moving_averages <- forecast::ma(data, 3)
-        # For 3rd order MA, the first and last observation don't have 3-point
-        # estimates
+        # User chooses how much to smooth the lines
+        req(input$trend_period)
+        period <- as.numeric(input$trend_period)
         
-        # We shall calculate these trend points as weighted estimates with the
-        # earliest / latest observation having more weight
-        no_obs <- length(data)
+        # rollapply to calculate means will also calculate border values,
+        # e.g. first and last 3 dates for a 7-month window
         
-        first_tp <- mean(c(rep(data[1], 2),
-                           data[2]
-                           ))
-        last_tp <- mean(c(data[no_obs-1],
-                          rep(data[no_obs], 2)
-                          ))
-        
-        moving_averages[1] <- first_tp
-        moving_averages[no_obs] <- last_tp
+        moving_averages <- zoo::rollapply(data,
+                                          width = period,
+                                          FUN = mean,
+                                          align = "center",
+                                          partial = TRUE)
         
         moving_averages
       })
@@ -165,7 +150,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
         }
         
         # Add trend line if needed
-        if (enough_data_ma() && show_trend()) {
+        if (enough_data_ma() && input$trend_check) {
           mov_av <- monthly_ma()
           
           plot_object <- plot_object %>% 
