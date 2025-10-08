@@ -172,7 +172,7 @@ server <- function(input, output, session) {
     upload_success <- F
     
     tryCatch({
-        imported_data <- load_and_prepare_data(file_location)
+        imported_data <- load_user_data(file_location)
         upload_success <- T
       },
       error = function(e) {
