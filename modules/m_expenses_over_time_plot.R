@@ -2,7 +2,7 @@ expenses_over_time_plotUI <- function(id) {
   ns <- NS(id)
   tagList(
     div(plotlyOutput(ns("expenses_plot"), height = "200px")),
-    div(uiOutput(ns("view_buttons")),
+    div(uiOutput(ns("view_buttons"), inline = T),
         make_trendline_btn(ns("trend_check")),
         make_trendline_period_drop(ns("trend_period")))
   )
