@@ -124,9 +124,10 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 mode = "lines",
                 name = NULL,
                 color = I("#3c8dbc"),
-                hovertemplate = "%{x|%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
+                hovertemplate = "Amount: %{y:.2f}<extra></extra>"
                 ) %>%
           layout(
+            hovermode = "x unified",
             xaxis = list(
               tickformat = "%m.%Y.",
               # dtick so that every month is shown, and only once.
@@ -157,7 +158,7 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
             add_lines(y = mov_av,
                       color = I("#EB7259"), 
                       showlegend = F,
-                      hovertemplate = NA,
+                      hovertemplate = "Trend: %{y:.2f}<extra></extra>",
                       line = list(dash = "dot")
                       )
         }
