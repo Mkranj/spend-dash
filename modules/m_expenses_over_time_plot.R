@@ -41,9 +41,15 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
               class = "checkmark-trend"
             )
           
+          # The intervals allowed depend on data size
+          ma_months <- c(3, 5, 7)
+          
+          choice_names <- paste0(ma_months, " months")
+          offered_choices <- ma_months %>% setNames(choice_names) 
+          
           trendline_period <- selectInput(ns("trend_period"),
-                                          choices = c("3 months", "5 months", "7 months"),
-                                          selected = "7 months",
+                                          choices = offered_choices,
+                                          selected = 7,
                                           label = "",
                                           selectize = F) %>% 
             tagAppendAttributes(class = "trend-select")
