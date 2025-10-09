@@ -98,40 +98,14 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
   allTags()
 
 ### Importing from Revolut section
-revolut_button <- fileInput("user_sent_revolut", "NO_TEXT", accept = c(".xlsx"))
-
-revolut_button <- htmltools::tagQuery(revolut_button)$
-  find(".input-group-btn.input-group-prepend")$
-  # Style this button specifically
-  addClass("revolut_button")$
-  selectedTags()
-
-# We need to replace the text in the span, so we'll extract the unchanging part,
-# empty the original (text + extracted part) and the fill it back with the extracted part
-revolut_button_content <- tags$img(src = "revolut_logo.png", height = "50px", width = "50px")
-
-input_part <- htmltools::tagQuery(revolut_button)$find("input")$
-  selectedTags()
-
-revolut_button <- htmltools::tagQuery(revolut_button)$
-  find("span")$
-  empty()$ # getting rid of the text and input_part
-  append(revolut_button_content, input_part)$
-  allTags()
-
-
-
-instr_revolut <- tagList(
-  span(
-    revolut_button,
-    span("Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
+instr_revolut <- span(
+    span(tags$img(src = "revolut_logo.png", height = "50px", width = "50px"),
+         "Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
     p("In Revolut, go to your account,", tags$em("More > Statement > Excel", .noWS = "after"),
-      ", select the period you want to visualize and download the generated file.
-      Then import that file by clicking on the logo above.",
+      ", select the period you want to visualize and download the generated file to use it with SpendDash.",
       tags$br(),
-      "Only card payments will be visualized in SpendDash.",
+      tags$b("Only card payments"), "will be visualized in SpendDash!",
       class = "revolut_info")
-  )
 )
 
 instructions <- tagList(
