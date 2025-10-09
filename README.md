@@ -1,4 +1,4 @@
-# SpendDash v1.1  
+# SpendDash v1.2  
 Keep track of your spending habits over time.  
 Access the live version of the app [***here***](https://spenddash.live/).  
 A backup is hosted [***here***](https://mkranj.shinyapps.io/SpendDash/).
@@ -23,6 +23,9 @@ Valid data should look similar to this:
 
 The file **must** contain columns named "*Date*" and "*Amount*" to be properly loaded. If a column called "*Category*" also exists, features related to charting and selecting individual categories will be enabled. The dashboard will accommodate **any category found in the data**, they are not restricted to those shown for sample data.  
 Note that the Date column should contain dates, not datetimes (i.e. "*30.08.2023.*" and not "*30.08.2023. 11:55:30*").
+
+### Revolut:
+SpendDash can use data exported by Revolut! To get this data, go to your Revolut account and go through "More > Statement > Excel", then upload this data to the dashboard.
 
 ## Privacy:  
 Any data you upload can be viewed only by you and is deleted at the end of the session.  
