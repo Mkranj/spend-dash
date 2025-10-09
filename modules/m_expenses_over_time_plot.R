@@ -91,9 +91,10 @@ expenses_over_time_plotServer <- function(id, expenses_by_day, expenses_by_month
                 mode = "lines",
                 name = NULL,
                 color = I("#3c8dbc"),
-                hovertemplate = "%{x|%d.%m.%Y.}<br>Amount: %{y:.2f}<extra></extra>"
+                hovertemplate = "Amount: %{y:.2f}<extra></extra>"
                 ) %>%
           layout(
+            hovermode = "x unified",
             xaxis = list(
               tickformat = "%d.%m.%Y.",
               title = list(text = NULL),
