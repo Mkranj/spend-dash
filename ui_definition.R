@@ -108,6 +108,7 @@ instr_revolut <- span(
       class = "revolut_info")
 )
 
+# Custom file instructions
 instructions <- tagList(
   p("Upload a file from disk to visualize your data."),
   p("Supported filetypes: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),

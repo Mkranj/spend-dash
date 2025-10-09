@@ -240,49 +240,6 @@ server <- function(input, output, session) {
     removeModal()
   })
   
-  # Uploading custom file data ----
-  # Message to be displayed if an error is caught. NULL to hide.
-  upload_error_msg <- reactiveVal(NULL)
-  
-  observeEvent(input$user_sent_revolut, {
-    file_location <- input$user_sent_revolut$datapath
-    
-    upload_success <- F
-    tryCatch({
-      imported_data <- load_and_prepare_revolut(file_location)
-      upload_success <- T
-    },
-    error = function(e) {
-      error_msg <- e$message
-      
-      # Show error
-      upload_error_msg(error_msg)
-    }
-    )
-    
-    # Don't proceed if the file didn't upload correctly. Don't close the popup.
-    if (!upload_success) {
-      return(NULL)
-    }
-    
-    # Cleanup possible leftover error messages
-    upload_error_msg(NULL)
-    
-    new_dataframe <- imported_data$data
-    new_available_columns <- imported_data$detected_columns
-    
-    # Update main data source
-    expenses_data(new_dataframe)
-    
-    # Update variable indicating whether categories are present in data
-    data_has_categories <- new_available_columns$Category
-    categories_exist(data_has_categories)
-    
-    # Close the popup
-    removeModal()
-  })
-  
-  
   # Outputs ----
   expenses_over_time_plotServer("expenses_plot", expenses_by_day = expenses_by_day,
                                 expenses_by_month = expenses_by_month)
