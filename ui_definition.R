@@ -99,21 +99,20 @@ fileInput_button <- htmltools::tagQuery(fileInput_button)$
 
 ### Importing from Revolut section
 instr_revolut <- span(
-    span(tags$img(src = "revolut_logo.png", height = "50px", width = "50px"),
-         "Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
-    p("In Revolut, go to your account,", tags$em("More > Statement > Excel", .noWS = "after"),
-      ", select the period you want to visualize and download the generated file to use it with SpendDash.",
-      tags$br(),
-      tags$b("Only card payments"), "will be visualized in SpendDash!",
-      class = "revolut_info")
+  div(tags$img(src = "revolut.png", class = "revolut-logo")),
+  span("Import expenses from", tags$b("Revolut", .noWS = "after"), "!"),
+  p("In Revolut, go to your account,", tags$em("More > Statement > Excel", .noWS = "after"),
+    ", select the period you want to visualize and download the generated file to use it with SpendDash.",
+    tags$br(),
+    tags$b("Only card payments"), "will be visualized in SpendDash!",
+    class = "revolut_info")
 )
 
 # Custom file instructions
 instructions <- tagList(
   p("Upload a file from your device to visualize your data."),
-  p("Supported filetypes: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),
-  span(class = "space-divider"),
-  h2("Revolut"),
+  p("Supported file types: ", tags$b(".xlsx"), "and ", tags$b(".csv"), "."),
+  tags$hr(),
   instr_revolut,
   tags$hr(),
   h2("Custom file"),

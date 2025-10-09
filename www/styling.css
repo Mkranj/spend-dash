@@ -71,14 +71,16 @@
   display: inline;
 }
 
-/*Revolut button*/
-.revolut_button {
-  margin-right: 1rem;
+/*Revolut section*/
+.revolut-logo {
+  height: 35px;
+  margin-bottom: 1rem;
 }
 
 .revolut_info {
   margin-top: 1rem;
 }
+
 
 .space-divider {
   height: 10px;
