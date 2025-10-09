@@ -153,7 +153,8 @@ empty_string_to_na <- function(df, detected_columns) {
 
 # Integrate into loading data ----
 
-load_and_prepare_data <- function(filename){
+# Format data from any excel/csv with the right columns
+load_and_prepare_custom_data <- function(filename){
   original_df <- read_data_file(filename)
   
   # Column work - other functions depend on correct names
@@ -176,6 +177,8 @@ load_and_prepare_data <- function(filename){
 
 
 # Import Revolut files into desired output
+# One version outputs .csv, the other .xlsx. Both have same column names.
+# Note: we chose to only model card payments here, ignoring transfers etc. for simplicity.
 load_and_prepare_revolut <- function(filename){
   original_df <- read_data_file(filename)
   
@@ -190,8 +193,42 @@ load_and_prepare_revolut <- function(filename){
            # We need to flip them so they represent amounts of expenses.
            Amount = -Amount)
   
+  # If user data has no transactions, stop the process
+  if (nrow(validated_df) == 0) stop("No data in file.")
+  
   detected_columns <- detect_data_columns(validated_df)
   
   list(data = validated_df,
        detected_columns = detected_columns)
+}
+
+# Base functions that tries several known data formats on the provided data
+load_user_data <- function(filename) {
+  load_success <- F
+  
+  # Revolut
+  tryCatch({
+    imported_data <- load_and_prepare_revolut(filename)
+    load_success <- T
+  },
+  error = function(e) {
+    if (e$message == "No data in file.") stop(e)
+    # other errors - try other formats
+    }
+  )
+  
+  if (load_success) return(imported_data)
+  
+  # Custom table format with required columns
+  tryCatch({
+    imported_data <- load_and_prepare_custom_data(filename)
+    load_success <- T
+  },
+  error = function(e) {
+    stop(e)
+    }
+  )
+  
+  
+  if (load_success) return(imported_data)
 }
